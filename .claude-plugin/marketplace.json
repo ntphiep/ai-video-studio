@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "ntphiep-ai-video-studio",
+  "description": "Skill sản xuất video AI toàn diện, xây từ việc xem 43 video hướng dẫn và đo trực tiếp trên tài khoản thật.",
+  "owner": {
+    "name": "ntphiep",
+    "url": "https://github.com/ntphiep"
+  },
+  "plugins": [
+    {
+      "name": "ai-video-studio",
+      "source": {
+        "source": "github",
+        "repo": "ntphiep/ai-video-studio"
+      },
+      "description": "Sản xuất video AI toàn diện qua bốn đường: Google Flow, Gemini API, Gemini Notebook, và Claude Code kết hợp Remotion.",
+      "homepage": "https://github.com/ntphiep/ai-video-studio",
+      "license": "MIT",
+      "keywords": ["video", "google-flow", "veo", "gemini", "remotion", "tts"]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Khoa va bi mat, TUYET DOI khong commit
+.env
+*.key
+.gemini_key
+
+# San pham tam khi chay thu
+*.mp4
+*.wav
+*.mp3
+*.png
+out/
+output/
+node_modules/
+
+# He dieu hanh
+.DS_Store
+Thumbs.db
+desktop.ini

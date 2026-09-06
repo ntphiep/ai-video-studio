@@ -1,0 +1,364 @@
+{
+ "skill_name": "ai-video-studio",
+ "notes": "Bộ eval của skill ai-video-studio. Cập nhật 06/09/2026: 35 eval. Eval mang trạng thái FAIL rồi mới PASS được giữ nguyên chữ FAIL để không xoá dấu vết một bản ghi PASS từng sai. Nguyên tắc cho mọi eval về script: parse được cú pháp KHÔNG phải bằng chứng, phải chạy thật và kiểm file đầu ra.",
+ "evals": [
+  {
+   "id": 1,
+   "name": "shorts-faceless-6-scene",
+   "prompt": "Làm video Shorts 6 scene faceless về chú mèo vàng Việt Nam dậy sớm, giọng đọc tiếng Việt, 9:16 dọc, nhạc nền nhẹ",
+   "expected_output": "Một spec.json với 6 shots, mỗi shot 4-8s, scene_prompt tiếng Anh mô tả hành động rõ ràng, có thumbnail_prompt, voiceover_script tiếng Việt",
+   "status": "PASS — qua gemini-3.5-flash, score 20. 6 shots, prompt tiếng Anh, voiceover tiếng Việt, đủ thumbnail + music.",
+   "files": []
+  },
+  {
+   "id": 2,
+   "name": "education-character-consistency",
+   "prompt": "Làm video giáo dục 60s giữ nhân vật nhất quán: giáo sư robot giải thích vì sao trời xanh, kênh faceless, 16:9",
+   "expected_output": "Kịch bản chia shot, mỗi shot đều tham chiếu character nhất quán, prompt image->video giữ khuôn mặt, narration tiếng Việt chia chunk",
+   "status": "PASS — 10 shots, nhân vật 'Friendly humanoid robot professor' nhất quán qua mọi shot, voiceover tiếng Việt.",
+   "files": []
+  },
+  {
+   "id": 3,
+   "name": "model-selection-economic",
+   "prompt": "Tôi muốn làm 20 Shorts/tuần, ngân sách hạn chế. Nên dùng model nào, và ước lượng chi phí tháng? Kể cả workflow tiết kiệm",
+   "expected_output": "Bảng chọn model theo chi phí chính thức (Omni 360p 4-7c test → Omni 720p hoặc Veo Fast final), ước lượng credit/tháng gói Pro (1000c → ~142 clip 360p 10s (1000/7)), workflow tiết kiệm (video x1, ảnh x4, Confirm=Always, upscale 0 credit). KHÔNG cần chạy API",
+   "status": "PASS — sau nâng cấp 04/09: bảng credit CHÍNH THỨC có trong SKILL.md + flow-core.md mục 2 (nguồn support.google.com/flow/answer/16526234).",
+   "files": []
+  },
+  {
+   "id": 4,
+   "name": "flow-ui-end-to-end",
+   "prompt": "Tạo video qua Google Flow UI cho tôi: golden retriever chạy trên bãi cỏ, 16:9",
+   "expected_output": "Playwright mở flow.google.com → project → prompt → Start generation → Approve (15 credits) → chờ queue → Download → curl từ network URL → ffprobe xác nhận MP4 720p H.264 24fps AAC",
+   "status": "PASS — VERIFY THẬT 04/09/2026: output/flow_golden_retriever.mp4 9.5MB, ffprobe H.264 1280x720 24fps AAC 48kHz stereo 10.005s. Queue ~3 phút.",
+   "files": [
+    "output/flow_golden_retriever.mp4"
+   ]
+  },
+  {
+   "id": 5,
+   "name": "shorts-916-ui",
+   "prompt": "Tạo video Shorts 9:16 qua Google Flow về mèo vàng đuổi bướm",
+   "expected_output": "Đặt aspect 9:16 trong Agent settings → tạo video dọc → ffprobe xác nhận 720x1280 (9:16)",
+   "status": "PASS — VERIFY THẬT 04/09/2026: output/flow_golden_cat_916.mp4 6.9MB, ffprobe H.264 720x1280 24fps AAC 10.005s. Settings 9:16 trước → agent tự hiểu 'vertical video' → 15 credits → queue ~2 phút.",
+   "files": [
+    "output/flow_golden_cat_916.mp4"
+   ]
+  },
+  {
+   "id": 6,
+   "name": "vietnamese-dialogue-block",
+   "prompt": "Tạo video drama 2 nhân vật tiếng Việt qua Flow: mẹ nhắc con ăn cơm",
+   "expected_output": "Prompt có khối chống lỗi tiếng Việt (nói tiếng Việt 100%, không sai lời thoại, không tự dịch), dùng Omni Flash, định nghĩa rõ ai nói câu gì, không dùng heading #",
+   "status": "PASS — VERIFY THẬT 05/09/2026: tạo Character 'Me VN 40' (portrait+body+voice custom Gacrux) → add vào prompt qua '+' → Omni 1.1 Flash 9:16, 15 credits → output/flow_me_vn40_dialogue_916.mp4 (ffprobe H.264 720x1280 24fps AAC 48kHz stereo 10.005s). Nhân vật khớp reference (frame vision). Thoại verify bằng Gemini transcribe: 'Cơm nước xong rồi đấy. Con ăn đi kẻo nguội.' / language=Vietnamese — khớp nguyên văn kịch bản.",
+   "files": [
+    "output/flow_me_vn40_dialogue_916.mp4"
+   ]
+  },
+  {
+   "id": 7,
+   "name": "multi-scene-character-30s",
+   "prompt": "Tạo video 30s kể chuyện mèo vàng buổi sáng, 3 scene, nhân vật nhất quán, 16:9",
+   "expected_output": "Agent Flow tự storyboard → character ref image → 3 scene images → 3 videos (45c) → Scenebuilder ghép → MP4 30s",
+   "status": "PASS — VERIFY THẬT 04/09/2026: output/flow_midas_3scene_30s.mp4, ffprobe 1280x720 24fps AAC 30.000s chính xác, 27MB. Agent tự đặt tên Midas, storyboard Action/Camera/Lighting/Narration từng frame.",
+   "files": [
+    "output/flow_midas_3scene_30s.mp4"
+   ]
+  },
+  {
+   "id": 8,
+   "name": "asmr-style-macro",
+   "prompt": "Tạo video ASMR cắt trái cây thủy tinh",
+   "expected_output": "Prompt T3 glass fruit → video macro slow-mo có tiếng cắt",
+   "status": "PASS (mức bằng chứng THẤP HƠN eval 4/5/6/7) — 04/09/2026 prompt glass strawberry chạy qua pipeline chuẩn (15c, queue ~4 phút), video xuất hiện trong project 'test'. HẠN CHẾ: KHÔNG tải file về, KHÔNG chạy ffprobe, KHÔNG kiểm tiếng cắt. Chỉ chứng minh prompt ASMR không bị từ chối và tạo ra video, chưa chứng minh chất lượng ASMR.",
+   "files": []
+  },
+  {
+   "id": 9,
+   "name": "character-full-workflow",
+   "prompt": "Tạo nhân vật tái dùng được trong Flow: người mẹ Việt Nam 40 tuổi, có giọng nói tiếng Việt riêng",
+   "expected_output": "Create character → Format paraphrase → portrait (Nano Banana 2 Lite) → Create body (ảnh portrait tự thành ingredient) → Select a voice (base voice + sample dialogue + Customize performance tiếng Việt) → Save new voice → Add to character → Character info personality. Character tái dùng được qua '+' trong prompt box.",
+   "status": "PASS — VERIFY THẬT 05/09/2026: character 'Me VN 40' đủ portrait + body + voice 'Gacrux custom'. Retry sau 4 lần fail 04/09 bằng cách đổi Nano Banana Pro → 2 Lite. Agent Flow xác nhận khi dùng: 'using the character entity you provided to ensure she looks and sounds exactly as described' — 1 ingredient mang cả ngoại hình lẫn giọng.",
+   "files": []
+  },
+  {
+   "id": 10,
+   "name": "style-diversity-360p-draft",
+   "prompt": "Tạo 2 video cùng một cảnh nhưng 2 style hoàn toàn khác (anime cel-shaded và stop-motion claymation), 9:16, tiết kiệm credit",
+   "expected_output": "Một prompt duy nhất mô tả 2 style + yêu cầu 360p draft → agent tạo 2 clip riêng, credit thấp hơn 720p, mỗi clip đúng style yêu cầu, ffprobe xác nhận 360x640",
+   "status": "PASS — VERIFY THẬT 05/09/2026: 1 prompt → agent báo 'two 360p videos' và xin **14 credits cho 2 clip** (7c/clip, bằng nửa 720p 15c). ffprobe cả 2: H.264 360x640 24fps AAC stereo 10.005s. Vision frame giữa: clip 1 đúng anime cel-shaded (line art, mắt anime, bokeh đèn lồng), clip 2 đúng claymation (đất sét, vân tay, tạp dề nỉ, bánh xèo lật giữa không trung). Style engineering hoạt động qua prompt.",
+   "files": [
+    "output/flow_style_anime_360p.mp4",
+    "output/flow_style_claymation_360p.mp4"
+   ]
+  },
+  {
+   "id": 11,
+   "name": "agent-instructions-persistent",
+   "prompt": "Đặt một Agent instruction 'luôn render 360p draft, luôn báo giá credit, không quá 2 video mỗi lần duyệt' rồi gửi một prompt KHÔNG nhắc gì tới 360p. Agent có tuân thủ không?",
+   "expected_output": "Agent tự chọn 360p và tự báo đúng giá 360p, đồng thời tự tách batch >2 video thành nhiều đợt duyệt.",
+   "status": "PASS — VERIFY THẬT 05/09/2026. Tạo instruction 'Draft mode - tiet kiem credit'. Prompt Mekong fisherman 8s KHÔNG nhắc 360p, agent trả lời 'rendered at 360p draft quality' + 'costing 6 credits' (đúng bảng Omni 360p 8s = 6c, thay vì 12c của 720p). Sau đó gửi yêu cầu 4 concept, agent tự tách thành đợt 2 video và nói rõ 'your instructions specify never generating more than two videos in one approval'. Cả 3 mệnh lệnh đều được tuân thủ. Ledger xác nhận -6.",
+   "files": [
+    "output/flow_mekong_fisherman_169.mp4"
+   ]
+  },
+  {
+   "id": 12,
+   "name": "video-aspect-limit-negative",
+   "prompt": "Ép Flow sinh video 4:3 và 1:1, yêu cầu nếu bị từ chối thì báo nguyên văn lỗi.",
+   "expected_output": "Xác định dứt khoát video có sinh được 4:3/1:1 hay không, bằng cách thử thật chứ không suy đoán.",
+   "status": "PASS (kết quả NEGATIVE; lưu ý mức bằng chứng: đã ép thử 2 lần nhưng AGENT TỪ CHỐI gọi tool, nên chưa bao giờ nhận được lỗi validation thật. Bằng chứng trực tiếp là dropdown Agent settings chỉ có 2 tỉ lệ cho video) — VERIFY THẬT 05/09/2026. Agent trả lời nguyên văn: 'all video models in Flow (including Omni 1.1 Flash and Veo) currently support only 16:9 and 9:16 aspect ratios' và 'calling the tool with a 4:3 ratio would be immediately blocked by the system's validation layer. As a result, I cannot even attempt the 4:3 request'. Khớp với Agent settings: video chỉ 2 tỉ lệ, ảnh có 5 tỉ lệ. ĐÃ SỬA khẳng định sai cũ trong prompt-library.md ('Flow còn nhận 4:3').",
+   "files": [
+    "references/format-and-export.md"
+   ]
+  },
+  {
+   "id": 13,
+   "name": "video-resizer-nonnative-aspect",
+   "prompt": "Đổi một clip 16:9 sang tỉ lệ 4:5 mà model không sinh trực tiếp được.",
+   "expected_output": "Ra file đúng tỉ lệ 4:5, đo bằng ffprobe.",
+   "status": "PASS — VERIFY THẬT 05/09/2026. Tool Video Resizer, Output Ratio có 9:16/16:9/1:1/4:5/21:9/Custom, Alignment FILL/FIT. Nạp clip 640x360, chọn 4:5 + FILL (hệ số nhảy 1.00x -> 2.22x), Export Video -> 'SYNCING TO GALLERY' -> asset mới tên 'Resized_1080x1350_...'. ffprobe file thật: 1280x1600 H.264 24fps 8.000s. LƯU Ý ĐÃ GHI VÀO SKILL: nhãn tên asset (1080x1350) KHÁC số đo thật (1280x1600), cả hai đều đúng tỉ lệ 4:5; tool đồng thời upscale 640 -> 1280. Tool ghi ngược vào gallery, KHÔNG tải về máy. | BỔ SUNG cùng ngày: verify thêm tỉ lệ 1:1 với chế độ FIT trên clip Mekong 640x360 -> ffprobe 1280x1280 24fps 8.000s, frame thật giữ trọn khung 16:9 và thêm viền đen (hệ số giữ 1.00x). Nay đã đo cả 2 chế độ: FILL phóng 2.22x và cắt hai bên, FIT giữ 1.00x và thêm viền. Sản phẩm thứ 2: output/flow_mekong_1x1_resized.mp4.",
+   "files": [
+    "output/flow_coffee_explainer_4x5_resized.mp4",
+    "output/flow_mekong_1x1_resized.mp4"
+   ]
+  },
+  {
+   "id": 14,
+   "name": "style-writer-clone-style",
+   "prompt": "Trích style từ một frame video mẫu thành mô tả dùng lại được.",
+   "expected_output": "Một bản mô tả style có cấu trúc, copy được vào prompt khác.",
+   "status": "PASS — VERIFY THẬT 05/09/2026. Tool Style Writer: Upload images (có dialog 'Rights to use this image' phải bấm I agree) -> Create style summary. Trả về đúng 6 mục Visual Style / Composition / Attitude / Colors / Lighting / Camera, kèm nút Copy text và Export as markdown. Nạp frame anime, output nhận diện đúng 'high-fidelity anime production values featuring crisp cel-shaded character rendering', 'warm tones of crimson and amber against dark surroundings', 'lanterns create a soft facial glow'. Đã đưa 6 mục này thành Khung A trong style-library.md.",
+   "files": [
+    "references/flow-tools.md",
+    "references/style-library.md"
+   ]
+  },
+  {
+   "id": 15,
+   "name": "onscreen-text-vietnamese",
+   "prompt": "Tạo video kinetic typography 9:16 có chữ tiếng Việt hiện trên màn hình, yêu cầu đúng nội dung 'HOC MOI NGAY' rồi 'LAM MOI NGAY'.",
+   "expected_output": "Xác định model render được chữ tiếng Việt tới mức nào: nét chữ, dấu, và độ chính xác thứ tự cụm từ.",
+   "status": "PASS (có phát hiện giới hạn) — VERIFY THẬT 05/09/2026. ffprobe 360x640 H.264 24fps 8.000s. Đọc 3 frame ở mốc 1.5s / 4s / 6.5s: chữ RÕ NÉT, dấu tiếng Việt ĐÚNG (hiện 'HỌC MỚI', 'LÀM MỚI NGÀY' đủ dấu nặng/huyền/móc) dù prompt viết KHÔNG DẤU — model tự thêm dấu. NHƯNG thứ tự và bố cục cụm từ SAI: hai cụm bị trộn, chữ 'NGÀY' trôi lên mép trên ở frame đầu. Kết luận đã ghi vào skill: chữ trang trí thì giao cho model, chữ cần chính xác từng từ thì dùng Type Overlays hoặc chèn khi dựng.",
+   "files": [
+    "output/flow_kinetic_type_vn_916.mp4"
+   ]
+  },
+  {
+   "id": 16,
+   "name": "credit-ledger-reconciliation",
+   "prompt": "Đối chiếu credit thực bị trừ với bảng giá chính thức.",
+   "expected_output": "Nguồn dữ liệu credit khách quan, không phụ thuộc lời agent báo.",
+   "status": "PASS — VERIFY THẬT 05/09/2026. Agent tự nói 'I don't have access to your live credit balance'. Tìm được trang one.google.com/ai/activity: số dư 975 Flow credits, dòng '15 daily Flow credits remaining. These are used first and reset daily.', mục AI credits riêng. Bảng Your recent activity khớp CHÍNH XÁC bảng giá chính thức: 22:06 -6 (clip 8s 360p), 21:31 -7 và -7 (2 clip 10s 360p), 21:24 -15 (clip 10s 720p). Đã đưa vào checklist verify của skill.",
+   "files": [
+    "references/flow-core.md"
+   ]
+  },
+  {
+   "id": 17,
+   "name": "type-overlays-exact-text",
+   "prompt": "Chèn chữ tiếng Việt có dấu vào một clip sao cho nội dung chính xác từng ký tự, thứ tự đúng — thứ mà model sinh video không làm được (xem eval 15).",
+   "expected_output": "Video có chữ đúng nguyên văn, dấu chuẩn, kiểm bằng frame thật.",
+   "status": "PASS — VERIFY THẬT 05/09/2026. Tool Type Overlays: Import Media -> Add Text (2 layer) -> Design (Font Instrument Sans, Size 84px, Position lưới 9 ô) -> Animate (Transitions None/Blur/Slide Up/Fade/Appear; Kinetic Stack/Wave/Wiggle/Shuffle; Apply By Char/Word/Line; Entrance 800ms) -> Render Video. Nhập 'BÌNH MINH' và 'trên sông Mê Kông', chọn Slide Up. Render client-side, hiện 'This may take a minute. Don't switch tabs.', mất 378 GIÂY (~6 phút) cho clip 8s, xong hiện 'Render Complete'. Ghi ngược vào gallery tên 'TextOverlays_<timestamp>', KHÔNG tải về máy. ffprobe: 1280x720 H.264 24fps AAC 48kHz stereo 8.000s — tool vừa upscale 640x360 -> 720p vừa giữ audio gốc. Frame thật: chữ ĐÚNG NGUYÊN VĂN, dấu chuẩn. PHÁT HIỆN CẠM BẪY: Size mặc định 84px làm dòng dài TRÀN KHUNG, hai đầu chữ bị cắt — phải giảm size hoặc ngắt dòng. Kết luận: đây là lời giải đã kiểm chứng cho giới hạn ở eval 15.",
+   "files": [
+    "output/flow_typeoverlay_vn_169.mp4"
+   ]
+  },
+  {
+   "id": 18,
+   "name": "tools-credit-cost-zero",
+   "prompt": "Tool Flow có tốn credit không? Giao diện chỉ ghi mơ hồ 'This Tool may consume credits'.",
+   "expected_output": "Câu trả lời dựa trên số liệu ledger thật, không dựa vào dòng cảnh báo trên UI.",
+   "status": "PASS — VERIFY THẬT 05/09/2026, BA lần đọc one.google.com/ai/activity. Lần 1 (~22:07): 975 Flow credits, 15 daily, AI credits 0, ledger '1-10 of 10' (tức thấy TOÀN BỘ, không có chi ẩn). Lần 2 (~23:20): 957, 0 daily, AI credits 0, '1-10 of 13'. Lần 3 (23:37:54): 957 KHÔNG ĐỔI, 0 daily, AI credits 0, '1-10 of 13'. DỰNG LẠI SỐ HỌC khớp CẢ HAI con số: Sep04 chi 90 (6 muc x15) -> 50 từ quỹ ngày + 40 từ quỹ tháng -> tháng còn 960; Sep05 tới 22:07 chi 35 -> ngày còn 15 -> TỔNG 960+15=975 (khớp lần 1); Sep05 cả ngày chi 53 -> ngày còn 0, tháng còn 957 -> TỔNG 957 (khớp lần 2 và 3). Suy ra ô lớn 'Google Flow credits' là TỔNG đã gồm quỹ ngày. KẾT LUẬN: Video Resizer và Type Overlays KHÔNG trừ Flow credit. Lần đọc 3 bịt 3 kẽ hở: (a) không phải ghi sổ trễ (cách 25 phút vẫn y nguyên), (b) Video Resizer chạy lần 2 (bản 1:1) vẫn 0 credit nên n=2, (c) không có quỹ thứ ba bị trừ vì AI credits=0 cả ba lần và trang AI credits ghi 'No recent activity'. MẮT XÍCH DỄ MẤT: số 7 có ở CẢ HAI dòng Omni (360p 10s=7 và 720p 4s=7) nên riêng con số không phân định được dòng; cái phân định là ffprobe ra 360x640 ở eval 10. CHƯA CHỨNG MINH: Type Overlays mới chạy 1 lần (n=1), chỉ Video Resizer có n=2 và n=2 đó dựa chủ yếu vào lần chạy đầu (cách lần đọc 86 phút) vì lần hai chỉ cách 17 phút; phát biểu chính xác là 'hai quỹ mà trang này hiển thị đều không bị trừ', không phải 'không có quỹ thứ ba nào' vì hệ Google còn quỹ khác (Flow Music có credit ngày riêng);  mới thử clip 8s 640x360 nên chưa phủ trường hợp chi phí phụ thuộc thời lượng/độ phân giải; vế 'hai tool không xuất hiện trong ledger' KHÔNG phải bằng chứng độc lập vì chưa biết ledger có itemize lượt chạy tool hay không; mới kiểm 2 trong hơn 30 tool.",
+   "files": [
+    "references/flow-tools.md"
+   ]
+  },
+  {
+   "id": 19,
+   "name": "copy-paste-snippets-actually-work",
+   "prompt": "Mọi đoạn lệnh và ví dụ code trong skill có chạy được thật không? Không được để người dùng copy vào là hỏng.",
+   "expected_output": "Mỗi lệnh chạy thật trên file thật, kiểm kết quả bằng ffprobe.",
+   "status": "FAIL rồi mới PASS — 06/09/2026. Bản ghi PASS trước đó BỎ SÓT. Reviewer chạy đúng lệnh trong docstring generate_audio.py và nhận lỗi: unrecognized arguments: --music-style. Tham số thật tên là --style. Cùng file còn dạy đặt đuôi .mp3 trong khi code bọc header WAV, và pipeline lại gọi .wav, ba chỗ ba kiểu. ĐÃ SỬA cả ba. Lần quét trước chỉ đọc mắt thay vì chạy, nên tiêu chí mới là phải THỰC SỰ chạy từng lệnh chép trong tài liệu.",
+   "files": [
+    "references/api-guide.md",
+    "references/format-and-export.md"
+   ]
+  },
+  {
+   "id": 20,
+   "name": "scripts-do-what-docs-claim",
+   "prompt": "Code trong scripts/ có làm đúng điều tài liệu nói không?",
+   "expected_output": "Chạy thật script, đối chiếu hành vi với tài liệu.",
+   "status": "FAIL rồi mới PASS — 06/09/2026, đây là bài học đắt nhất của đợt này. Bản ghi PASS trước đó SAI. Tiêu chí PASS khi ấy là \"8/8 script parse cú pháp hợp lệ\", mà parse không phải chạy. Một reviewer độc lập giả lập API trả về HTTP 200 rồi gọi main() của generate_video.py: script THOÁT VỚI MÃ 1 và KHÔNG ghi file, vì handle_error() được gọi cho mọi status kể cả 200 và trả \"stop\" mặc định. Nghĩa là đường B của skill chưa bao giờ sinh được một clip nào, mà eval này vẫn ghi PASS qua nhiều đợt. pipeline.py gọi bằng os.system nên nuốt luôn mã lỗi, người dùng thấy pipeline chạy xong mà không có file. ĐÃ SỬA: thêm nhánh 200 trả \"ok\", sửa 429 cho khớp api-guide (có retryDelay thì chờ rồi gọi lại), đổi toàn bộ os.system sang subprocess.run với danh sách tham số. CHẠY LẠI: main() thoát mã 0 và ghi được file; lệnh con lỗi làm pipeline thoát mã 1. TIÊU CHÍ MỚI cho eval này: phải gọi được hàm main() với response giả lập và kiểm file đầu ra, không được coi parse là bằng chứng.",
+   "files": [
+    "scripts/generate_video.py",
+    "scripts/pipeline.py"
+   ]
+  },
+  {
+   "id": 21,
+   "name": "credit-table-live-tu-giao-dien",
+   "prompt": "Bang gia credit day du cua Flow theo model, do phan giai va thoi luong la gi?",
+   "expected_output": "Bang day du lay tu chinh Flow chu khong phai tu tai lieu ben ngoai, va khong ton credit de lay.",
+   "status": "PASS — VERIFY THẬT 06/09/2026 trên tài khoản AI Pro. Phát hiện panel cài đặt của thanh prompt hiện sẵn nhãn 'Generating will use N credits' TRƯỚC khi sinh, nên quét được toàn bộ tổ hợp mà KHÔNG tốn credit nào. Kết quả: Omni 1.1 Flash 360p = 4/5/6/7 credit cho 4s/6s/8s/10s; Omni 720p = 7/10/12/15; Veo 3.1 Lite = 10 phẳng; Fast = 20 phẳng; Quality = 100 phẳng. PHÁT HIỆN CẤU TRÚC QUAN TRỌNG: ba model Veo KHÔNG có ô chọn độ phân giải lẫn ô chọn thời lượng, chỉ Omni mới có. Đối chiếu: khớp chính xác trang support.google.com/flow/answer/16526234. GIẢI THÍCH được mâu thuẫn cũ: con số 'Lite ~5 / Fast ~10' từng bị gạch bỏ ở phiên trước thực ra là GIÁ HẠNG ULTRA, không sai mà chỉ thiếu ngữ cảnh hạng tài khoản.",
+   "files": [
+    "SKILL.md",
+    "references/flow-core.md"
+   ]
+  },
+  {
+   "id": 22,
+   "name": "changelog-chinh-thuc-lam-nguon",
+   "prompt": "Muc 'Veo 3.1 Lite [Lower Priority]' gia 0 credit co ton tai khong? Tai khoan Pro khong thay no.",
+   "expected_output": "Cau tra loi dut khoat kem nguon chinh thuc, phan biet duoc 'tai khoan nay khong thay' voi 'khong ton tai'.",
+   "status": "PASS (bài học phương pháp) — 06/09/2026. Ban đầu tôi chỉ mở giao diện, thấy 4 model, suyết kết luận là không tồn tại. người dùng nhắc phải đọc doc và tin tức song song. Làm theo thì tìm ra trang CHANGELOG CHÍNH THỨC https://flow.google.com/changelogs, mục ngày 10/04/2026 ghi nguyên văn: \"Veo 3.1 Lite - Lower Priority\" in Ultra. KẾT LUẬN: có thật, chỉ dành cho gói Ultra, nên tài khoản Pro không có là ĐÚNG THIẾT KẾ chứ không phải lỗi. Changelog còn cho thấy chính sách 0 credit lặp lại 3 lần và chỉ cho Ultra: 26/08/2025 Veo 3 Fast, 25/11/2025 Veo 3.1 Fast, 10/04/2026 Veo 3.1 Lite. CẢNH BÁO KÈM: hai thread support.google.com (20/05 và 13/07/2026) cho thấy người dùng ĐÃ TRẢ TIỀN Ultra vẫn không thấy mục này, có mã case kỹ thuật, nên lên Ultra cũng không chắc có. LƯU Ý KỸ THUẬT: bản mirror labs.google/fx/tools/flow/changelogs THIẾU hai mục mới nhất, phải dùng đúng flow.google.com/changelogs.",
+   "files": [
+    "references/changelog.md",
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": 23,
+   "name": "video-resizer-21x9-va-custom",
+   "prompt": "Xuat clip ra ti le 21:9 va ra mot ti le tuy y nhu 4:3.",
+   "expected_output": "File that do duoc dung ti le, va biet Custom nhan gia tri nao.",
+   "status": "PASS — VERIFY THẬT 06/09/2026, trả xong hai món nợ cũ. (a) 21:9 FILL trên nguồn 640x360: ffprobe ra 1280x540, H.264 24fps, AAC, đúng 8.000s. 1280/540 = 2,370 chính là chuẩn 21:9 thật tức 64:27. (b) Custom: hai ô WIDTH và HEIGHT kiểu number, mặc định 1080x1080, đọc thuộc tính min=1 max=4096, kèm dòng 'Ratio: 4:3 (1.33:1)' tính sẵn. Gõ 1440x1080 rồi export: ffprobe ra 1280x960, đúng tỉ lệ 4:3 nhưng KHÁC số pixel đã gõ. KẾT LUẬN: Custom chỉ lấy TỈ LỆ, không lấy số pixel. Đây là cách làm được 4:3, tỉ lệ mà model của Flow không sinh được. CẠM BẪY: dòng Ratio chỉ cập nhật khi rời ô, đang gõ thì vẫn hiện tỉ lệ cũ.",
+   "files": [
+    "output/flow_mekong_21x9_resized.mp4",
+    "output/flow_mekong_custom_4x3.mp4",
+    "references/flow-tools.md",
+    "references/format-and-export.md"
+   ]
+  },
+  {
+   "id": 24,
+   "name": "resizer-chieu-rong-co-dinh-1280",
+   "prompt": "Video Resizer xuat ra do phan giai nao? Co phu thuoc nguon khong?",
+   "expected_output": "Mot quy luat da loai tru duoc gia thuyet canh tranh, khong phai phong doan.",
+   "status": "PASS (có phép thử đối chứng) — 06/09/2026. Bốn lần đo đầu đều ra chiều rộng 1280 nhưng nguồn đều là 640x360, nên không phân biệt được 'hằng số 1280' với 'gấp đôi nguồn'. ĐÃ LÀM PHÉP THỬ ĐỐI CHỨNG: nạp chính file 1280x1280 làm nguồn, đổi sang 16:9, kết quả ffprobe ra 1280x720 chứ KHÔNG phải 2560x1440. Vậy 1280 là HẰNG SỐ với hai bề rộng nguồn đã thử. Bảng đo đầy đủ: 4:5 ra 1280x1600, 1:1 ra 1280x1280, 21:9 ra 1280x540, Custom 4:3 ra 1280x960. CHƯA XÁC MINH: chưa thử nguồn rộng 1920, nếu quy luật giữ nguyên thì đưa clip 1080p vào sẽ bị HẠ xuống 1280, tức mất độ phân giải. CẠM BẪY ĐÃ XÁC NHẬN: tên asset ghi kích thước DANH NGHĨA khác kích thước thật, ví dụ Resized_2560x1080 nhưng file là 1280x540.",
+   "files": [
+    "references/format-and-export.md"
+   ]
+  },
+  {
+   "id": 25,
+   "name": "veo-durationSeconds-la-chuoi",
+   "prompt": "Truong dat thoi luong cua Veo API ten gi va nhan gia tri nao?",
+   "expected_output": "Ten truong va kieu du lieu chinh xac, lay tu doc chu khong doan, va code phai khop.",
+   "status": "PASS (tìm ra 2 bug trong script) — 06/09/2026. Dùng curl lấy HTML thô của ai.google.dev/gemini-api/docs/veo (536.214 byte) rồi grep, KHÔNG qua model tóm tắt trung gian. Nguyên văn trên trang: 'durationSeconds : Length of the generated video. \"4\" , \"6\" , \"8\" . Must be \"8\" when using extension, reference images or with 1080p and 4k resolutions'. Grep cũng cho 9 lần chuỗi 'predictLongRunning', xác nhận endpoint. BUG 1: scripts/generate_video.py truyền int(duration) trong khi doc ghi rõ giá trị là CHUỖI. BUG 2: script cho phép --duration 10 nhưng Veo chỉ nhận 4/6/8, chỉ Omni mới có mức 10 giây. ĐÃ SỬA cả hai và chạy thử: truyền 10 cho Veo nay bị chặn với thông báo hướng dẫn dùng --model omni. CŨNG PHÁT HIỆN: grep KHÔNG ra chuỗi negativePrompt và seed trên trang này, nên mọi khẳng định cũ về hai trường đó phải gắn nhãn chưa xác minh.",
+   "files": [
+    "scripts/generate_video.py",
+    "references/api-guide.md"
+   ]
+  },
+  {
+   "id": 26,
+   "name": "models-api-live-thieu-lyria",
+   "prompt": "Danh sach model thuc su dung duoc tren key nay la gi?",
+   "expected_output": "Danh sach lay tu API that, va phat hien chenh lech voi config neu co.",
+   "status": "PASS (tìm ra 1 thiếu sót trong config) — 06/09/2026. Gọi GET /v1beta/models trên key thật, trả về 54 model. Video: đúng 3 model veo-3.1-lite/fast/generate-preview, KHÔNG còn veo-2 và veo-3.0, khớp mục changelog 'Veo 2 Deprecation' ngày 02/03/2026. Ảnh: cả gemini-3.1-flash-image lẫn bản -preview đều tồn tại, nên nghi ngờ trước đó về config là sai, config vẫn đúng. THIẾU SÓT THẬT: API có model lyria-3.5 mà scripts/config.py KHÔNG có, trong khi trang flowmusic.app ghi rõ 'our latest frontier music model, Lyria 3.5'. Đã bổ sung vào config với khoá 'latest' và ghi chú nguồn hai chiều.",
+   "files": [
+    "scripts/config.py",
+    "references/api-guide.md"
+   ]
+  },
+  {
+   "id": 27,
+   "name": "xem-that-43-video-bang-mat",
+   "prompt": "Hoc lai toan bo nguon video huong dan Google Flow ma nguoi dung da gui.",
+   "expected_output": "Xem bang hinh anh chu khong chi doc transcript, va rut ra duoc thu transcript khong the cho.",
+   "status": "PASS (sửa một sai lầm phương pháp) — 06/09/2026. Phiên trước tôi chỉ đọc transcript rồi gọi đó là 'xem video'. người dùng phản đối vì với tutorial giao diện thì kiến thức nằm ở MÀN HÌNH. Đã làm lại đúng cách: yt-dlp tải 43 video (9,4 giờ) ở 720p, ffmpeg tách frame theo phát hiện đổi cảnh với ngưỡng phân tầng, ra 3.853 frame, chia 49 batch, giao agent MỞ TỪNG ẢNH bằng tool Read. Kết quả 4.500 dòng ghi chép. NHỪNG THỨ CHỈ NHÌN MỚI THẤY: dropdown model có bao nhiêu mục và tên chính xác, giá credit hiện trên màn hình, giới hạn 120 ký tự ô Sample Dialogue, video quá 10 giây không sửa được kèm nút Trim Automatically, ba slide lỗi thường gặp kèm cách xử lý, quy tắc prompt phải là một đoạn liền không xuống dòng, và cạm bẫy Character đã tạo công phu nhưng video ra nhân vật khác hẳn. KIỂM CHỨNG NGƯỠNG: đã đo thử 5 ngưỡng đổi cảnh trên một video, 0.25 chỉ cho 12 frame trên 356 giây nên quá thưa, chọn 0.04 cho nhóm Flow và 0.10 cho nhóm còn lại.",
+   "files": [
+    "references/flow-core.md",
+    "references/prompt-library.md",
+    "references/troubleshooting.md"
+   ]
+  },
+  {
+   "id": 28,
+   "name": "tinh-gon-skill-khong-de-tham-chieu-chet",
+   "prompt": "Tinh gon toan bo skill, khong de lai rac hay noi dung loi thoi.",
+   "expected_output": "It file hon, khong noi dung loi thoi, va khong tham chieu chet.",
+   "status": "PASS — 06/09/2026. SKILL.md từ 283 xuống 142 dòng, chỉ còn làm bản đồ điều hướng. Reference từ 12 file xuống 10 file, gỡ 11 file đã bị thay thế. Tổng 3.669 xuống 3.037 dòng dù đã thêm rất nhiều kiến thức mới, vì phần trùng lặp và lỗi thời đã bị cắt. Đã sao lưu toàn bộ bản cũ ra ngoài project trước khi xoá. TÌM RA LỖI KHI TỰ KIỂM: các file mới do agent viết vẫn trỏ tới tên file cũ đã xoá, và trỏ tới cả file nháp nằm ngoài skill. Đã sửa hết và chạy lại vòng kiểm, nhưng vòng kiểm đó CÒN SÓT: nó chỉ quét file .md, bỏ qua các tham chiếu nằm trong file .py. Reviewer tìm thêm được sáu tham chiếu chết, ba trong số đó nằm trong script (audio-guide.md, format-matrix.md, export-spec.md). Đã sửa và quét lại cả .md lẫn .py.",
+   "files": [
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": 29,
+   "name": "assemble-khong-cat-cut-narration",
+   "prompt": "Ghep clip Flow roi long tieng Viet dai hon clip.",
+   "expected_output": "Giu tron loi doc, khong duoc cat cut trong im lang.",
+   "status": "FAIL rồi mới PASS — 06/09/2026. Reviewer chạy thật: clip 10 giây cộng lời đọc 25 giây cho ra file 10,0 giây, tức MẤT 15 GIÂY lời đọc mà không một dòng cảnh báo. Nguyên nhân: amix dùng duration=first, mà stream đầu tiên là audio gốc của clip. Đây đúng là luồng chính của skill, vì giọng tiếng Việt trong Flow nghe lơ lớ nên hướng dẫn là lồng tiếng riêng rồi ghép. Nghịch lý: bật --drop-original-audio thì lại đúng, tức hành vi mặc định là hành vi sai. ĐÃ SỬA: đổi sang duration=longest, thêm tpad giữ khung hình cuối cho đủ tiếng, và in cảnh báo kèm số giây chênh. CHẠY LẠI: video 25,000000s, audio 25,000250s, có in cảnh báo.",
+   "files": [
+    "scripts/assemble_video.py"
+   ]
+  },
+  {
+   "id": 30,
+   "name": "assemble-chan-noi-clip-khac-do-phan-giai",
+   "prompt": "Ghep mot clip nhap 360p voi mot clip ban cuoi 720p.",
+   "expected_output": "Phai dung va bao, khong duoc am tham ha do phan giai.",
+   "status": "FAIL rồi mới PASS — 06/09/2026. Docstring ghi \"Chỉ nối khi cùng codec/resolution\" nhưng KHÔNG có một dòng kiểm tra nào. Reviewer nối 360x640 với 720x1280: ffmpeg ép toàn bộ về 360x640, in ra dấu tích xanh báo thành công, mất một nửa độ phân giải. Nguy hiểm vì chính skill khuyên nháp 360p rồi render cuối 720p, nên trong cùng thư mục luôn có cả hai loại. ĐÃ SỬA: ffprobe từng clip trước khi nối, lệch thì dừng hẳn kèm thông báo liệt kê kích thước từng file. CHẠY LẠI: dừng đúng, không tạo file đầu ra.",
+   "files": [
+    "scripts/assemble_video.py"
+   ]
+  },
+  {
+   "id": 31,
+   "name": "co-aspect-va-bitrate-lam-that",
+   "prompt": "Xuat ban doc 9:16 tu nguon ngang, va dat bitrate dung cho clip doc 720p.",
+   "expected_output": "Co --aspect phai thuc su doi khung; bitrate phai theo canh ngan.",
+   "status": "FAIL rồi mới PASS — 06/09/2026. Hai lỗi cùng file. (a) Cờ --aspect được khai báo và có kiểm choices nhưng KHÔNG dòng nào đọc args.aspect; gọi --aspect 9:16 trên nguồn 16:9 vẫn ra 16:9, người dùng chỉ biết khi upload Shorts. (b) Hàm _bitrate_for có dòng vô nghĩa short_side = height if height < 1200 else height, hai nhánh y hệt nhau, và không hề đọc chiều rộng; clip dọc 720x1280 bị gán 8M của mức 1080p. ĐÃ SỬA: thêm convert_aspect dùng đúng hai bộ lọc ffmpeg đã kiểm chứng, và _bitrate_for nay lấy min(width, height). CHẠY LẠI: --aspect 9:16 trên 1280x720 ra đúng 720x1280; clip 720x1280 nay ra 5M thay vì 8M.",
+   "files": [
+    "scripts/assemble_video.py"
+   ]
+  },
+  {
+   "id": 32,
+   "name": "pipeline-khong-nuot-loi-va-khong-nuot-dau-nhay",
+   "prompt": "Chay pipeline voi prompt co dau nhay kep va ky tu va, va voi mot buoc con that bai.",
+   "expected_output": "Prompt phai den nguyen ven; buoc con hong phai lam pipeline dung.",
+   "status": "FAIL rồi mới PASS — 06/09/2026. pipeline.py nội suy prompt thẳng vào chuỗi shell rồi gọi os.system. Hai hậu quả đã chạy thật: prompt 'a cat says \"hello\" & runs away' đến nơi thành 'a cat says hello & runs away', mất cả cặp dấu nháy, mà prompt hội thoại nhiều nhân vật của skill đặt TOÀN BỘ lời thoại trong ngoặc kép; và pipeline thoát mã 0 dù mọi shot đều hỏng. Trên PowerShell ký tự và còn tách câu lệnh. ĐÃ SỬA: đổi toàn bộ sang subprocess.run với danh sách tham số và check=True, bỏ hai import chết. CHẠY LẠI: prompt đến nơi nguyên vẹn cả dấu nháy lẫn ký tự và; lệnh con thoát mã 3 làm pipeline thoát mã 1.",
+   "files": [
+    "scripts/pipeline.py"
+   ]
+  },
+  {
+   "id": 33,
+   "name": "hai-reviewer-doc-lap-tim-61-loi",
+   "prompt": "Soat lai toan bo skill sau khi viet lai.",
+   "expected_output": "Tim ra loi that, ke ca loi do chinh dot viet lai gay ra.",
+   "status": "PASS — 06/09/2026. Giao hai reviewer độc lập, một agent chuyên soát bằng chứng chạy Opus và một agent brutal-reviewer được yêu cầu CHẠY THẬT mọi lệnh và mọi script. Kết quả 61 phát hiện, gồm 28 lỗi bằng chứng và 33 lỗi kỹ thuật. BỐN NHÓM ĐÁNG NHỚ. Nhóm một, nhãn bằng chứng cao hơn thực tế: nhãn [live] được định nghĩa gồm cả nguồn không phải live, và một bài blog bên thứ ba bị gọi thành tài liệu chính thức ở bốn chỗ, lỗi này do chính phép thay thế hàng loạt của tôi gây ra. Nhóm hai, nguồn xác nhận chéo không tồn tại: câu \"được nhấn mạnh độc lập ở ít nhất 3 video khác nhau\" thực ra b16 và b17 là hai phần của cùng một video còn b05 không hề nhắc, mà điều đó đã được nâng thành Luật vàng. Nhóm ba, tài liệu mô tả sai chính code của nó ở chín chỗ, ví dụ nói bản vá encoding nằm trong khối kiểm tra sys.platform trong khi grep cả tám script ra 0 lần. Nhóm bốn, bộ eval tự chứng nhận cho code chưa từng chạy hết một lượt. TẤT CẢ đã sửa và chạy lại.",
+   "files": [
+    "SKILL.md",
+    "references/flow-core.md",
+    "references/troubleshooting.md",
+    "scripts/generate_video.py"
+   ]
+  },
+  {
+   "id": 34,
+   "name": "video-10-phut-that-duong-remotion",
+   "prompt": "Lam mot video 10 phut chu de ky thuat.",
+   "expected_output": "Mot file mp4 dai khoang 10 phut, 1080p, co loi doc tieng Viet, do duoc bang ffprobe.",
+   "status": "PASS — 06/09/2026, lần đầu tiên tự chạy trọn đường D (Claude Code với Remotion), đóng món nợ lớn nhất của skill. Sản phẩm: output/video_7loi_im_lang_10phut.mp4, ffprobe cho 1920x1080 h264 30fps, aac 48kHz stereo, 618.41 giây tức 10 phút 18 giây, 137 MB. Số này khớp con số tính trước là 618.37 giây. QUYẾT ĐỊNH ĐẦU TIÊN: 10 phút thuần Flow tốn tối thiểu 420 credit, vượt gấp đôi ngân sách 200, nên chọn Remotion cho phần hình và chỉ dùng 6 clip Flow làm nền, hết 90 credit. ĐO THẬT: tốc độ đọc của TTS là 219 từ mỗi phút, không phải 127 như tôi ước, nên kịch bản phải viết 2.185 từ mới đủ 10 phút. KIỂM CHỨNG NỘI DUNG: trích 12 khung hình rải đều rồi tự nhìn, đủ 11 cảnh đúng thiết kế, chữ tiếng Việt đủ dấu và đọc được trên nền clip. KIỂM CHỨNG ÂM THANH: mean_volume -23,3 dB, max -3,8 dB, không đoạn im lặng nào dài quá 5 giây; chép ngược tiếng ở giây 300 bằng Gemini cho 79 từ liên tiếp khớp đúng kịch bản cảnh 6, tức tiếng gắn đúng cảnh. Chép ngược cảnh 1 đạt độ khớp 100 phần trăm.",
+   "files": [
+    "output/video_7loi_im_lang_10phut.mp4",
+    "references/troubleshooting.md"
+   ]
+  },
+  {
+   "id": 35,
+   "name": "flow-remotion-loi-khong-tai-hien-duoc",
+   "prompt": "Chen clip Google Flow lam nen trong mot du an Remotion.",
+   "expected_output": "Render chay den cuoi, khong dung giua chung.",
+   "status": "FAIL rồi PASS, NHƯNG KẾT LUẬN BAN ĐẦU SAI và đã đính chính — 06/09/2026. Hiện tượng có thật: ba lần render liên tiếp chết giữa chừng với 'Compositor error: No frame found at position 8192', ở khung 120 rồi khung 15 hai lần, trong khi ffprobe đọc clip bình thường. Đổi <OffthreadVideo> sang <Video> thì render chạy hết 18551 khung và sản phẩm được dựng bằng bản đó. TÔI ĐÃ KẾT LUẬN SAI rằng OffthreadVideo là thủ phạm. Sau khi giao xong, tôi quay lại cô lập bằng NĂM phép thử đối chứng và CẢ NĂM ĐỀU CHẠY ĐƯỢC với chính OffthreadVideo: clip Flow trong composition tối giản, clip ffmpeg sinh, composition thật concurrency mặc định, composition thật concurrency bằng 1, và clip ngắn hơn cảnh. KẾT LUẬN ĐÚNG: lỗi có thật, lặp ba lần, nhưng NGUYÊN NHÂN CHƯA XÁC ĐỊNH và không tái hiện được. Ba giả thuyết đều bị bác: time_base lạ của clip Flow, <Loop>, và OffthreadVideo. BÀI HỌC: sửa liên tiếp nhiều thứ rồi lỗi biến mất thì cái sửa cuối KHÔNG đương nhiên là nguyên nhân; phải đổi ngược lại đúng một biến để xem lỗi có quay về. Đã đính chính cả trong troubleshooting.md và trong memory. Hai phát hiện giao diện Flow trong cùng lần này thì vẫn đứng vững: chip Agent bật sẵn nuốt prompt và trả 'The agent failed' mà không mất credit, và thư viện Flow xếp ngược thứ tự sinh.",
+   "files": [
+    "references/troubleshooting.md"
+   ]
+  }
+ ]
+}

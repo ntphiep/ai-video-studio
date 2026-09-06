@@ -1,0 +1,19 @@
+{
+  "name": "ai-video-studio",
+  "displayName": "AI Video Studio",
+  "version": "1.0.0",
+  "description": "Sản xuất video AI toàn diện qua bốn đường: Google Flow, Gemini API, Gemini Notebook, và Claude Code kết hợp Remotion. Mọi con số trong tài liệu đều đo được, kèm nhãn mức bằng chứng.",
+  "author": {
+    "name": "ntphiep",
+    "url": "https://github.com/ntphiep"
+  },
+  "homepage": "https://github.com/ntphiep/ai-video-studio",
+  "repository": "https://github.com/ntphiep/ai-video-studio",
+  "license": "MIT",
+  "keywords": [
+    "video", "ai-video", "google-flow", "veo", "gemini", "omni",
+    "nano-banana", "remotion", "tts", "shorts", "tiktok", "reels",
+    "faceless", "ugc", "motion-graphics", "lip-sync"
+  ],
+  "skills": "./skills"
+}

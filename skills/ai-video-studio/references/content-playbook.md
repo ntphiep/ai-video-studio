@@ -117,10 +117,29 @@ support.google.com/flow/answer/16526234.
 | Cảnh quan trọng nhất, cần chất lượng cao nhất | Veo 3.1 Quality | 100 credit, mọi gói như nhau |
 | Đổi tỉ lệ khung hình sau khi đã có video | Tool Video Resizer | 0 credit (đã đo) |
 | Tiêu đề/quote/lower-third chính xác từng chữ | Tool Type Overlays | 0 credit (đã đo) |
+| Sửa (edit) một video đã sinh, không sinh lại từ đầu | Gemini Omni Flash, task edit | 40 credit, mọi gói như nhau |
+| Nâng bản nháp thấp độ phân giải lên 1080p | Nâng cấp resolution (mọi model) | Miễn phí, áp dụng cho mọi người dùng đã trả phí (Plus/Pro/Ultra) |
+| Nâng độ phân giải lên 4K | Nâng cấp resolution (mọi model) | 50 credit, CHỈ tài khoản Ultra dùng được |
 | UGC quảng cáo sản phẩm | Nền tảng UGC chuyên dụng hoặc mô phỏng trong Flow | ~15.000đ/nền tảng UGC hoặc ~45 credit Flow/clip 30s [chưa xác minh] |
 | Video đa ngôn ngữ kèm lip sync | VMEG | 180 credit/3 ngôn ngữ, 60 credit Lip Sync, 60 credit/ngôn ngữ thêm, 6 credit/phút transcription |
 | Video dựng từ tài liệu có sẵn | Gemini Notebook | [chưa xác minh, chưa thấy bảng giá trên màn hình] |
 | Chữ động phức tạp, đếm số, biểu đồ | Remotion | Không dùng credit Flow, chi phí API riêng, xem `other-routes.md` |
+
+Ba dòng sửa video/nâng độ phân giải ở trên đọc trực tiếp từ bảng giá chính thức
+`support.google.com/flow/answer/16526234`, đối chiếu với phép đo trực tiếp trên giao diện
+mục 2, đọc 08/09/2026 [doc]. Trang chính thức không nói rõ Nâng lên 720p có
+tốn credit hay không (chỉ có dòng 1080p và 4K) — không suy diễn thêm.
+
+**Quy trình rẻ nhất hiện nay: nháp 360p rồi nâng độ phân giải, đừng sinh lại.**
+Theo cập nhật "New creative controls in Google Flow" (Google Labs blog,
+27/08/2026, xem `changelog.md`), cách rẻ nhất để có bản video chất lượng cao
+không phải là sinh thẳng ở độ phân giải cao ngay từ đầu, mà là: sinh nháp ở
+**360p** (rẻ nhất, 4-7 credit tuỳ độ dài) để duyệt nội dung và bố cục trước,
+rồi mới **nâng độ phân giải** đúng bản đã ưng ý (miễn phí lên 1080p cho người
+trả phí, 50 credit lên 4K chỉ Ultra), thay vì sinh lại nhiều lần ở 720p hoặc
+cao hơn cho tới khi vừa ý. Mỗi lần sinh lại ở độ phân giải cao để thử sai tốn
+credit gấp nhiều lần so với một lượt nháp 360p cộng một lượt nâng cấp duy
+nhất khi đã chốt được nội dung.
 
 Mục **"Veo 3.1 Lite [Lower Priority]"** xuất hiện trong một số video hướng
 dẫn, nhưng theo changelog chính thức (mục 10/04/2026) chỉ dành cho gói Ultra;
@@ -172,6 +191,11 @@ nhạc/hình có bản quyền, ưu tiên nhạc tự sinh bằng Lyria.
   06/09/2026, khớp support.google.com/flow/answer/16526234; Video Resizer và
   Type Overlays 0 credit đo bằng ffprobe cùng đối chiếu ledger cùng ngày.
   Mức bằng chứng cao nhất trong file này.
+- Ba dòng sửa video (40 credit), nâng 1080p (miễn phí cho người trả phí),
+  nâng 4K (50 credit, chỉ Ultra), và mục "quy trình rẻ nhất: nháp 360p rồi
+  nâng độ phân giải": đọc lại trực tiếp support.google.com/flow/answer/16526234
+  tại `support.google.com/flow/answer/16526234`, đọc 08/09/2026 [doc]; mốc 27/08/2026 lấy từ
+  changelog chính thức và blog Google Labs, xem `changelog.md`.
 - "Veo 3.1 Lite [Lower Priority]" chỉ dành Ultra: changelog chính thức
   flow.google.com/changelogs, mục 10/04/2026; số "0 credit" đến từ một bài
   đăng mạng xã hội cùng ngày, mức bằng chứng trung bình.

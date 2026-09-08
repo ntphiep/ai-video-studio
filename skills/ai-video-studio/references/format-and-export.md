@@ -1,8 +1,9 @@
-# Tỉ lệ khung hình và chuẩn xuất video (verify 06/09/2026)
+# Tỉ lệ khung hình và chuẩn xuất video (verify 06/09/2026, cập nhật doc chính thức 08/09/2026)
 
 File này gộp và thay thế phần còn dùng được của `format-and-export.md` và
 bản export-spec cũ, nay đã gỡ khỏi skill. Mọi con số đều kèm nguồn; phần chưa ai đo lại được gắn
-`[chưa xác minh]`, không đoán.
+`[chưa xác minh]`, không đoán. Mục 4.1, 7 và 8 cập nhật ngày 08/09/2026 dựa trên các trang
+hỗ trợ chính thức của Google, đọc trực tiếp bằng WebFetch.
 
 ## 1. Ba tầng tỉ lệ khung hình
 
@@ -99,6 +100,31 @@ and 4s/6s Videos" ngày 21/04/2026.
 trong editor nội bộ của Flow (cảnh báo "Videos longer than 10s can't be
 edited"), phải ghép ngoài bằng Scenebuilder, Stringout Creator, hoặc CapCut.
 
+### 4.1 Nâng độ phân giải sau khi sinh — thay đổi lớn, cập nhật 08/09/2026
+
+**Phần này đã lạc hậu trong bản trước của skill: không phải chỉ có 720p.** Bảng ở trên
+chỉ nói về độ phân giải CHỌN ĐƯỢC LÚC SINH (native khi generate). Ngoài lúc sinh, Flow còn
+cho nâng độ phân giải SAU KHI ĐÃ CÓ VIDEO, áp dụng cho MỌI MODEL kể cả ba model Veo, theo
+trang giá chính thức `[doc, đọc 08/09/2026]`
+https://support.google.com/flow/answer/16526234?hl=en:
+
+| Nâng lên | Giá | Điều kiện gói |
+|---|---|---|
+| 1080p | Miễn phí | Người dùng trả phí (Plus/Pro/Ultra) |
+| 4K | 50 credit | Chỉ Google AI Ultra |
+
+Trang giá chính thức KHÔNG nói rõ lượt nâng độ phân giải thất bại có mất credit hay không.
+
+**Quy trình tiết kiệm nhất hiện nay: nháp ở 360p rồi nâng độ phân giải, KHÔNG sinh lại từ
+đầu.** Đây là thay đổi lớn về cách làm so với trước, khi skill còn khuyên sinh thẳng ở độ
+phân giải mong muốn. Vì Omni 360p rẻ hơn nhiều so với 720p ở cùng thời lượng (4 đến 7
+credit so với 7 đến 15 credit, xem bảng credit ở trên), quy trình khuyến nghị là: sinh nháp
+ở 360p để duyệt bố cục và chuyển động trước, chọn bản ưng ý, rồi mới nâng lên 1080p (miễn
+phí nếu có gói trả phí) hoặc 4K (50 credit, chỉ Ultra), thay vì sinh lại toàn bộ ở độ phân
+giải cao ngay từ đầu và tốn credit cho những lần thử sai. Nguồn: blog Google Labs ngày
+27/08/2026 "New creative controls in Google Flow" và trang giá chính thức trên
+`[doc, đọc 08/09/2026]`.
+
 ## 5. Lệnh ffmpeg đã chạy thật (không phải chép từ doc)
 
 Hai lệnh dưới đã chạy bằng ffmpeg 9.0.1 trên máy, kiểm bằng ffprobe, giữ
@@ -166,19 +192,52 @@ này không hề xuất hiện riêng trong ledger.
 Thumbnail: khuyến nghị 16:9, 1280x720, JPG/PNG/GIF dưới 2MB [con số phổ
 biến, chưa đối chiếu lại trang chính thức YouTube ở lần verify này].
 
-## 7. Watermark
+## 7. Định dạng video tải lên Flow
 
-Menu tài khoản Flow hiện dòng nguyên văn **"Visible watermarking is required
-in your region"**. Đối chiếu trên frame thật: mọi clip đều có một dấu lấp
-lánh nhỏ ở góc dưới bên phải, đúng vị trí ràng buộc theo khu vực này, không
-tắt được từ giao diện. Ngoài dấu hiện có, theo hiểu biết chung thì Google còn gắn thêm SynthID vô
-hình, nhưng đợt xác minh này KHÔNG đọc lại trang công bố nào của Google về
-SynthID, và không tư liệu nào thu thập được nhắc tới chuỗi đó `[chưa xác minh]`.
-Muốn khẳng định thì phải mở trang công bố chính thức và dẫn URL.
+Nguồn: https://support.google.com/flow/answer/16935718 `[doc, đọc 08/09/2026]`
 
-Hệ quả khi dựng: chừa lề an toàn ở góc dưới bên phải khi crop hoặc đặt chữ
-đè, vì cắt trúng dấu watermark khi crop giữa khung chỉ là hệ quả ngoài ý
-muốn, không phải cách gỡ watermark hợp lệ.
+Định dạng chấp nhận: `.mov`, `.mp4`, `.avi`, `.wmv`. Giới hạn: tối đa 60 giây và tối đa
+1GB mỗi file. Áp dụng cho việc tải video lên Flow (ví dụ để dùng làm video tham chiếu,
+sửa, hoặc đưa qua Video Resizer), không phải video do Flow tự sinh ra.
+
+## 8. Watermark — mục quan trọng vì Việt Nam nằm trong vùng bắt buộc
+
+### 8.1 Watermark hiển thị tự động bật ở Việt Nam
+
+Nguồn: https://support.google.com/flow/answer/16353333?hl=en `[doc, đọc 08/09/2026]` nói rõ:
+**watermark hiển thị tự động bật ở Ấn Độ, Hàn Quốc, và Việt Nam.** Đây là vùng bắt buộc
+theo điều kiện dùng Flow, không phải tuỳ chọn mặc định có thể lờ đi.
+
+Đối chiếu với quan sát trực tiếp trên giao diện `[live]`, đo ngày 06/09/2026: menu tài
+khoản Flow hiện dòng nguyên văn **"Visible watermarking is required in your region"**, và
+mọi clip xuất ra đều có một dấu lấp lánh nhỏ ở góc dưới bên phải, không tìm thấy nút tắt
+trong giao diện tại thời điểm đo. Hai nguồn độc lập, một `[doc]` một `[live]`, khớp nhau,
+đây là tín hiệu mạnh xác nhận Việt Nam nằm trong vùng bắt buộc watermark hiển thị.
+
+### 8.2 [chưa xác minh] Có tin nói tắt được watermark hiển thị từ 14/08/2026
+
+Nguồn: https://techcrunch.com/2026/08/14/google-will-now-allow-users-to-remove-visible-watermark-from-its-ai-generations/
+— đây là nguồn bên thứ ba, KHÔNG phải trang chính thức của Google, nên toàn bộ đoạn này
+gắn nhãn `[chưa xác minh]`.
+
+Theo tin trên, từ ngày 14/08/2026 Google cho phép tắt watermark HIỂN THỊ trong phần
+Settings, mục "Media Watermark", áp dụng cho nội dung của Nano Banana, Omni và Lyria
+trong cả Gemini và Flow. Tin này ra TRƯỚC thời điểm quan sát UI trực tiếp ngày 06/09/2026
+ở mục 8.1, vốn không thấy nút tắt và vẫn thấy dòng cảnh báo bắt buộc watermark — có thể
+do đợt đo 06/09/2026 chưa mở đúng mục Settings > Media Watermark, hoặc tính năng chưa bật
+cho tài khoản đo, hoặc tin bên thứ ba không chính xác. Chưa ai mở lại đúng màn hình
+Settings > Media Watermark để kiểm chứng trực tiếp. Trước khi báo với khách hàng là
+watermark tắt được, phải tự mở Settings và xác nhận bằng mắt, đừng dựa vào tin này.
+
+**Dù tắt được watermark hiển thị, SynthID vô hình và metadata C2PA vẫn giữ nguyên và
+KHÔNG tắt được**, theo cùng nguồn bên thứ ba trên, vẫn `[chưa xác minh]` vì chưa đọc được
+trang công bố chính thức nào của Google (kể cả trang SynthID tại deepmind.google/models/synthid/)
+xác nhận lại chi tiết này.
+
+### 8.3 Hệ quả khi dựng
+
+Chừa lề an toàn ở góc dưới bên phải khi crop hoặc đặt chữ đè, vì cắt trúng dấu watermark
+khi crop giữa khung chỉ là hệ quả ngoài ý muốn, không phải cách gỡ watermark hợp lệ.
 
 ## Tự soát nguồn
 
@@ -194,7 +253,15 @@ muốn, không phải cách gỡ watermark hợp lệ.
   chạy thật bằng ffmpeg 9.0.1, kiểm bằng ffprobe.
 - Thông số file Flow (H.264/24fps/AAC 48kHz): `format-and-export.md` bản cũ mục 4,
   đo bằng ffprobe trên nhiều file trong `output/`.
-- Watermark: `format-and-export.md` bản cũ mục 6, đọc menu tài khoản Flow và
-  quan sát frame thật.
+- Nâng độ phân giải 1080p/4K mục 4.1: đọc trực tiếp
+  https://support.google.com/flow/answer/16526234?hl=en và blog Google Labs 27/08/2026
+  "New creative controls in Google Flow", ngày đọc 08/09/2026.
+- Định dạng video tải lên mục 7: đọc trực tiếp
+  https://support.google.com/flow/answer/16935718, ngày đọc 08/09/2026.
+- Watermark bắt buộc ở Việt Nam mục 8.1: đọc trực tiếp
+  https://support.google.com/flow/answer/16353333?hl=en ngày đọc 08/09/2026, đối chiếu với
+  quan sát menu tài khoản Flow và frame thật ngày 06/09/2026.
+- Tin tắt watermark từ 14/08/2026 mục 8.2: nguồn bên thứ ba techcrunch.com, chưa có trang
+  chính thức xác nhận, giữ nguyên nhãn [chưa xác minh].
 - Facebook và các giới hạn thời lượng nền tảng: chưa tìm thấy nguồn trong
   batch video hay tài liệu chính thức đã đọc, gắn [chưa xác minh].

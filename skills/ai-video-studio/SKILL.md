@@ -27,7 +27,7 @@ Kiến thức trong skill này được rút ra từ bốn mức bằng chứng 
 | Mức | Nghĩa là gì | Cách nhận ra trong tài liệu |
 |---|---|---|
 | Cao nhất | Tự chạy, tự đo, tự đọc DOM, hoặc gọi API thật | ghi `[live]`, hoặc kèm số đo `ffprobe` |
-| Cao | Đọc trực tiếp tài liệu chính thức của Google | có URL kèm ngày đọc |
+| Cao | Đọc trực tiếp tài liệu chính thức của Google | ghi `[doc]` kèm URL và ngày đọc |
 | Trung bình | Nhìn thấy trên màn hình một video hướng dẫn | ghi `[bNN t=...s]` |
 | Thấp | Chỉ nghe nói, hoặc nguồn bên thứ ba | ghi `[chưa xác minh]` |
 
@@ -44,6 +44,23 @@ Kiến thức trong skill này được rút ra từ bốn mức bằng chứng 
 nên chính xác tuyệt đối nhưng không có chất điện ảnh. Nhiều video thật ghép cả
 hai, dùng Flow cho cảnh quay và Remotion cho chữ cùng đồ hoạ.
 
+## Bảng năng lực theo model, đọc trước khi chọn model
+
+Nguồn: `support.google.com/flow/answer/16352836`, đọc ngày 08/09/2026 `[doc]`.
+
+| Chế độ | Veo 3.1 Lite | Veo 3.1 Fast | Veo 3.1 Quality | Omni Flash 1.1 |
+|---|---|---|---|---|
+| Text to Video | 4, 6, 8 giây | 4, 6, 8 giây | 4, 6, 8 giây | 4, 6, 8, 10 giây |
+| Frames to Video, chỉ khung đầu | có | có | có | có |
+| Frames to Video, khung đầu và khung cuối | có | có | có | có |
+| Ingredients to Video | chỉ 8 giây | chỉ 8 giây | **không có** | 4, 6, 8, 10 giây |
+| Extend, nối dài clip | chỉ 8 giây | **không có** | **không có** | Coming Soon |
+| Sửa video | **không có** | **không có** | **không có** | có, tối đa 10 giây |
+
+Bốn điều ngược trực giác trong bảng này. Chỉ bản **Lite** rẻ nhất mới nối dài được clip.
+Bản **Quality** đắt nhất lại không nhận Ingredients, nên không giữ được nhân vật nhất quán.
+Chỉ **Omni** mới sửa được video. Và Ingredients trên Veo bị khoá cứng ở 8 giây.
+
 ## Bảng giá credit của Flow
 
 Số dưới đây đọc trực tiếp từ nhãn `Generating will use N credits` mà chính Flow
@@ -53,9 +70,21 @@ hiện ra trước khi sinh, trên tài khoản gói AI Pro, ngày 06/09/2026.
 |---|---|---|---|---|
 | Omni 1.1 Flash, 360p | 4 | 5 | 6 | 7 |
 | Omni 1.1 Flash, 720p | 7 | 10 | 12 | 15 |
-| Veo 3.1 Lite | 10 cho mỗi lần sinh, không chọn được độ phân giải lẫn thời lượng | | | |
-| Veo 3.1 Fast | 20, cũng không chọn được | | | |
-| Veo 3.1 Quality | 100, cũng không chọn được | | | |
+| Veo 3.1 Lite | 10 mỗi lần sinh, Ultra còn 5 | | | |
+| Veo 3.1 Fast | 20, Ultra còn 10 | | | |
+| Veo 3.1 Quality | 100 ở mọi hạng, và chỉ có 8 giây | | | |
+
+Ba dòng nữa không nằm trong bảng trên vì chúng không phải sinh clip, đọc từ trang chính
+thức `support.google.com/flow/answer/16526234` ngày 08/09/2026:
+
+| Việc | Giá |
+|---|---|
+| Sửa một video, chỉ Gemini Omni Flash làm được | 40 credit |
+| Nâng lên 1080p | miễn phí cho người có gói trả phí |
+| Nâng lên 4K | 50 credit, và chỉ gói Ultra |
+
+Con số 40 đáng nhớ vì nó **đắt hơn sinh mới**. Một clip 10 giây ở 720p chỉ tốn 15 credit.
+Chỉ sửa khi cần giữ lại phần lớn khung hình cũ, còn muốn đổi nội dung thì sinh lại rẻ hơn.
 
 Ba điều phải nhớ. Thứ nhất, **chỉ Omni mới có 360p và mới chọn được thời lượng**.
 Thứ hai, clip rẻ nhất là **4 credit**, nên quỹ 50 credit mỗi ngày làm được 12
@@ -69,10 +98,20 @@ không thấy mục này.
 
 ## Năm luật vàng
 
-1. **Luôn nháp ở Omni 360p trước.** Chốt bố cục và nội dung xong mới lên 720p.
-   Cách ép mạnh nhất là đặt Agent instruction, xem `flow-core.md` mục 7.3.
-2. **Báo giá trước khi sinh.** Flow hiện sẵn số credit ngay trong panel cài đặt.
-   Đọc con số đó và nói cho người dùng biết trước khi bấm.
+1. **Luôn nháp ở Omni 360p trước, rồi NÂNG CẤP chứ đừng sinh lại.** Đây là điểm đã thay
+   đổi từ bản cập nhật ngày 27/08/2026. Trước kia nháp xong phải sinh lại ở độ phân giải
+   cao, tức trả tiền hai lần. Nay nâng chính clip đó lên 1080p không mất thêm credit cho
+   người có gói trả phí. Nâng lên 4K thì tốn 50 credit và chỉ gói Ultra
+   `[doc, support.google.com/flow/answer/16526234, 08/09/2026]`. Riêng việc nâng từ 360p
+   lên 720p có nguồn bên thứ ba nói miễn phí, nhưng bảng chính thức không có dòng đó,
+   nên `[chưa xác minh]`, hãy tự đọc nhãn credit trước khi bấm.
+   Cách ép nháp mạnh nhất là đặt Agent instruction, xem `flow-core.md` mục 7.3.
+2. **Báo giá trước khi sinh.** Flow hiện sẵn số credit ngay trong panel cài đặt, dạng
+   `Generating will use N credits`. Đọc con số đó và nói cho người dùng biết trước khi bấm.
+   Từ 08/09/2026, nhãn này là nguồn số dư đáng tin DUY NHẤT còn lại: trang
+   `one.google.com/ai/activity` nay hiện `AI credits: 0` kèm dòng *"AI credits included with
+   your plan have been replaced by product-based usage limits"*, tức sổ credit cũ đã đổi cơ
+   chế `[live 08/09/2026]`. Đừng dùng trang đó để đối chiếu nữa.
 3. **Prompt phải là một đoạn liền, không xuống dòng.** Xuống dòng làm Flow hiểu
    thành nhiều lệnh và sinh dư, tốn credit oan.
 4. **Chữ cần chính xác từng ký tự thì đừng để model vẽ.** Trong lần tự thử duy
@@ -88,7 +127,11 @@ không thấy mục này.
 |---|---|---|---|
 | Tỉ lệ sinh video | Chỉ 16:9 và 9:16 | Mọi tỉ lệ khác phải đi qua Video Resizer | `[live]` đọc DOM, khớp doc Veo |
 | Tỉ lệ sinh ảnh | 16:9, 4:3, 1:1, 3:4, 9:16 | Ảnh rộng đường hơn video | `[live]` đọc Agent settings |
-| Thời lượng một clip | Omni cho chọn 4, 6, 8, 10 giây. Ba model Veo trên Flow không có ô chọn thời lượng. API Veo chỉ nhận chuỗi `"4"`, `"6"`, `"8"` | Video dài phải ghép nhiều clip | `[live]` đọc panel, cộng doc Veo đọc HTML thô |
+| Thời lượng một clip | Omni cho chọn 4, 6, 8, 10 giây. Veo: bảng chính thức ghi cả ba bản đều có 4, 6, 8 giây, nhưng phép đo trên giao diện tài khoản Pro lại không thấy ô chọn. Mâu thuẫn CHƯA giải quyết, xem `flow-core.md` mục 4.0b | Đừng khẳng định chắc chắn bên nào, hãy tự mở panel đọc | `[doc]` và `[live]` nói ngược nhau |
+| Độ phân giải video | Sinh ra ở 360p hoặc 720p, rồi nâng lên 1080p hoặc 4K | Skill từng nói Flow chỉ có 720p, điều đó đã lạc hậu từ 27/08/2026 | `[doc]` blog Google Labs 27/08/2026 |
+| Nối dài clip trong Flow | Chỉ Veo 3.1 Lite, mỗi lần 8 giây. Fast và Quality không có. Omni ghi "Coming Soon" | Muốn cảnh liền mạch dài thì phải chọn Lite ngay từ đầu | `[doc]` bảng năng lực chính thức |
+| Nối dài clip qua API | Veo tới 148 giây đầu ra, Omni tới 40 giây | API mạnh hơn giao diện rất nhiều ở điểm này | `[doc]` trang Veo và Omni trên ai.google.dev |
+| Sửa video | Chỉ Gemini Omni Flash, video tối đa 10 giây, tốn 40 credit | Sinh mới thường rẻ hơn sửa | `[doc]` bảng năng lực và bảng giá chính thức |
 | Video dài quá 10 giây | Không sửa được trong Flow | Giao diện có nút `Trim Automatically` | `[b22]` nguyên văn trên màn hình |
 | Ô Sample Dialogue khi tạo giọng | 120 ký tự | Viết mẫu thoại thật ngắn | Bốn video độc lập xác nhận |
 | Thoại trong một clip | Khoảng 10 giây, trung bình 2 dòng | Dài hơn thì giọng bị cắt | `[b22]` slide do tác giả video tự soạn, chưa tự đo |
@@ -113,15 +156,16 @@ Chỉ nạp đúng file cần dùng, đừng nạp hết.
 
 ## Chạy bằng script
 
-Thư mục `scripts/` có 8 file Python cho đường B, tức đường gọi API. Đây là phần
+Thư mục `scripts/` có 9 file Python cho đường B, tức đường gọi API. Đây là phần
 duy nhất của skill chạy được không cần trình duyệt.
 
 | Script | Làm gì |
 |---|---|
+| `doctor.py` | **Chạy đầu tiên trên máy mới.** Kiểm tra Python, khoá API, ffmpeg, ffprobe, node, npx, yt-dlp, curl, rồi nói thiếu gì và cài bằng lệnh nào trên đúng hệ điều hành |
 | `config.py` | Đọc key từ biến môi trường `GEMINI_API_KEY` hoặc `~/.gemini_key`, giữ danh sách model |
 | `write_script.py` | Sinh kịch bản và chia shot, xuất ra `spec.json` |
 | `generate_image.py` | Sinh ảnh bằng Nano Banana |
-| `generate_video.py` | Sinh một clip bằng Veo hoặc Omni |
+| `generate_video.py` | Sinh một clip bằng Veo hoặc Omni. Có `--resolution` và `--reference-images`, và tự chặn trước các tổ hợp tham số mà API sẽ từ chối |
 | `generate_audio.py` | Sinh giọng đọc bằng TTS và nhạc nền bằng Lyria |
 | `assemble_video.py` | Nối clip, trộn tiếng, đổi tỉ lệ, xuất bản cuối |
 | `upload_video.py` | Chỉ sinh file metadata JSON, không tải lên đâu cả |
@@ -133,7 +177,10 @@ Chạy từng bước một, đừng chạy hết một mạch, vì mỗi bướ
 python pipeline.py --spec spec.json --stage video --model omni
 ```
 
-Ba điều cần biết trước khi dùng. Thứ nhất, `assemble_video.py` sẽ **dừng và báo**
+Bốn điều cần biết trước khi dùng. Thứ nhất, `generate_video.py` gọi Omni qua
+`POST /v1beta/interactions` và đặt tỉ lệ khung hình bằng `response_format.aspect_ratio`.
+Trước ngày 08/09/2026 nó nhét tỉ lệ vào giữa câu prompt tiếng Anh vì lúc đó chưa biết có
+tham số này, và đó là một lỗi thật đã sửa. Thứ hai, `assemble_video.py` sẽ **dừng và báo**
 nếu các clip khác độ phân giải, vì nối thẳng sẽ mất chất lượng mà không ai hay.
 Thứ hai, nếu lời đọc dài hơn hình, script giữ khung hình cuối cho đủ tiếng và in
 cảnh báo kèm số giây. Thứ ba, `pipeline.py` dừng ngay khi một bước con lỗi thay
@@ -143,20 +190,32 @@ vì chạy tiếp trên dữ liệu hỏng.
 
 Khi người dùng hỏi một tính năng có tồn tại hay không, **đừng chỉ mở giao diện ra
 xem**. Giao diện chỉ cho biết tài khoản này thấy gì, không cho biết tính năng có
-tồn tại ở gói khác, vùng khác, mới ra hay vừa bị gỡ. Hãy làm song song ba việc:
-tự thử trên giao diện, mở `changelog.md` cùng trang gốc
-`https://flow.google.com/changelogs`, và tra tin tức gần đây.
+tồn tại ở gói khác, vùng khác, mới ra hay vừa bị gỡ. Hãy mở song song bốn nguồn.
 
-Bài học này đến từ một lần suýt kết luận sai. Mục `Veo 3.1 Lite - Lower Priority`
-không có trên tài khoản Pro, nhưng changelog chính thức ngày 10/04/2026 ghi rõ nó
-tồn tại và dành riêng cho gói Ultra.
+| Nguồn | Địa chỉ | Trả lời được câu hỏi gì |
+|---|---|---|
+| Giao diện | `flow.google.com` | Tài khoản này hiện thấy gì |
+| Bảng năng lực | `support.google.com/flow/answer/16352836` | Model nào làm được chế độ nào, thời lượng nào |
+| Bảng giá | `support.google.com/flow/answer/16526234` | Giá từng việc, kể cả sửa và nâng độ phân giải |
+| Changelog | `flow.google.com/changelogs` và `ai.google.dev/gemini-api/docs/changelog` | Có từ bao giờ, cho gói nào |
+
+Hai bài học, cả hai đều là lần suýt kết luận sai.
+
+Lần thứ nhất, mục `Veo 3.1 Lite - Lower Priority` không có trên tài khoản Pro, nhưng
+changelog chính thức ngày 10/04/2026 ghi rõ nó tồn tại và dành riêng cho gói Ultra.
+
+Lần thứ hai, ngày 08/09/2026 skill vẫn dừng ở mục changelog ngày 26/08/2026 và tưởng đó là
+mới nhất. Thực ra ngay hôm sau, ngày 27/08/2026, blog chính thức đã công bố Start and End
+Frames, xuất 1080p và 4K, cùng quy trình nháp 360p rồi nâng cấp. Changelog của Flow đi
+chậm hơn blog và chậm hơn changelog của Gemini API, nên **chỉ đọc changelog của Flow là
+không đủ**.
 
 ## Kịch bản thường gặp
 
 | Người dùng muốn | Làm gì |
 |---|---|
 | Một clip thử nhanh | Omni 360p, 4 giây, hết 4 credit |
-| Video kể chuyện nhiều cảnh | Tạo Character trước, gắn vào mọi prompt bằng nút cộng |
+| Video kể chuyện nhiều cảnh | Tạo Character trước, rồi gọi bằng cú pháp `@tên_nhân_vật` ngay trong prompt, nhanh hơn gắn ảnh thủ công. Đưa chính mình vào cảnh thì dùng `@me`, nhưng không dùng được ở EEA, Anh và Thuỵ Sĩ |
 | Video dọc cho Shorts hoặc TikTok | Đặt 9:16 ngay từ đầu, đừng sinh 16:9 rồi cắt |
 | Tỉ lệ lạ như 4:3, 21:9, hoặc số đo riêng | Sinh 16:9 rồi qua Video Resizer. Đo hai lần không thấy trừ credit, nhưng Flow vẫn cảnh báo `This Tool may consume credits` |
 | Chữ tiếng Việt chính xác trên hình | Type Overlays, hoặc dựng bằng Remotion |
@@ -164,6 +223,10 @@ tồn tại và dành riêng cho gói Ultra.
 | Một video ra nhiều thứ tiếng | Đường VMEG trong `other-routes.md` |
 | Video từ tài liệu dài | Gemini Notebook, mục Video Overview |
 | Chữ động, biểu đồ, đồ hoạ dữ liệu | Claude Code với Remotion |
+| Một cảnh liền mạch dài hơn 10 giây | Trong Flow thì chỉ Veo 3.1 Lite nối dài được, mỗi lần 8 giây. Cần dài hơn nữa thì đi API, Veo cho tới 148 giây và Omni cho tới 40 giây |
+| Sửa một video đã có, giữ phần lớn khung hình | Gemini Omni Flash, video tối đa 10 giây, tốn 40 credit. Nếu chỉ đổi nội dung thì sinh lại rẻ hơn |
+| Cần bản 4K | Nâng độ phân giải, tốn 50 credit và chỉ gói Ultra. Gói Pro dừng ở 1080p |
+| Nối hai ảnh thành một chuyển động | Frames to Video, nạp cả khung đầu và khung cuối. Cả bốn model đều làm được |
 
 ## Trước khi nói đã xong
 

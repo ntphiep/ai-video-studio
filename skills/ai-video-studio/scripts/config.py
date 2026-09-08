@@ -46,9 +46,14 @@ IMAGE_MODELS = {
     "nano-banana-2-lite": "gemini-3.1-flash-lite-image",
 }
 TTS = "gemini-3.1-flash-tts-preview"
-# Lyria 3.5 là model nhạc mới nhất, xác nhận hai chiều ngày 06/09/2026:
+# Lyria 3.5 là model nhạc mới nhất, xác nhận BA chiều:
 # (a) trang flowmusic.app ghi "our latest frontier music model, Lyria 3.5",
-# (b) gọi GET /v1beta/models trên key thật trả về đúng id "lyria-3.5".
+# (b) gọi GET /v1beta/models trên key thật trả về đúng id "lyria-3.5"
+#     (06/09/2026),
+# (c) [changelog] https://ai.google.dev/gemini-api/docs/changelog, đọc
+#     08/09/2026, mục ngày 03/09/2026: "Lyria 3.5 vào public preview: sinh
+#     trọn bài hát, giọng hát tự nhiên hơn, kiểm soát cấu trúc và thời lượng
+#     tốt hơn". Xem references/api-guide.md mục 5 và mục Tự soát nguồn.
 MUSIC = {
     "latest": "lyria-3.5",
     "clip": "lyria-3-clip-preview",

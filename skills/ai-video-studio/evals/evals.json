@@ -1,6 +1,6 @@
 {
  "skill_name": "ai-video-studio",
- "notes": "Bộ eval của skill ai-video-studio. Cập nhật 06/09/2026: 35 eval. Eval mang trạng thái FAIL rồi mới PASS được giữ nguyên chữ FAIL để không xoá dấu vết một bản ghi PASS từng sai. Nguyên tắc cho mọi eval về script: parse được cú pháp KHÔNG phải bằng chứng, phải chạy thật và kiểm file đầu ra.",
+ "notes": "Bộ eval của skill ai-video-studio. Cập nhật 08/09/2026: 41 eval. Eval mang trạng thái FAIL rồi mới PASS được giữ nguyên chữ FAIL để không xoá dấu vết một bản ghi PASS từng sai. Hai nguyên tắc cứng cho mọi eval về script. Thứ nhất, parse được cú pháp KHÔNG phải bằng chứng, phải chạy thật và kiểm file đầu ra. Thứ hai, một agent báo PASS cũng KHÔNG phải bằng chứng: eval 38 là trường hợp bài kiểm của agent khớp với code chứ không khớp với tài liệu, nên nó không bao giờ chạm vào nhánh hỏng, và lỗi chỉ lộ ra khi người khác tự viết bài kiểm độc lập.",
  "evals": [
   {
    "id": 1,
@@ -213,7 +213,7 @@
    "name": "changelog-chinh-thuc-lam-nguon",
    "prompt": "Muc 'Veo 3.1 Lite [Lower Priority]' gia 0 credit co ton tai khong? Tai khoan Pro khong thay no.",
    "expected_output": "Cau tra loi dut khoat kem nguon chinh thuc, phan biet duoc 'tai khoan nay khong thay' voi 'khong ton tai'.",
-   "status": "PASS (bài học phương pháp) — 06/09/2026. Ban đầu tôi chỉ mở giao diện, thấy 4 model, suyết kết luận là không tồn tại. người dùng nhắc phải đọc doc và tin tức song song. Làm theo thì tìm ra trang CHANGELOG CHÍNH THỨC https://flow.google.com/changelogs, mục ngày 10/04/2026 ghi nguyên văn: \"Veo 3.1 Lite - Lower Priority\" in Ultra. KẾT LUẬN: có thật, chỉ dành cho gói Ultra, nên tài khoản Pro không có là ĐÚNG THIẾT KẾ chứ không phải lỗi. Changelog còn cho thấy chính sách 0 credit lặp lại 3 lần và chỉ cho Ultra: 26/08/2025 Veo 3 Fast, 25/11/2025 Veo 3.1 Fast, 10/04/2026 Veo 3.1 Lite. CẢNH BÁO KÈM: hai thread support.google.com (20/05 và 13/07/2026) cho thấy người dùng ĐÃ TRẢ TIỀN Ultra vẫn không thấy mục này, có mã case kỹ thuật, nên lên Ultra cũng không chắc có. LƯU Ý KỸ THUẬT: bản mirror labs.google/fx/tools/flow/changelogs THIẾU hai mục mới nhất, phải dùng đúng flow.google.com/changelogs.",
+   "status": "PASS (bài học phương pháp) — 06/09/2026. Ban đầu tôi chỉ mở giao diện, thấy 4 model, suyết kết luận là không tồn tại. Người dùng nhắc phải đọc doc và tin tức song song. Làm theo thì tìm ra trang CHANGELOG CHÍNH THỨC https://flow.google.com/changelogs, mục ngày 10/04/2026 ghi nguyên văn: \"Veo 3.1 Lite - Lower Priority\" in Ultra. KẾT LUẬN: có thật, chỉ dành cho gói Ultra, nên tài khoản Pro không có là ĐÚNG THIẾT KẾ chứ không phải lỗi. Changelog còn cho thấy chính sách 0 credit lặp lại 3 lần và chỉ cho Ultra: 26/08/2025 Veo 3 Fast, 25/11/2025 Veo 3.1 Fast, 10/04/2026 Veo 3.1 Lite. CẢNH BÁO KÈM: hai thread support.google.com (20/05 và 13/07/2026) cho thấy người dùng ĐÃ TRẢ TIỀN Ultra vẫn không thấy mục này, có mã case kỹ thuật, nên lên Ultra cũng không chắc có. LƯU Ý KỸ THUẬT: bản mirror labs.google/fx/tools/flow/changelogs THIẾU hai mục mới nhất, phải dùng đúng flow.google.com/changelogs.",
    "files": [
     "references/changelog.md",
     "SKILL.md"
@@ -269,7 +269,7 @@
    "name": "xem-that-43-video-bang-mat",
    "prompt": "Hoc lai toan bo nguon video huong dan Google Flow ma nguoi dung da gui.",
    "expected_output": "Xem bang hinh anh chu khong chi doc transcript, va rut ra duoc thu transcript khong the cho.",
-   "status": "PASS (sửa một sai lầm phương pháp) — 06/09/2026. Phiên trước tôi chỉ đọc transcript rồi gọi đó là 'xem video'. người dùng phản đối vì với tutorial giao diện thì kiến thức nằm ở MÀN HÌNH. Đã làm lại đúng cách: yt-dlp tải 43 video (9,4 giờ) ở 720p, ffmpeg tách frame theo phát hiện đổi cảnh với ngưỡng phân tầng, ra 3.853 frame, chia 49 batch, giao agent MỞ TỪNG ẢNH bằng tool Read. Kết quả 4.500 dòng ghi chép. NHỪNG THỨ CHỈ NHÌN MỚI THẤY: dropdown model có bao nhiêu mục và tên chính xác, giá credit hiện trên màn hình, giới hạn 120 ký tự ô Sample Dialogue, video quá 10 giây không sửa được kèm nút Trim Automatically, ba slide lỗi thường gặp kèm cách xử lý, quy tắc prompt phải là một đoạn liền không xuống dòng, và cạm bẫy Character đã tạo công phu nhưng video ra nhân vật khác hẳn. KIỂM CHỨNG NGƯỠNG: đã đo thử 5 ngưỡng đổi cảnh trên một video, 0.25 chỉ cho 12 frame trên 356 giây nên quá thưa, chọn 0.04 cho nhóm Flow và 0.10 cho nhóm còn lại.",
+   "status": "PASS (sửa một sai lầm phương pháp) — 06/09/2026. Phiên trước tôi chỉ đọc transcript rồi gọi đó là 'xem video'. Người dùng phản đối vì với tutorial giao diện thì kiến thức nằm ở MÀN HÌNH. Đã làm lại đúng cách: yt-dlp tải 43 video (9,4 giờ) ở 720p, ffmpeg tách frame theo phát hiện đổi cảnh với ngưỡng phân tầng, ra 3.853 frame, chia 49 batch, giao agent MỞ TỪNG ẢNH bằng tool Read. Kết quả 4.500 dòng ghi chép. NHỪNG THỨ CHỈ NHÌN MỚI THẤY: dropdown model có bao nhiêu mục và tên chính xác, giá credit hiện trên màn hình, giới hạn 120 ký tự ô Sample Dialogue, video quá 10 giây không sửa được kèm nút Trim Automatically, ba slide lỗi thường gặp kèm cách xử lý, quy tắc prompt phải là một đoạn liền không xuống dòng, và cạm bẫy Character đã tạo công phu nhưng video ra nhân vật khác hẳn. KIỂM CHỨNG NGƯỠNG: đã đo thử 5 ngưỡng đổi cảnh trên một video, 0.25 chỉ cho 12 frame trên 356 giây nên quá thưa, chọn 0.04 cho nhóm Flow và 0.10 cho nhóm còn lại.",
    "files": [
     "references/flow-core.md",
     "references/prompt-library.md",
@@ -358,6 +358,74 @@
    "status": "FAIL rồi PASS, NHƯNG KẾT LUẬN BAN ĐẦU SAI và đã đính chính — 06/09/2026. Hiện tượng có thật: ba lần render liên tiếp chết giữa chừng với 'Compositor error: No frame found at position 8192', ở khung 120 rồi khung 15 hai lần, trong khi ffprobe đọc clip bình thường. Đổi <OffthreadVideo> sang <Video> thì render chạy hết 18551 khung và sản phẩm được dựng bằng bản đó. TÔI ĐÃ KẾT LUẬN SAI rằng OffthreadVideo là thủ phạm. Sau khi giao xong, tôi quay lại cô lập bằng NĂM phép thử đối chứng và CẢ NĂM ĐỀU CHẠY ĐƯỢC với chính OffthreadVideo: clip Flow trong composition tối giản, clip ffmpeg sinh, composition thật concurrency mặc định, composition thật concurrency bằng 1, và clip ngắn hơn cảnh. KẾT LUẬN ĐÚNG: lỗi có thật, lặp ba lần, nhưng NGUYÊN NHÂN CHƯA XÁC ĐỊNH và không tái hiện được. Ba giả thuyết đều bị bác: time_base lạ của clip Flow, <Loop>, và OffthreadVideo. BÀI HỌC: sửa liên tiếp nhiều thứ rồi lỗi biến mất thì cái sửa cuối KHÔNG đương nhiên là nguyên nhân; phải đổi ngược lại đúng một biến để xem lỗi có quay về. Đã đính chính cả trong troubleshooting.md và trong memory. Hai phát hiện giao diện Flow trong cùng lần này thì vẫn đứng vững: chip Agent bật sẵn nuốt prompt và trả 'The agent failed' mà không mất credit, và thư viện Flow xếp ngược thứ tự sinh.",
    "files": [
     "references/troubleshooting.md"
+   ]
+  },
+  {
+   "id": 36,
+   "name": "skill-lac-hau-vi-chi-doc-mot-changelog",
+   "prompt": "Da tan dung het tinh nang Google Flow chua?",
+   "expected_output": "Phai phat hien duoc tinh nang moi ra sau lan cap nhat truoc.",
+   "status": "FAIL rồi mới PASS — 08/09/2026. Skill dừng ở mục changelog ngày 26/08/2026 và coi đó là mới nhất. Đọc lại trang changelog ngày 08/09/2026 xác nhận nó THẬT SỰ không có mục nào mới hơn, đủ 40 mục, không có nút tải thêm. Nhưng cùng khoảng đó blog chính thức và changelog Gemini API đã có sáu mục mới, trong đó bài blog ngày 27/08/2026 công bố Start and End Frames, xuất 1080p và 4K, cùng quy trình nháp 360p rồi nâng cấp. NGUYÊN NHÂN GỐC: skill chỉ coi flow.google.com/changelogs là nguồn quyết định, mà trang đó đi chậm hơn blog. ĐÃ SỬA: changelog.md tách thành hai bảng theo hai nguồn; SKILL.md đổi quy tắc tra cứu từ ba nguồn thành bốn nguồn, thêm bảng năng lực và bảng giá chính thức. TIÊU CHÍ MỚI: câu hỏi 'tính năng này có chưa' phải mở đủ bốn nguồn, thiếu một là fail.",
+   "files": [
+    "SKILL.md",
+    "references/changelog.md",
+    "references/flow-core.md"
+   ]
+  },
+  {
+   "id": 37,
+   "name": "bang-nang-luc-theo-model-chua-tung-co",
+   "prompt": "Model nao noi dai duoc clip? Model nao sua duoc video?",
+   "expected_output": "Tra loi dung theo tung model, khong doan.",
+   "status": "FAIL rồi mới PASS — 08/09/2026. Trước đó skill KHÔNG có bảng nào trả lời được câu này, nên buộc phải đoán. Trang support.google.com/flow/answer/16352836 có sẵn bảng đầy đủ mà skill chưa từng trích. Bốn điều bảng đó phơi ra đều ngược trực giác: chỉ Veo 3.1 Lite tức bản RẺ NHẤT mới nối dài được clip; Veo 3.1 Quality tức bản ĐẮT NHẤT lại không nhận Ingredients nên không giữ được nhân vật nhất quán; chỉ Omni mới sửa được video và tốn 40 credit, đắt hơn sinh mới một clip 10 giây vốn chỉ 15; Ingredients trên Veo bị khoá cứng ở 8 giây. ĐÃ SỬA: thêm bảng vào cả SKILL.md và flow-core.md mục 4.0, thêm mục Extend và mục Video to Video editing.",
+   "files": [
+    "SKILL.md",
+    "references/flow-core.md"
+   ]
+  },
+  {
+   "id": 38,
+   "name": "omni-nhet-ti-le-vao-prompt-va-loc-step-type-qua-chat",
+   "prompt": "Sinh clip doc 9:16 bang Omni qua API.",
+   "expected_output": "Ti le phai di bang tham so API, va phai lay duoc file ra.",
+   "status": "FAIL rồi mới PASS — 08/09/2026, hai lỗi chồng nhau trong cùng một file. LỖI MỘT: nhánh Omni gọi generateContent và nhét tỉ lệ vào giữa câu prompt tiếng Anh, vì lúc viết chưa biết Interactions API có response_format.aspect_ratio. Đã đổi sang POST /v1beta/interactions dùng đúng tham số. LỖI HAI, do chính tôi tìm ra khi tự chạy lại chứ không tin báo cáo: hàm extract_uri lọc step['type'] == 'model_output', mà chuỗi đó lấy từ doc đọc qua WebFetch và CHÍNH DOCSTRING của nó ghi là chưa xác minh bằng key thật. Nếu response thật không có đúng chuỗi đó thì script mất tiền sinh video xong vẫn thoát mã 1 và không ghi file. Đã bỏ điều kiện lọc, chỉ quét content tìm phần tử type == 'video'. ĐÃ CHẠY LẠI: giả lập hai dạng response, có field type và không có field type, cả hai đều ghi ra đủ 19 byte và thoát 0; payload gửi lên đúng endpoint /interactions, aspect_ratio 9:16, resolution 360p, task text_to_video; assert chuỗi '9:16' và 'portrait' KHÔNG còn lọt vào prompt; prompt chứa dấu nháy kép và ký tự & đi qua nguyên vẹn. BÀI HỌC: một agent báo PASS không phải bằng chứng. Bài kiểm của agent khớp với code chứ không khớp với doc, nên nó không bao giờ chạm vào nhánh hỏng.",
+   "files": [
+    "scripts/generate_video.py",
+    "references/api-guide.md"
+   ]
+  },
+  {
+   "id": 39,
+   "name": "co-resolution-thieu-dung-muc-re-nhat",
+   "prompt": "Nhap clip re nhat bang script.",
+   "expected_output": "Phai chon duoc 360p, vi do la muc re nhat.",
+   "status": "FAIL rồi mới PASS — 08/09/2026. Cờ --resolution mới thêm chỉ có 720p, 1080p và 4k. Thiếu đúng 360p, tức mức mà LUẬT VÀNG SỐ 1 của skill dựa vào để tiết kiệm credit. Nghĩa là tài liệu dạy một đằng còn công cụ làm một nẻo. Phát hiện tình cờ khi tôi gõ sai cú pháp và đọc dòng usage in ra. ĐÃ SỬA: thêm 360p vào choices, và thêm nhánh chặn báo lỗi rõ nếu ai đó xin 360p trên model Veo vì Veo không có mức này. CHẠY LẠI: --model omni --resolution 360p chạy thông và gửi đúng response_format.resolution = 360p; --model fast --resolution 360p bị chặn với thông báo chỉ đường sang Omni.",
+   "files": [
+    "scripts/generate_video.py"
+   ]
+  },
+  {
+   "id": 40,
+   "name": "tai-lieu-trich-dan-file-tam-khong-di-kem-plugin",
+   "prompt": "Doc api-guide.md tu ban plugin da cai.",
+   "expected_output": "Moi nguon trich dan phai mo duoc tu ban da cai.",
+   "status": "FAIL rồi mới PASS — 08/09/2026. Tôi phát cho các agent một bản tóm tắt dữ liệu đặt trong thư mục scratchpad tạm. Các agent trích dẫn thẳng tên file đó vào tài liệu, tổng cộng bảy chỗ trên bốn file. File tạm KHÔNG đi kèm plugin, nên người cài về sẽ thấy một nguồn không tồn tại và không có cách nào kiểm chứng lại. Đây là lỗi của tôi ở khâu giao việc, không phải của agent. ĐÃ SỬA: thay cả bảy chỗ bằng URL gốc tương ứng. QUÉT LẠI: grep FLOW_FACTS trên toàn bộ skill trả về rỗng. TIÊU CHÍ MỚI: trước khi đóng gói, phải grep mọi tên file được trích dẫn và xác nhận nó nằm trong phạm vi phát hành.",
+   "files": [
+    "references/api-guide.md",
+    "references/content-playbook.md",
+    "references/flow-tools.md",
+    "references/troubleshooting.md"
+   ]
+  },
+  {
+   "id": 41,
+   "name": "skill-md-bo-sot-mot-script",
+   "prompt": "Liet ke cac script cua skill.",
+   "expected_output": "Dung so luong, khong sot file nao.",
+   "status": "FAIL rồi mới PASS — 08/09/2026. SKILL.md ghi 'thư mục scripts có 8 file' và bảng liệt kê 8 dòng, trong khi thư mục có 9 file. Thiếu đúng doctor.py, tức file được thiết kế để CHẠY ĐẦU TIÊN trên máy mới. README có nhắc nó, SKILL.md thì không, mà SKILL.md mới là file được nạp mỗi phiên. Phát hiện bằng cách đếm wc -l trên scripts/*.py rồi đối chiếu bảng. ĐÃ SỬA: sửa số thành 9 và thêm doctor.py lên dòng đầu bảng. TIÊU CHÍ MỚI: mỗi lần đóng gói phải đối chiếu số file thật với số ghi trong tài liệu.",
+   "files": [
+    "SKILL.md",
+    "scripts/doctor.py"
    ]
   }
  ]

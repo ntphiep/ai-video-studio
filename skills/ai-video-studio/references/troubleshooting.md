@@ -181,7 +181,21 @@ qua bước đó và kết luận sai, kể cả khi đã tự gắn nhãn suy l
 | Agent hỏng thì có mất credit không | Không | Đối chiếu sổ giao dịch trước và sau: số dư giữ nguyên, không phát sinh dòng nào `[live]` |
 | Tải nhầm clip khi lấy hàng loạt | **Thư viện Flow xếp ngược thứ tự sinh**, clip sinh đầu tiên nằm cuối danh sách | Trích một khung hình của từng clip rồi tự nhìn để gán đúng vai trò, đừng tin thứ tự hiển thị `[live]` |
 
-## 10. Sinh giọng đọc hàng loạt bằng API TTS
+**Mâu thuẫn về trạng thái mặc định của chip `Agent`, giữ cả hai vế.** Phép đo `[live]` lần đầu (dòng đầu bảng trên) thấy chip `Agent` BẬT sẵn khi vào ô nhập. Một phép đo `[live 08/09/2026]` khác, mở project bằng Playwright trên cùng hạng tài khoản Pro, lại thấy nút `Agent` ở trạng thái KHÔNG pressed ngay khi vừa mở project. Hai phép đo live ở hai thời điểm cho kết quả khác nhau, nên kết luận đúng là: **trạng thái mặc định của chip `Agent` không ổn định, hoặc phụ thuộc vào từng project/phiên bản giao diện tại thời điểm mở**, không phải một trong hai lần đo bị sai. Cách xử lý an toàn không đổi bất kể trạng thái mặc định là gì: luôn tự đọc trạng thái chip trước khi bấm sinh, và triệu chứng nhận biết khi bị định tuyến nhầm vào Agent vẫn là thông báo `The agent failed. Please try again.`
+
+## 10. Điều kiện chạy và giới hạn vùng
+
+Nguồn: `https://support.google.com/flow/answer/16353333`, đọc 08/09/2026 [doc], trừ khi ghi nguồn khác.
+
+- Flow chỉ chạy được ở vùng được hỗ trợ. **VPN KHÔNG mở khoá được vùng chưa hỗ trợ** — đổi IP không đổi được việc tài khoản có được cấp quyền dùng Flow hay không.
+- Nên dùng trình duyệt nhân Chromium (Chrome hoặc Edge).
+- Cần từ 18 tuổi trở lên VÀ đã qua xác minh tuổi (age verification), không chỉ tự khai tuổi.
+- Ở khu vực **EEA, Thuỵ Sĩ, và Anh**: Gemini Omni **không sửa (edit) và không nối dài (extend) được video TẢI LÊN** (uploaded video). Video do chính model của Flow SINH RA thì vẫn sửa và nối dài được bình thường ở các vùng này — ranh giới nằm ở nguồn gốc của video (tải lên vs do model sinh), không phải Omni bị chặn hoàn toàn tính năng sửa video ở các vùng đó [doc, `ai.google.dev/gemini-api/docs/omni`, đọc 08/09/2026].
+- Video tải lên (upload) để dùng trong Scenebuilder/Editor: tối đa **60 giây và 1GB**, định dạng chấp nhận `.mov`, `.mp4`, `.avi`, `.wmv` [doc, `support.google.com/flow/answer/16935718`, đọc 08/09/2026]. Cùng trang còn ghi thêm hai ràng buộc chưa từng có trong skill: video dài hơn 30 giây BẮT BUỘC phải cắt còn 30 giây ngay trong Flow trước khi dùng tiếp, và khi sửa bằng Gemini Omni Flash chỉ chọn được tối đa MỘT đoạn 10 giây của video để sửa mỗi lần.
+
+**Về credit khi sinh thất bại.** Trang điều kiện dùng chính thức (16353333) đã đọc toàn trang và KHÔNG có dòng nào nói lượt sinh thất bại có mất credit hay không. Dòng hiện có ở Mục 1 của file này ("Flow có chính sách hoàn credit cho request thất bại...") KHÔNG dựa vào trang tài liệu này — nó dựa vào bằng chứng `[live]`: tự đọc nguyên văn banner cảnh báo hiển thị ngay trên giao diện Flow ngày 06/09/2026 ("AI Credits will be refunded for any failed requests.") cộng với đối chiếu sổ giao dịch trước/sau khi Agent lỗi ở Mục 9 (số dư giữ nguyên, không phát sinh dòng nào). Bằng chứng `[live]` này đứng độc lập với tài liệu chính thức, không bị tài liệu chính thức phủ định, nhưng cần nói rõ ràng nó không đến từ trang hỗ trợ — để khi trang hỗ trợ cập nhật sau này (hoặc khi ai đó nghi ngờ) thì biết cần đối chiếu lại đúng chỗ, không lấy nhầm làm chính sách văn bản chính thức.
+
+## 11. Sinh giọng đọc hàng loạt bằng API TTS
 
 Trong 11 lần gọi liên tiếp có **2 lần hỏng ngay lần đầu**, chạy lại lần hai thành công ngay,
 không cần đổi nội dung `[live]`. Đây là lý do hàm gọi TTS bắt buộc phải có retry.

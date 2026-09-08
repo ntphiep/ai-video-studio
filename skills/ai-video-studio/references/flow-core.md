@@ -36,7 +36,19 @@ Các batch còn lại trong `vision/` (b07 đến b49, trừ các mã kể trên
 
 ### 1.1 Trang chủ và điều hướng chung
 
-Trang chủ tại `labs.google/fx/tools/flow`. Thanh trên cùng: logo "Google Flow" bên trái; bên phải có nút "Google Flow TV", icon Discord, Instagram, X (Twitter), dấu hỏi (Help), menu ba chấm, nhãn gói đang dùng (PRO hoặc ULTRA), avatar tài khoản [b01 t=146s; b06 t=53.7s; b12 t=0s; b16 t=3s; b20 t=123s; b23 t=42.7s].
+Trang chủ có hai địa chỉ. Địa chỉ hiện hành nên dùng là **`flow.google.com`**. Địa chỉ cũ
+`labs.google/fx/tools/flow` vẫn chạy nhưng bản mirror changelog ở đó thiếu mục mới, nên
+đừng lấy làm nguồn.
+
+Đo lại header ngày 08/09/2026 trên `flow.google.com` `[live 08/09/2026]`: có link
+**`Flow Music`** trỏ sang `flowmusic.app`, link **`Flow TV`** trỏ RA NGOÀI tới
+`labs.google/flow/tv` chứ không phải một panel bên trong ứng dụng, nút `Account details`
+hiện huy hiệu `PRO tier`, và nút `More options` mở menu gồm: About Flow, Learn Flow, Send
+app feedback, Report legal issue, Privacy notice, công tắc `Help improve Flow`, và
+`Delete all projects`. Mục cuối cùng đó xoá TOÀN BỘ project, hãy cẩn thận khi thao tác
+bằng script tự động.
+
+Thanh trên cùng theo quan sát cũ qua video: logo "Google Flow" bên trái; bên phải có nút "Google Flow TV", icon Discord, Instagram, X (Twitter), dấu hỏi (Help), menu ba chấm, nhãn gói đang dùng (PRO hoặc ULTRA), avatar tài khoản [b01 t=146s; b06 t=53.7s; b12 t=0s; b16 t=3s; b20 t=123s; b23 t=42.7s].
 
 Banner lớn xoay vòng (carousel) trên trang chủ, ba mẫu quan sát được: "A creative partner at every step." (nút "Try the Google Flow Agent"), "Your face, your voice, your story." (nút "Get started", giới thiệu tính năng Avatar thử nghiệm), "Introducing Gemini Omni Flash" (nút "Try Omni now", mô tả "Cinematic realism, powerful editing, world knowledge: try our latest video generation model!") [b01 t=146s; b06 t=53.7s; b20 t=123-133s]. Dưới banner là lưới các thẻ project đã lưu và nút "+ New project" [b20 t=142-154s].
 
@@ -157,8 +169,17 @@ Bảng chính thức từ trang hỗ trợ Google (`support.google.com/flow/answ
 | Veo 3.1 Quality | 100 | 100 (như nhau mọi hạng) |
 | Gemini Omni Flash 720p (4-10s) | 7 đến 15 tùy thời lượng | như thường |
 | Omni 360p | bằng khoảng nửa giá 720p | như thường, Pro/Ultra được upscale 360→720 miễn phí |
+| Gemini Omni Flash, sửa video | 40 | 40 |
 | Upscale 1080p | miễn phí cho người có gói trả phí | miễn phí |
 | Upscale 4K | không có | 50 credit, CHỈ Ultra mới dùng được |
+
+Đọc lại trang trên ngày 08/09/2026, số liệu không đổi so với lần đọc ngày 06/09/2026, và
+lần này lấy thêm được dòng **sửa video 40 credit** vốn bị bỏ sót lần trước
+`[doc, support.google.com/flow/answer/16526234, 08/09/2026]`. Dòng "Veo 3.1 Quality" trên
+trang chính thức ghi rõ phạm vi là "8s videos, Extend", tức bản Quality chỉ có 8 giây.
+
+Một hệ quả về giá đáng nhớ: **sửa một video tốn 40 credit, còn sinh mới một clip 10 giây ở
+720p chỉ tốn 15**. Sửa chỉ đáng tiền khi cần giữ lại phần lớn khung hình cũ.
 
 Bảng đo trực tiếp trên tài khoản **AI Pro** ngày 06/09/2026, đọc nhãn "Generating will use N credits" TRƯỚC khi sinh, không tốn credit nào để lấy số này `[live, bảng giá đo trực tiếp trên tài khoản ngày 06/09/2026]` — mức bằng chứng CAO NHẤT cho phần này:
 
@@ -200,6 +221,27 @@ Free: 50 credit/ngày, không cộng dồn (reset hàng ngày, chính thức t�
 
 Clip rẻ nhất có thể tạo trên tài khoản trả phí: Omni 1.1 Flash, 360p, 4 giây = 4 credit. Với 50 credit miễn phí mỗi ngày, làm được khoảng 12 clip nháp/ngày [live, bảng giá đo trực tiếp trên tài khoản ngày 06/09/2026].
 
+### 2.5 Sổ credit ở Google One đã đổi cơ chế, và nó mâu thuẫn với chính Flow
+
+Đây là phát hiện của lần đo ngày 08/09/2026 và nó ảnh hưởng tới cách kiểm tra số dư.
+
+Mở `one.google.com/ai/activity` trên tài khoản Pro thì trang hiện **`AI credits: 0`** kèm
+một dòng cảnh báo nguyên văn: *"AI credits included with your plan have been replaced by
+product-based usage limits"*, dẫn tới `support.google.com/googleone/answer/16287445`. Mục
+hoạt động gần đây thì trống, ghi *"No recent activity"* `[live 08/09/2026]`.
+
+Nhưng ngay bên trong Flow, panel cài đặt vẫn hiện số credit cụ thể trước mỗi lần sinh, đo
+được nguyên văn `Generating will use 12 credits` `[live 08/09/2026]`.
+
+Hai dòng chữ này nói ngược nhau. Chưa xác minh được cơ chế thật. Giả thuyết là có hai tầng
+riêng biệt: Flow tự quản một quỹ credit của riêng nó, còn thứ bị thay bằng hạn mức theo sản
+phẩm là phần credit cộng thêm mua qua Google One. **Đây là giả thuyết, chưa kiểm chứng.**
+
+Hệ quả thực tế cho cách làm việc: **đừng dùng `one.google.com/ai/activity` làm nguồn số dư
+nữa**. Nguồn đáng tin duy nhất hiện nay là nhãn `Generating will use N credits` hiện ngay
+trong panel cài đặt của Flow trước khi bấm sinh. Nhãn đó vừa cho biết giá, vừa là cách duy
+nhất còn hoạt động để đối chiếu chi phí.
+
 ---
 
 ## 3. Tỉ lệ khung hình, độ phân giải, thời lượng
@@ -222,6 +264,23 @@ Thời lượng: **4 mức cố định — 4s, 6s, 8s, 10s**, với 8s thườn
 
 Độ phân giải: tài liệu HTML gốc của Veo (`[live]`) ghi Veo 3.1 hỗ trợ "720p" (mặc định), "1080p", "4k" (4K không có ở bản Lite); "the higher the resolution, the higher the latency will be. 4k videos are also more expensive"; "Video extension is also limited to 720p videos." Trên UI Flow chính, KHÔNG quan sát được dropdown độ phân giải riêng cho model Veo qua các frame vision đã xem — chỉ thấy độ phân giải là biến số ĐO ĐƯỢC cho riêng model Omni (360p/720p, xem bảng credit ở Mục 2). [chưa xác minh UI chọn resolution cho Veo trông như thế nào trên màn hình thật].
 
+Đo lại ngày 08/09/2026 trên tài khoản Pro, panel cài đặt khi model là Omni 1.1 Flash chỉ
+có **hai** mức độ phân giải: `360p` kèm chú thích nguyên văn *"360p generates faster at
+lower resolution"*, và `720p` đang được chọn. **KHÔNG có 1080p và không có 4K trong ô chọn
+lúc sinh** `[live 08/09/2026]`.
+
+Đây là chỗ dễ hiểu lầm nhất sau bản cập nhật 27/08/2026, nên tách bạch cho rõ.
+
+| Việc | Có những mức nào |
+|---|---|
+| Lúc SINH video | 360p và 720p, chỉ với Omni. Đây là cái quyết định giá clip |
+| Lúc TẢI VỀ hoặc XUẤT | Thêm 1080p và 4K, dưới dạng nâng độ phân giải cho clip đã có |
+
+Nói cách khác, 1080p và 4K không phải là mức để sinh mà là mức để nâng. Điều này khớp với
+bảng giá: nâng lên 1080p miễn phí cho người trả phí, nâng lên 4K tốn 50 credit và chỉ Ultra
+`[doc, support.google.com/flow/answer/16526234, 08/09/2026]`. Ai đi tìm ô 1080p trong panel
+lúc sinh sẽ không thấy, và đó là đúng thiết kế chứ không phải lỗi.
+
 Số lượng video sinh mỗi lần: **1x, x2, x3, x4**, giống ảnh.
 
 Giới hạn chỉnh sửa: video dài hơn 10 giây KHÔNG chỉnh sửa được trong editor, hiện cảnh báo nguyên văn *"Videos longer than 10s can't be edited. Trim to 10s or under to edit."* kèm nút **"Trim Automatically"** [b22 t=1382s, t=1424s; khớp lại ghi chép xem frame video hướng dẫn].
@@ -232,6 +291,88 @@ Mặc định khi tạo video qua Agent (không tùy chỉnh gì thêm): 8 giây
 
 ## 4. Chế độ tạo: Văn bản, Frames to Video, Ingredients to Video
 
+### 4.0 Bảng năng lực chính thức theo model — đọc bảng này TRƯỚC khi chọn model
+
+Nguồn: `https://support.google.com/flow/answer/16352836`, đọc ngày 08/09/2026 `[doc]`.
+Đây là câu trả lời có thẩm quyền cho câu hỏi "model nào làm được chế độ nào, ở thời lượng
+nào". Trước đợt cập nhật này skill không hề có bảng nào tương đương, nên người dùng phải
+đoán, và đoán sai thì mất credit.
+
+| Chế độ | Veo 3.1 Lite | Veo 3.1 Fast | Veo 3.1 Quality | Gemini Omni Flash 1.1 |
+|---|---|---|---|---|
+| Text to Video | 4s, 6s, 8s | 4s, 6s, 8s | 4s, 6s, 8s | 4s, 6s, 8s, 10s |
+| Frames to Video: First | 4s, 6s, 8s | 4s, 6s, 8s | 4s, 6s, 8s | 4s, 6s, 8s, 10s |
+| Frames to Video: First and last | 4s, 6s, 8s | 4s, 6s, 8s | 4s, 6s, 8s | 4s, 6s, 8s, 10s |
+| Ingredients / References to Video | chỉ 8s | chỉ 8s | KHÔNG hỗ trợ | 4s, 6s, 8s, 10s |
+| Extend videos | chỉ 8s, áp lên video do ba model Veo 3.1 sinh | KHÔNG hỗ trợ | KHÔNG hỗ trợ | ghi "Coming Soon" |
+| Video to Video editing | KHÔNG hỗ trợ | KHÔNG hỗ trợ | KHÔNG hỗ trợ | có, video tối đa 10 giây |
+
+Mọi chế độ trong bảng đều chạy được ở cả hai tỉ lệ khung hình.
+
+Bốn kết luận rút ra từ bảng này.
+
+Thứ nhất, **chỉ Veo 3.1 Lite mới nối dài được video**. Bản Fast và bản Quality đều không.
+Đây là điều ngược với trực giác, vì Lite là bản rẻ nhất. Nếu cần một cảnh dài hơn 8 giây
+bằng đường Veo thì bắt buộc phải sinh bằng Lite ngay từ đầu.
+
+Thứ hai, **chỉ Gemini Omni Flash mới sửa được video đã có**. Chi phí là 40 credit mỗi lần
+sửa, đắt hơn cả một clip 10 giây ở 720p vốn chỉ 15 credit. Hãy cân nhắc sinh lại thay vì sửa.
+
+Thứ ba, **Veo 3.1 Quality không nhận Ingredients**. Quy trình giữ nhân vật nhất quán bằng
+Ingredients không dùng được với model chất lượng cao nhất. Cách đi thực tế là chốt nhân vật
+bằng Lite hoặc Fast, rồi mới nghĩ tới Quality cho cảnh cần đẹp nhất, và chấp nhận rằng cảnh
+đó không có Ingredients.
+
+Thứ tư, **Ingredients trên Veo bị khoá cứng ở 8 giây**. Chỉ Omni mới cho chọn thời lượng
+khác khi dùng Ingredients.
+
+### 4.0b Mâu thuẫn chưa giải quyết về ô chọn thời lượng của Veo
+
+Bảng chính thức ở trên ghi cả ba model Veo 3.1 đều hỗ trợ 4s, 6s và 8s cho Text to Video.
+Nhưng phần đo trực tiếp ở mục 2.2 lại ghi ba model Veo "không chọn được resolution và
+duration riêng", đo trên tài khoản Pro ngày 06/09/2026.
+
+Hai khả năng, chưa biết cái nào đúng.
+
+Một, giao diện Flow không phơi ô chọn thời lượng cho Veo dù model có hỗ trợ ở cấp API. Khi
+đó bảng chính thức mô tả năng lực model, còn phép đo mô tả năng lực giao diện, và cả hai
+đều đúng theo cách riêng.
+
+Hai, phép đo ngày 06/09/2026 đã bỏ sót ô đó, hoặc giao diện đã đổi sau bản cập nhật ngày
+27/08/2026.
+
+**Chưa được kết luận bên nào sai.** Khi cần dùng, hãy tự mở panel cài đặt, chọn từng model
+Veo, và đọc xem có ô duration hay không, rồi cập nhật lại mục này kèm ngày đo.
+
+Đã thử giải quyết ngày 08/09/2026 nhưng KHÔNG xong. Lần đo đó mở panel cài đặt khi model
+đang chọn là Omni 1.1 Flash và đọc được đủ bốn mốc 4s, 6s, 8s, 10s, tất cả đều bấm được
+trên tài khoản Pro. Nhưng phép đo đó **không chuyển sang từng model Veo rồi đọc lại panel**,
+nên nó không nói được gì về Veo. Mâu thuẫn vẫn còn nguyên. Đây chính xác là một bước còn
+thiếu, không phải một câu trả lời.
+
+Một dữ kiện phụ thu được cùng lần đo đó: changelog ngày 21/04/2026 giới thiệu hai mốc 4
+giây và 6 giây như tuỳ chọn thử nghiệm dành cho người dùng Ultra, nhưng tài khoản Pro ngày
+08/09/2026 chọn được cả hai và không bị khoá `[live 08/09/2026]`. Nghĩa là tính năng đã mở
+rộng ra ngoài Ultra sau đó, dù không có mục changelog nào ghi lại việc mở rộng.
+
+### 4.0c Mâu thuẫn thứ hai: Omni có nhận cả khung đầu lẫn khung cuối không
+
+Hai nguồn chính thức nói ngược nhau và đây là mâu thuẫn về THỜI GIAN, không phải về sự thật.
+
+Changelog ngày 04/06/2026 và 10/06/2026 nói nguyên văn: *"Note: Omni Flash currently
+supports First Frame only; First + Last Frame combinations coming soon!"* `[changelog]`.
+
+Bảng năng lực chính thức đọc ngày 08/09/2026 lại ghi Gemini Omni Flash 1.1 hỗ trợ cả
+`Frames to Video: First and last` ở 4, 6, 8 và 10 giây
+`[doc, support.google.com/flow/answer/16352836, 08/09/2026]`.
+
+Giải thích khả dĩ nhất là lời hứa "coming soon" hồi tháng 6 đã được thực hiện trong bản
+Gemini Omni Flash 1.1 ra ngày 27/08/2026, và bảng năng lực là bản mới hơn nên đúng hơn.
+Đây là SUY LUẬN, chưa xác minh. Trước khi dựa vào khung cuối với Omni, hãy tự mở tab Frames
+và xem có đủ cả ô Start lẫn ô End hay không.
+
+### 4.1 Bốn tab của panel cấu hình
+
 Panel cấu hình khi ở chế độ Video có đúng **4 tab**: **Image, Video, Frames, Ingredients** [b16 t=42s; b20 t=169s].
 
 **Văn bản (Text/Voice-over-to-Video)** — chế độ mặc định, gõ mô tả cảnh tự do vào ô nhập chính. Có thể dùng mẫu câu chuyên biệt "Create a video base on the voice over: Voice Over: ... Note: Realistic Video, show the shock and viral. Text animation with eye-catching in the middle" để Flow tự dựng hình ảnh minh họa khớp với đoạn lời đọc cho trước [b20 t=169-333s]. Dùng khi: đã có kịch bản/lời thoại rõ ràng, muốn Flow tự nghĩ ra hình ảnh minh họa.
@@ -241,6 +382,37 @@ Panel cấu hình khi ở chế độ Video có đúng **4 tab**: **Image, Video
 **Ingredients to Video** — ghép nhiều ảnh "nguyên liệu" riêng biệt (người, trang phục, phụ kiện, bối cảnh...) vào cùng một cảnh bằng cách đính kèm nhiều ảnh tham chiếu rồi mô tả cách kết hợp, ví dụ prompt thật: *"The girl in image 1 wearing exactly the tank top in image 2 and exactly pants in image 3, wearing exactly glasses in image 4. Place her in a suitable background with the outfit and posing exactly like image 5"* [b20 t=549-553s]. Dùng khi: cần giữ đúng nhiều yếu tố hình ảnh tách rời (trang phục cụ thể, phụ kiện cụ thể, tư thế tham chiếu) hợp nhất vào một nhân vật/cảnh mà không cần dựng character reference sheet đầy đủ trước. Theo changelog chính thức, "Ingredients to Video" đã có với Veo Lite từ 16/04/2026 và trước đó đã hỗ trợ định dạng dọc (Portrait) từ 18/12/2025 — tức đây là tính năng có lịch sử phát triển riêng, không phải phần phụ của Frames [live, changelog.md].
 
 Ghi chú liên quan (Voice là "ingredient" riêng): có thể gắn đồng thời Character reference + Voice + Storyboard image làm 3 "ingredients" vào cùng một prompt video, ví dụ đã làm thật khi tạo video từ storyboard có nhân vật cố định và giọng đọc cố định [b17 t=634s]. "Experimental Voice Ingredients for Ultra Users" là tính năng chính thức riêng từ 02/04/2026 theo changelog — có thể đây là cơ chế gắn giọng nói dưới dạng ingredient khác với việc gắn Voice thông thường vào Character, [cần kiểm lại, chưa xác minh chi tiết khác biệt].
+
+**Extend** — nối dài một clip đã có bằng cách phân tích khung hình cuối rồi sinh tiếp hành
+động, thay vì sinh lại từ đầu. Theo bảng chính thức, trong Flow chỉ **Veo 3.1 Lite** làm
+được, ở mức 8 giây mỗi lần, và chỉ áp lên video do một trong ba model Veo 3.1 sinh ra. Với
+Omni thì bảng ghi "Coming Soon" `[doc, support.google.com/flow/answer/16352836, 08/09/2026]`.
+Giá bằng đúng giá sinh một clip cùng model, tức 10 credit với Lite và 5 với Ultra
+`[doc, support.google.com/flow/answer/16526234, 08/09/2026]`.
+
+Ở cấp API thì con số khác hẳn và rộng hơn nhiều. Veo qua Gemini API nối dài được video đầu
+vào tới 141 giây và cho ra tối đa 148 giây, nhưng chỉ với `veo-3.1-generate-preview` và
+`veo-3.1-fast-generate-preview`, và video đầu vào phải là 720p
+`[doc, ai.google.dev/gemini-api/docs/veo, 08/09/2026]`. Omni qua Interactions API nối được
+vào cuối clip cho tới tổng 40 giây `[doc, ai.google.dev/gemini-api/docs/omni, 08/09/2026]`.
+Chi tiết tham số nằm ở `api-guide.md`.
+
+Đây là chỗ giao diện và API lệch nhau rõ nhất trong toàn bộ Flow. Nếu cần một cảnh liền
+mạch dài hơn 10 giây thì đường API mạnh hơn hẳn đường giao diện.
+
+**Video to Video editing** — sửa một video đã có bằng mô tả bằng lời, giữ nguyên phần không
+đổi. Theo bảng chính thức chỉ **Gemini Omni Flash 1.1** làm được, và video phải từ 10 giây
+trở xuống. Giá 40 credit mỗi lần sửa
+`[doc, support.google.com/flow/answer/16526234, 08/09/2026]`.
+
+Ba điều cần cân nhắc trước khi dùng. Thứ nhất, 40 credit đắt hơn sinh mới một clip 10 giây
+720p vốn chỉ 15 credit, nên nếu chỉ cần đổi nội dung thì sinh lại rẻ hơn; sửa chỉ đáng khi
+cần GIỮ phần lớn khung hình cũ. Thứ hai, ở khu vực EEA, Thuỵ Sĩ và Anh thì không sửa được
+video TẢI LÊN, còn video do model sinh ra thì vẫn sửa được ở mọi nơi
+`[doc, ai.google.dev/gemini-api/docs/omni, 08/09/2026]`. Thứ ba, định dạng tải lên được là
+`.mov`, `.mp4`, `.avi`, `.wmv`, tối đa 60 giây và 1GB
+`[doc, support.google.com/flow/answer/16935718, 08/09/2026]`; con số 60 giây này là giới hạn
+tải lên, còn giới hạn sửa vẫn là 10 giây.
 
 ---
 
@@ -254,6 +426,29 @@ Ghi chú liên quan (Voice là "ingredient" riêng): có thể gắn đồng th�
 4. Vào trang chi tiết Character: đặt tên, bấm **"Select a voice"** để gắn giọng, điền **"Character Info (optional)"** — mô tả tính cách để Agent tham khảo khi tạo cảnh sau này (ví dụ: *"nhân vật này bình tĩnh, điềm đạm và đĩnh đạc"* [b23 t=366s]).
 5. Bấm **"Create Body"** để sinh ảnh toàn thân 3 góc (triptych front/3-4/back) từ chân dung đã có, dùng prompt mẫu Flow gợi ý sẵn (xem 1.3).
 6. Muốn thêm biến thể góc chụp/trang phục: gắn thêm ảnh tham chiếu qua asset picker "+" rồi mô tả yêu cầu, ví dụ *"Tạo cho tôi phiên bản 2D của cô gái này, giữ nguyên đường nét gương mặt, tóc, trang phục, để nền trắng"* [b21 t=805s].
+
+### 5.1b Gọi nhân vật bằng cú pháp @ ngay trong prompt
+
+Đây là cách dùng mà skill trước đây hoàn toàn không có, dù nó là cách nhanh nhất để giữ
+nhân vật nhất quán mà không phải gắn ảnh thủ công mỗi lần.
+
+**`@tên_nhân_vật`** gọi một Character đã lưu vào thẳng prompt. Changelog ngày 19/05/2026
+giới thiệu Characters với khẩu hiệu nguyên văn *"Design once, cast anywhere"*: tạo nhân vật
+một lần từ mô tả bằng chữ hoặc từ ảnh tham chiếu, gắn giọng nói cho nó, rồi gõ
+`@character_name` trong prompt để đưa nhân vật đó vào cảnh `[changelog]`.
+
+**`@me`** đưa chính bạn vào cảnh. Cùng mục changelog ngày 19/05/2026 mô tả đường thao tác:
+vào Account Settings, chọn `Create avatar`, quay một video selfie ngắn và đọc vài từ để ghi
+lại giọng, sau đó gõ `@me` trong prompt `[changelog]`. Tính năng này **không dùng được ở
+khu vực EEA, Anh và Thuỵ Sĩ**.
+
+Giao diện thật xác nhận có hạ tầng cho cả hai: bảng chọn asset khi bấm nút thêm ingredient
+có đủ các tab `All`, `Images`, `Videos`, `Voices`, `Characters`, `Avatars`, `Uploads`
+`[live 08/09/2026]`. Tab `Avatars` tách riêng khỏi tab `Characters`, tức đây là hai khái
+niệm khác nhau chứ không phải một.
+
+Chưa xác minh: chưa tự gõ `@` trong ô prompt để xem danh sách gợi ý hiện ra thế nào, và
+chưa thử `@me` vì tài khoản chưa tạo avatar.
 
 ### 5.2 Giới hạn ký tự
 

@@ -440,46 +440,11 @@ Mẫu cấu trúc "2 ảnh mỗi cảnh" cho công cụ ảnh-thành-video (Goog
 
 ---
 
-## 4. STYLE — danh sách phong cách theo từng công cụ (tên gọi chính xác công cụ dùng)
+## 4. Style theo từng công cụ
 
-### 4.1 NotebookLM — Video Overview
-Choose visual style (10 lựa chọn, cuộn ngang): **Auto-select, Custom, Classic, Whiteboard, Kawaii, Anime, Watercolor, Retro print, Heritage, Paper-craft** `[b34 t=139.2s]`.
-Format: **Cinematic (New!), Explainer, Brief** `[b34 t=127.4s]`. Một bản khác (b38) chỉ thấy: Auto-select, Custom, Classic, Whiteboard, Kawaii, Anime (có thể cuộn thêm) `[b38 t=764.4s]`.
-
-### 4.2 NotebookLM — Audio Overview
-Format: **Deep Dive (mặc định), Brief, Critique, Debate** `[b34 t=169.2s]`. Length: **Short / Default / Long** `[b34]`.
-
-### 4.3 NotebookLM — Infographic
-Ghi nhận NHIỀU bộ style khác nhau xuất hiện ở các video khác nhau (khả năng do Google cập nhật/đổi tên qua thời gian, hoặc do giao diện Anh/Việt khác nhau — cần đối chiếu khi dùng thật):
-- `[b29 t=319.1s]` (tiếng Việt): **Đất sét, Báo chí, Hướng dẫn, Lưới Bento, Gạch** (còn bị cuộn che, tác giả nói qua lời có tới "10 phong cách").
-- `[b38 t=690.1s]` (tiếng Anh): **Auto-select, Kawaii, Clay, Sketch Note, Anime, Editorial** (có thể cuộn thêm).
-- `[b40 t=194.6s]` (tiếng Việt): **Tự động chọn, Ghi chú phác thảo, Kawaii, Chuyên nghiệp, Có tính khoa học, Anime** (bị cắt mép).
-- `[b45 t=122-152s]` (tiếng Anh): **Auto-select, Sketch Note, Kawaii, Professional, Scientific, Anime**.
-Choose orientation: **Landscape / Portrait / Square**. Level of detail: **Concise / Standard / Detailed (nhãn "BETA")**.
-
-### 4.4 Google Flow — Story Animator (tool tự build trong Explore Tools)
-Dropdown "Phong cách": **Điện ảnh, Tả thực, Anime, Hoạt hình 3D, Tranh sơn dầu, Màu nước** `[b21 t=849s, t=1026s]`.
-
-### 4.5 Google Flow — Storyboard Studio
-Style: ít nhất 2 giá trị quan sát được: **Realistic** (mặc định trong modal Welcome) và **Claymation** `[b06 t=61.5-62.5s]`.
-
-### 4.6 Google Flow — Explore Tools (danh mục "Image", tên chính xác từng tool cộng đồng/Google)
-**Simple Sketch, Scene Explorer, Mockup, Image Editor, Shot Explorer, Mask Magic, Converge, Grid Architect, Shader Effects, Type Overlays, pixelBento, Poster Designer, Video Sketch, Transition Machine, Weirdcore, Video Resizer, Character X-Ray, Style Writer, Storyboard Studio, Prompt Tree, Story Sketch, Datamosh, 3D Model Visualizer, Scout360, Ribbit, Whisk, Pose Text, 3D Face Swap** `[b35 t=104-133s]`.
-
-### 4.7 Google Flow — New Character (thẻ mẫu tính cách nhân vật)
-**The Familiar, The Eccentric, The Wicked, The Fantastical** (b01); bản mở rộng 6 thẻ ở b06: **The Eccentric, The Professional, The Wildcard, The Familiar, The Wicked, The Fantastical**.
-
-### 4.8 Google Flow — giọng nói mẫu (Base Voice)
-**Callirrhoe** (Female, easy-going, mid pitch), **Charon** (Male, informative, lower pitch), **Despina** (Female, smooth, mid pitch), **Enceladus** (Male, breathy, lower pitch) `[b01 t=465-498.8s]`. Các giọng khác thấy tên riêng: Aoede, Achird Custom, Callirrhoe Custom, Achernar `[b06, b16]`. **Cảnh báo: viết đúng chính tả tuyệt đối** — API trả lỗi 400 nếu sai dù chỉ một ký tự trong tên giọng đọc.
-
-### 4.9 Suno / OpenMusic — thể loại nhạc (chip chọn nhanh, giống nhau ở cả hai nền tảng)
-**Country, Folk, Rock, Blues, Cổ điển, Disco, Funk** (+ nút "Thêm >" để mở rộng) `[b30 t=137s]`.
-
-### 4.10 UGC Character (UGCVideo.ai) — Look Vibe
-**90s Style, Casual Style, Glam Style, Gym Style, Office Style, Street Style, Y2K Style** `[b03 t=395s]` (một số tên bị cắt chữ trên UI gốc).
-
-### 4.11 Claude/AI Studio — style ảnh minh hoạ do người dùng tự đặt tên trong Brand Kit
-Không phải style cố định của công cụ mà là style thương hiệu tự định nghĩa theo khuôn Brand Kit Document (xem mục 1.10): ví dụ Red Bull = "Dark dramatic backgrounds, high-contrast lighting, action photography, motion blur, neon glow effects in red and yellow, wide-angle or low-angle shots" `[b43 t=268s]`.
+Danh sách tên style chính xác của từng công cụ nằm ở `style-library.md` mục 3, dạng
+bảng ba cột gồm công cụ, trường chọn và giá trị chính xác. Danh mục tool đầy đủ nằm
+ở `flow-tools.md`. Không lặp lại ở đây.
 
 ---
 

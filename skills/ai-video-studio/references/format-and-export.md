@@ -170,11 +170,14 @@ Hai lệnh dưới đã chạy bằng ffmpeg 9.0.1 trên máy, kiểm bằng ffp
 nguyên văn từ bản export-spec cũ, nay đã gỡ khỏi skill cũ vì vẫn đúng:
 
 ```bash
+
 # 16:9 -> 9:16, cắt hai bên rồi đưa về khung Shorts chuẩn
+
 # test thật: 1280x720 -> ra đúng 720x1280
 ffmpeg -i final.mp4 -vf "crop=ih*9/16:ih,scale=720:1280" -c:a copy final_916.mp4
 
 # 9:16 -> 16:9, giữ trọn khung, thêm viền đen hai bên
+
 # test thật: 720x1280 -> ra đúng 1920x1080
 ffmpeg -i vertical.mp4 -vf "scale=-2:1080,pad=1920:1080:(ow-iw)/2:0" -c:a copy out_169.mp4
 ```

@@ -1,6 +1,6 @@
 {
  "skill_name": "ai-video-studio",
- "notes": "Bộ eval của skill ai-video-studio. Cập nhật 08/09/2026: 43 eval. Eval mang trạng thái FAIL rồi mới PASS được giữ nguyên chữ FAIL để không xoá dấu vết một bản ghi PASS từng sai. Hai nguyên tắc cứng cho mọi eval về script. Thứ nhất, parse được cú pháp KHÔNG phải bằng chứng, phải chạy thật và kiểm file đầu ra. Thứ hai, một agent báo PASS cũng KHÔNG phải bằng chứng: eval 38 là trường hợp bài kiểm của agent khớp với code chứ không khớp với tài liệu, nên nó không bao giờ chạm vào nhánh hỏng, và lỗi chỉ lộ ra khi người khác tự viết bài kiểm độc lập.",
+ "notes": "Bộ eval của skill ai-video-studio. Cập nhật 09/09/2026: 49 eval. Eval mang trạng thái FAIL rồi mới PASS được giữ nguyên chữ FAIL để không xoá dấu vết một bản ghi PASS từng sai. Hai nguyên tắc cứng cho mọi eval về script. Thứ nhất, parse được cú pháp KHÔNG phải bằng chứng, phải chạy thật và kiểm file đầu ra. Thứ hai, một agent báo PASS cũng KHÔNG phải bằng chứng: eval 38 là trường hợp bài kiểm của agent khớp với code chứ không khớp với tài liệu, nên nó không bao giờ chạm vào nhánh hỏng, và lỗi chỉ lộ ra khi người khác tự viết bài kiểm độc lập.",
  "evals": [
   {
    "id": 1,
@@ -449,6 +449,68 @@
     "references/flow-core.md",
     "SKILL.md",
     "scripts/upload_video.py"
+   ]
+  },
+  {
+   "id": 44,
+   "name": "toc-do-doc-tts-khong-phai-hang-so",
+   "prompt": "Uoc thoi luong loi doc de dat do dai canh.",
+   "expected_output": "Do dai canh phai lay tu so do that, khong tu con so nho san.",
+   "status": "FAIL rồi mới PASS — 08/09/2026. Eval 34 ghi tốc độ đọc của TTS là 219 từ mỗi phút và con số đó đã được dùng như một hằng số. Lần này dựng một video 3 phút về GitHub trending, đo lại bằng ffprobe trên 7 file WAV vừa sinh thì tốc độ THẬT chỉ 194,1 từ mỗi phút, tức chênh 11 phần trăm. NGUYÊN NHÂN: kịch bản này dày chữ số, mà số viết bằng chữ tiếng Việt đọc rất chậm. Cụm 'mười bốn nghìn chín trăm bốn mươi sáu' là năm từ nhưng mất thời gian như một câu ngắn. Đo từng cảnh cho thấy biên độ còn rộng hơn nữa: cảnh ít số nhất đạt 225,2 wpm còn cảnh nhiều số nhất chỉ 172,6 wpm, tức chênh nhau 30 phần trăm giữa hai cảnh trong CÙNG một kịch bản, cùng một giọng. KẾT LUẬN: 219 không phải hằng số của TTS, nó chỉ là trung bình của một kịch bản cụ thể. CÁCH LÀM ĐÚNG đã áp dụng: sinh toàn bộ lời đọc TRƯỚC, chạy ffprobe đo từng file, rồi mới sinh durations.json cho Remotion từ số đo đó cộng khoảng lặng đặt riêng cho từng cảnh. Làm vậy thì hình không thể ngắn hơn tiếng, vì hình lấy số đo từ tiếng. TIÊU CHÍ MỚI: cấm dùng wpm ước lượng để đặt độ dài cảnh. Chỉ được dùng nó để ước số từ khi VIẾT kịch bản, và phải ghi kèm biên độ 170 tới 225 wpm thay vì một con số duy nhất.",
+   "files": [
+    "scripts/generate_audio.py",
+    "references/other-routes.md"
+   ]
+  },
+  {
+   "id": 45,
+   "name": "bang-mau-phang-mau-nhan-la-mau-khoi-khong-phai-mau-chu",
+   "prompt": "Dung video motion graphics phang theo mot bang mau lay tu anh mau.",
+   "expected_output": "Moi chu tren man hinh phai doc duoc sau khi ma hoa video.",
+   "status": "FAIL rồi mới PASS — 08/09/2026, dựng video 3 phút về GitHub trending theo phong cách flat minimalism. Bảng màu lấy bằng cách đếm pixel trên ảnh mẫu người dùng đưa. Tôi giao agent dựng cảnh với luật 'mỗi cảnh một màu nhấn', nhưng KHÔNG nói màu nhấn dùng thế nào, nên agent tô thẳng vào màu chữ. ĐO WCAG trên nền kem #F9F2EB: vàng #F1E33B chỉ 1,20:1, hồng #FFCFDB 1,25:1, teal #6BACC3 2,28:1, tức cả ba đều dưới ngưỡng 3:1 và gần như vô hình. Chiều ngược lại thì tốt: chữ ink #141824 trên khối vàng đạt 13,32:1. LUẬT RÚT RA, đúng với chính ảnh mẫu: trong ảnh đó vàng, hồng, teal và đỏ đều là MẢNG TÔ của máy in, khay giấy, màn hình, bàn phím, và không một chữ nào mang các màu đó. Vậy bốn màu nhấn là màu KHỐI. Muốn nhấn một chữ thì đặt khối màu phía sau rồi để chữ ink lên trên, kiểu bút dạ quang. TÔI CÒN SAI LẦN HAI khi viết luật: tự đặt ngưỡng 'chữ đỏ chỉ dùng từ 100px'. Con số đó bịa. Chuẩn WCAG định nghĩa chữ lớn là từ 18,66px nếu đậm, nên đỏ ở 3,34:1 hợp lệ từ 24px. Đặt luật khắt khe hơn chuẩn mà không có căn cứ cũng là sai, vì nó buộc người khác phá luật để làm việc bình thường. TIÊU CHÍ MỚI: với mọi bảng màu rút từ ảnh mẫu, phải tính tương phản WCAG cho từng màu trên nền chính TRƯỚC khi giao việc, và ghi thẳng vào file theme màu nào được làm màu chữ, màu nào chỉ được làm khối.",
+   "files": [
+    "output/github_trending_tuan_qua_3phut.mp4"
+   ]
+  },
+  {
+   "id": 46,
+   "name": "kiem-chung-phai-tren-artifact-hien-tai-khong-phai-anh-cu",
+   "prompt": "Soi loi hinh anh bang cach nhin khung hinh da render.",
+   "expected_output": "Ket luan phai dua tren ban render moi nhat.",
+   "status": "PASS (bài học phương pháp) — 08/09/2026. Tôi render khung hình tĩnh, nhìn thấy chữ màu teal, lấy mẫu pixel xác nhận đúng #6BACC3 ở 2,28:1. Nhưng đọc mã nguồn thì mọi chỗ đều ghi color: C.ink. Tôi suýt đi tìm một nhánh code ẩn không tồn tại. NGUYÊN NHÂN THẬT: ảnh render lúc 22:35:46 còn file nguồn được agent sửa lúc 22:36:50, tức ảnh cũ hơn code đúng một phút. Agent đã tự sửa sau khi nhận cảnh báo của tôi, và tôi đang so ảnh cũ với code mới. CÁCH PHÁT HIỆN: render lại đúng khung đó rồi lấy mẫu lại. Vùng ấy đổi từ chữ teal trên nền kem thành nền teal với chữ ink, tức bản sửa đã có sẵn. TIÊU CHÍ MỚI, áp dụng cho mọi lần kiểm chứng hình ảnh: trước khi kết luận, phải so dấu thời gian của artifact với dấu thời gian của file nguồn mới nhất. Nếu nguồn mới hơn thì artifact là rác, phải dựng lại rồi mới được nhìn. Điều này đặc biệt quan trọng khi có agent chạy song song, vì file có thể đổi giữa lúc mình render và lúc mình nhìn.",
+   "files": [
+    "output/github_trending_tuan_qua_3phut.mp4"
+   ]
+  },
+  {
+   "id": 47,
+   "name": "do-phep-do-truoc-khi-tin-phep-do",
+   "prompt": "Soat skill tim cho trung lap de tinh gon.",
+   "expected_output": "Ket luan phai dua tren phep do da duoc kiem chinh no.",
+   "status": "FAIL rồi mới PASS — 09/09/2026. Tôi tự đo trùng lặp rồi kết luận với chủ dự án rằng \"skill không có nhiều mỡ để cắt\". KẾT LUẬN ĐÓ SAI, và sai vì PHÉP ĐO chứ không vì dữ liệu. Script của tôi có hai dòng lọc: bỏ khối code, và bỏ mọi dòng bắt đầu bằng dấu gạch đứng, tức bỏ TOÀN BỘ BẢNG. Mà trùng lặp nằm chủ yếu trong bảng. Tôi đã loại đúng chỗ có vấn đề rồi kết luận là không có vấn đề. Lỗi thứ hai: tôi so CẢ FILE với CẢ FILE, trong khi trùng lặp nằm ở từng KHỐI. Hai file trùng nhau một khối 99 phần trăm vẫn chỉ ra 7,5 phần trăm khi tính trên toàn file. SỰ THẬT đo lại theo khối: flow-core mục 1.6 nằm trong flow-tools 99,2 phần trăm, mục 1.7 là 99,6 phần trăm. Chuỗi nguyên văn 'Width 1344px' và 'MODNet (People, Fast)' có ở cả hai file. TIÊU CHÍ MỚI: khi một phép đo cho kết quả sạch bất ngờ, hãy nghi phép đo trước khi mừng. Và luôn so ở cấp KHỐI, vì so cả file làm loãng mất.",
+   "files": [
+    "references/flow-core.md",
+    "references/flow-tools.md"
+   ]
+  },
+  {
+   "id": 48,
+   "name": "chay-cap-doi-chung-de-do-san-nhieu",
+   "prompt": "Do do tuong dong giua hai khoi van ban.",
+   "expected_output": "Con so tuong dong phai co san nhieu di kem moi doc duoc.",
+   "status": "PASS (bài học phương pháp) — 09/09/2026. Một agent soát độc lập làm được điều tôi không làm: trước khi tin bất kỳ con số tương đồng nào, họ chạy các cặp khối CHẮC CHẮN KHÔNG LIÊN QUAN làm ĐƯỜNG ĐỐI CHỨNG để đo sàn nhiễu. Tôi tự chạy lại với ba cặp đối chứng của riêng mình và xác nhận. KẾT QUẢ: phép đo túi từ có sàn nhiễu 35 tới 45 phần trăm, vì hai mục cùng nói về video thì dùng chung rất nhiều từ dù nội dung khác hẳn. Nghĩa là con số 94 phần trăm mà tôi từng đưa ra phần lớn là nhiễu. Ngược lại, phép đo cụm 8 từ liên tiếp cho 0,0 phần trăm trên CẢ BA cặp đối chứng, tức nó gần như không nhiễu. HỆ QUẢ ĐỔI KẾT LUẬN: khối flow-core mục 9 và 10 đạt 94 phần trăm ở túi từ nhưng chỉ 4,0 phần trăm ở cụm 8 từ, tức bằng chứng yếu hơn nhiều so với khối 1.6 đạt 21,1 phần trăm. Chính agent cũng phải RÚT LẠI một đề xuất của mình khi đo lại bằng thước sạch. MỖI THƯỚC CÓ ĐIỂM MÙ RIÊNG, không thước nào đủ một mình: túi từ có sàn nhiễu tới 48 phần trăm; cụm 8 từ mù với bảng số vì bảng chỉ còn vài từ sau khi lọc từ ngắn; so dòng nguyên văn mù với văn xuôi vì văn xuôi ngắt dòng ở độ rộng khác nhau. Chỗ nào một thước báo cao mà thước kia báo 0 thì phải đi kiểm tay. TIÊU CHÍ MỚI cho mọi phép đo tương đồng: bắt buộc chạy ít nhất ba cặp đối chứng không liên quan, ghi sàn nhiễu ra bên cạnh kết quả, và chỉ kết luận dựa trên thước có sàn nhiễu gần 0.",
+   "files": [
+    "evals/evals.json"
+   ]
+  },
+  {
+   "id": 49,
+   "name": "nguong-silencedetect-khong-tach-duoc-cau",
+   "prompt": "Lay moc cau tu file loi doc de can hinh theo tieng.",
+   "expected_output": "Moc phai tuong ung voi cau, khong phai voi cho ngat hoi.",
+   "status": "FAIL rồi mới PASS — 09/09/2026. Một reviewer đo được rằng hình lệch pha với lời đọc tới 8,5 giây: khối chữ '13 năm' hiện SAU khi người dẫn đã nói xong câu đó 8,5 giây, còn cảnh liệt kê cho cả bốn tên hiện hết trong 1,65 giây trong khi lời đọc rải suốt 6 giây. Nguyên nhân gốc: mọi mốc thời gian là hằng số đoán tay theo tỉ lệ số từ, dù dự án đã có sẵn công cụ đo file tiếng nhưng chỉ dùng nó để lấy TỔNG độ dài cảnh. TÔI SỬA SAI LẦN ĐẦU: dùng `silencedetect -35dB d=0.30` coi mỗi quãng có tiếng là một nhịp. Reviewer đo lại và chứng minh cách đó TÁCH THỪA 39 phần trăm, 43 chỗ trên 31 ranh giới câu thật, cảnh top3 bị tách 8 chỗ trên 4 ranh giới. Và KHÔNG NGƯỠNG NÀO CỨU ĐƯỢC: nới lên 0,45 thì thiếu 42 phần trăm, lên 0,60 thì gần như không phát hiện gì. Lý do nguyên tắc: khoảng lặng ở dấu phẩy và ở cuối câu chồng lấn nhau về độ dài, ở cảnh skills cả bảy khoảng lặng nằm trong dải rộng 0,18 giây. Một ngưỡng toàn cục không tách được hai phân bố chồng nhau. Heuristic 'lấy N trừ 1 khoảng lặng dài nhất' cũng hỏng, sai cả 4 trên 4 ở một cảnh, chỗ tệ nhất lệch 5,94 giây. CÁCH ĐÚNG, đã cài và đo: đảo ngược vai trò. Kịch bản quyết định CÓ BAO NHIÊU ranh giới và chúng nằm khoảng đâu, theo tỉ lệ âm tiết tích luỹ; khoảng lặng chỉ dùng để HÚT mốc đó về cho chính xác, trong cửa sổ 1,2 giây; không có khoảng lặng trong cửa sổ thì BÁO chứ không đoán. KIỂM CHỨNG CHÉO: hai bản cài đặt độc lập cho 31 ranh giới, 2 chỗ báo không chắc, lệch trung vị 0,35 và 0,38 giây, lớn nhất 1,10 và 1,15 giây. CẢNH BÁO ĐI KÈM: mốc neo theo âm tiết giả định tốc độ đọc không đổi, mà giả định đó SAI ở câu đọc số. Nên các con số trên là mức độ hai phương pháp ĐỒNG Ý với nhau, không phải sai số so với sự thật.",
+   "files": [
+    "references/other-routes.md"
    ]
   }
  ]

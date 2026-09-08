@@ -127,9 +127,9 @@ không thấy mục này.
 |---|---|---|---|
 | Tỉ lệ sinh video | Chỉ 16:9 và 9:16 | Mọi tỉ lệ khác phải đi qua Video Resizer | `[live]` đọc DOM, khớp doc Veo |
 | Tỉ lệ sinh ảnh | 16:9, 4:3, 1:1, 3:4, 9:16 | Ảnh rộng đường hơn video | `[live]` đọc Agent settings |
-| Thời lượng một clip | Omni cho chọn 4, 6, 8, 10 giây. Veo: bảng chính thức ghi cả ba bản đều có 4, 6, 8 giây, nhưng phép đo trên giao diện tài khoản Pro lại không thấy ô chọn. Mâu thuẫn CHƯA giải quyết, xem `flow-core.md` mục 4.0b | Đừng khẳng định chắc chắn bên nào, hãy tự mở panel đọc | `[doc]` và `[live]` nói ngược nhau |
-| Độ phân giải video | Sinh ra ở 360p hoặc 720p, rồi nâng lên 1080p hoặc 4K | Skill từng nói Flow chỉ có 720p, điều đó đã lạc hậu từ 27/08/2026 | `[doc]` blog Google Labs 27/08/2026 |
-| Nối dài clip trong Flow | Chỉ Veo 3.1 Lite, mỗi lần 8 giây. Fast và Quality không có. Omni ghi "Coming Soon" | Muốn cảnh liền mạch dài thì phải chọn Lite ngay từ đầu | `[doc]` bảng năng lực chính thức |
+| Thời lượng và độ phân giải của Veo | **Trong Flow không chọn được**, cả ba bản Veo. Panel chỉ có Mode, Video type, Aspect ratio, model, số lượng. Chỉ Omni mới có hai ô này | Muốn đổi thời lượng Veo thì phải đi API. Bảng năng lực nói Veo hỗ trợ 4, 6, 8 giây là nói ở cấp model, không phải cấp giao diện | `[live 08/09/2026]` thử đủ ba model Veo, cả hai Video type, có và không có ảnh Start |
+| Độ phân giải video | Sinh ra ở 360p hoặc 720p, rồi nâng lên 1080p hoặc 4K trong menu `Download media` | Skill từng nói Flow chỉ có 720p, điều đó đã lạc hậu từ 27/08/2026. Trên Pro, `1080p Upscaled` dùng được còn `4K Upscaled` bị khoá kèm link nâng gói | `[live 08/09/2026]` đọc menu tải về |
+| Nối dài clip trong Flow | Chỉ Veo 3.1 Lite, mỗi lần 8 giây. Nút tên `Extend (Veo 3.1 - Lite)` và **giấu trong menu của nút `Add clip` ở timeline** | Muốn cảnh liền mạch dài thì phải chọn Lite ngay từ đầu. Trên clip do Omni sinh, nút này luôn bị vô hiệu hoá | `[doc]` bảng năng lực, `[live 08/09/2026]` xác nhận nhãn và vị trí |
 | Nối dài clip qua API | Veo tới 148 giây đầu ra, Omni tới 40 giây | API mạnh hơn giao diện rất nhiều ở điểm này | `[doc]` trang Veo và Omni trên ai.google.dev |
 | Sửa video | Chỉ Gemini Omni Flash, video tối đa 10 giây, tốn 40 credit | Sinh mới thường rẻ hơn sửa | `[doc]` bảng năng lực và bảng giá chính thức |
 | Video dài quá 10 giây | Không sửa được trong Flow | Giao diện có nút `Trim Automatically` | `[b22]` nguyên văn trên màn hình |
@@ -226,7 +226,8 @@ không đủ**.
 | Một cảnh liền mạch dài hơn 10 giây | Trong Flow thì chỉ Veo 3.1 Lite nối dài được, mỗi lần 8 giây. Cần dài hơn nữa thì đi API, Veo cho tới 148 giây và Omni cho tới 40 giây |
 | Sửa một video đã có, giữ phần lớn khung hình | Gemini Omni Flash, video tối đa 10 giây, tốn 40 credit. Nếu chỉ đổi nội dung thì sinh lại rẻ hơn |
 | Cần bản 4K | Nâng độ phân giải, tốn 50 credit và chỉ gói Ultra. Gói Pro dừng ở 1080p |
-| Nối hai ảnh thành một chuyển động | Frames to Video, nạp cả khung đầu và khung cuối. Cả bốn model đều làm được |
+| Nối hai ảnh thành một chuyển động | Frames to Video. Trên giao diện hai nút tên là `Start` và `End`, không phải First và Last |
+| Đăng video lên YouTube | Nếu video làm hoàn toàn trong Flow thì chuột phải lên nó rồi chọn `Publish to YouTube`, có sẵn trong Flow. Script `upload_video.py` của skill KHÔNG tải lên, nó chỉ sinh file metadata |
 
 ## Trước khi nói đã xong
 

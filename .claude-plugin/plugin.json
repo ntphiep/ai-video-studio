@@ -1,7 +1,7 @@
 {
   "name": "ai-video-studio",
   "displayName": "AI Video Studio",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Sản xuất video AI toàn diện qua bốn đường: Google Flow, Gemini API, Gemini Notebook, và Claude Code kết hợp Remotion. Mọi con số trong tài liệu đều đo được, kèm nhãn mức bằng chứng.",
   "author": {
     "name": "ntphiep",

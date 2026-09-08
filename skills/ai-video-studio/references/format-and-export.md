@@ -67,6 +67,45 @@ Xuất xong Video Resizer ghi ngược vào gallery project, không tải thẳn
 Mọi lần resize đều giữ 24fps, giữ audio AAC 48kHz stereo, giữ đúng thời
 lượng gốc, và tool vừa đổi tỉ lệ vừa **upscale** (nguồn 640 lên 1280).
 
+## 3b. Menu tải về: nội dung thật, đo ngày 08/09/2026 `[live]`
+
+Nâng độ phân giải KHÔNG phải một nút riêng trên giao diện. Nó nằm trong menu
+`Download media` ở thanh trên khi mở một clip. Nội dung menu đổi theo độ phân giải gốc của
+clip đó.
+
+Clip gốc **360p**, menu hiện đúng ba mục nguyên văn:
+
+| Mục | Trạng thái |
+|---|---|
+| `270p Animated GIF` | dùng được |
+| `360p Original size` | dùng được |
+| `720p Upscaled` | dùng được |
+
+Clip gốc **720p**, menu hiện đúng bốn mục nguyên văn:
+
+| Mục | Trạng thái trên gói Pro |
+|---|---|
+| `270p Animated GIF` | dùng được |
+| `720p Original size` | dùng được |
+| `1080p Upscaled` | **dùng được** |
+| `4K Upscaled` | **bị khoá**, kèm link `Upgrade` trỏ sang trang nâng gói |
+
+Ba điều rút ra.
+
+Thứ nhất, đây là bằng chứng trực tiếp rằng **Flow đã xuất được 1080p ngay trên gói Pro**, và
+4K tồn tại nhưng khoá cho tới khi lên Ultra. Trước ngày 08/09/2026 tài liệu này nói Flow chỉ
+có 720p, điều đó đã sai kể từ bản cập nhật 27/08/2026.
+
+Thứ hai, có một mức không ai nhắc tới trong tài liệu chính thức: **`270p Animated GIF`**.
+Đây là đường xuất ảnh động sẵn có, tiện cho ảnh xem trước và cho nội dung nhúng vào bài viết.
+
+Thứ ba, **menu này KHÔNG hiện giá credit**. Bảng giá chính thức nói nâng lên 1080p miễn phí
+cho người trả phí và nâng lên 4K tốn 50 credit chỉ dành cho Ultra, nhưng giao diện không lặp
+lại con số đó ở chỗ bấm. Riêng mức `720p Upscaled` từ nguồn 360p thì bảng giá chính thức
+không có dòng nào tương ứng, nên giá của nó `[chưa xác minh]`. Phép đo ngày 08/09/2026 cố ý
+KHÔNG bấm vào các mục này để tránh kích hoạt một hành động tốn credit hoặc không đảo ngược
+được, nên phần giá vẫn là khoảng trống bằng chứng.
+
 ## 4. Độ phân giải và thời lượng — chỉ Omni chọn được, ba model Veo thì không
 
 Đọc trực tiếp panel cài đặt prompt (nhãn "Generating will use N credits"

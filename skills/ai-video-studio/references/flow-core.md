@@ -58,6 +58,26 @@ Banner khuyến mãi phụ từng thấy: "Your Google AI plan now comes with 50
 
 Sidebar trái theo thứ tự thấy đầy đủ nhất: **All Media, Images, Videos, Characters, Scenes, Favorites, Uploads, Tools, Trash, Collapse** [b01 t=64s; b06 t=100.7s; b20 t=169s]. Lưu ý quan trọng: mục **Images** và **Videos** KHÔNG xuất hiện ngay từ đầu — chúng chỉ hiện ra trong sidebar sau khi người dùng tạo ra ảnh/video đầu tiên trong project đó [b01 t=29s, t=351.6s; b05 t=144-158s]. Mục **Uploads** cũng chỉ xuất hiện sau khi có ít nhất một lần tải file lên [b05 t=202s]. Một số phiên bản giao diện hiển thị sidebar dạng icon dọc không có nhãn chữ, thứ tự icon: lưới (all), ảnh, phim, hình người (Characters), lịch, dấu cộng lưới (được suy luận là Ingredients) [b16 t=33s, t=68s] — đây có thể là chế độ thu gọn (collapsed) của cùng một sidebar, chưa xác minh chắc chắn liệu có phải phiên bản giao diện khác hay chỉ là trạng thái thu gọn.
 
+**Menu chuột phải trên một ô media, đo ngày 08/09/2026 `[live]`.** Đây là nơi chứa nhiều
+thao tác nhất và trước đây skill chưa từng liệt kê đầy đủ. Các mục nguyên văn theo thứ tự:
+`Favorite`, `Reuse prompt`, `Add to scene`, `Add to prompt`, `Download`, `Copy`, `Rename`,
+`Share`, **`Publish to YouTube`**, `Set project cover`, `Flag output`, `Move to trash`.
+
+Hai điều rút ra.
+
+Thứ nhất, **`Publish to YouTube` là đường đăng tải có sẵn ngay trong Flow**. Điều này quan
+trọng vì script `upload_video.py` của skill chỉ sinh một file metadata JSON và không tải
+lên đâu cả. Với video làm hoàn toàn trong Flow thì đăng thẳng từ menu này nhanh hơn nhiều.
+Chưa xác minh: chưa bấm thử nên chưa biết nó hỏi những trường gì, có chọn được chế độ riêng
+tư hay không, và có đăng lên đúng kênh mong muốn hay không.
+
+Thứ hai, **không có mục `Archive` trong menu này**, dù changelog ngày 29/04/2026 nói chuột
+phải để chuyển một mục vào archive. Sidebar cũng không có mục `Archive`. Đây là mâu thuẫn
+giữa changelog và giao diện hiện tại, chưa dò hết mọi menu nên chưa kết luận là đã bị gỡ.
+
+Menu `More options` trong khung sửa có thêm mục `View all changelogs`, mở changelog ngay
+trong ứng dụng, tiện hơn gõ địa chỉ.
+
 Khi project trống: chữ mờ giữa canvas "Start creating or drop media" [b01 t=154.2s; b16 t=17s; b23 t=132s].
 
 Khung nhập prompt chính (composer) ở cuối màn hình luôn có: placeholder "What do you want to create?"; nút "+" (thêm ảnh/asset) và nút "Agent" ở bên trái; bên phải hiện chip tóm tắt cấu hình hiện tại (ví dụ "Nano Banana Pro · x4" hoặc "Video · 10s · x1"); nút gửi hình mũi tên (→) ngoài cùng [b01, b05, b16, b20 — nhiều mốc].
@@ -326,34 +346,61 @@ bằng Lite hoặc Fast, rồi mới nghĩ tới Quality cho cảnh cần đẹp
 Thứ tư, **Ingredients trên Veo bị khoá cứng ở 8 giây**. Chỉ Omni mới cho chọn thời lượng
 khác khi dùng Ingredients.
 
-### 4.0b Mâu thuẫn chưa giải quyết về ô chọn thời lượng của Veo
+### 4.0b Ô chọn thời lượng của Veo: đã giải quyết, doc và giao diện nói về hai thứ khác nhau
 
-Bảng chính thức ở trên ghi cả ba model Veo 3.1 đều hỗ trợ 4s, 6s và 8s cho Text to Video.
-Nhưng phần đo trực tiếp ở mục 2.2 lại ghi ba model Veo "không chọn được resolution và
-duration riêng", đo trên tài khoản Pro ngày 06/09/2026.
+Bảng chính thức ghi cả ba model Veo 3.1 đều hỗ trợ 4s, 6s và 8s cho Text to Video. Giao
+diện thì không cho chọn gì cả. Cả hai đều đúng, vì chúng mô tả hai tầng khác nhau.
 
-Hai khả năng, chưa biết cái nào đúng.
+**Phép đo quyết định, ngày 08/09/2026 `[live]`.** Đã chọn lần lượt `Veo 3.1 - Lite`,
+`Veo 3.1 - Fast`, `Veo 3.1 - Quality`, thử với cả hai Video type là Frames và Ingredients,
+thử cả khi đã nạp ảnh Start frame và khi để trống. Trong **mọi** trường hợp, panel cài đặt
+của ba model Veo chỉ có: Mode, Video type, Aspect ratio, Select model family, Output count,
+và dòng `Generating will use N credits`. **Không có nhóm `Video resolution` và không có
+nhóm `Video duration`.** Cùng lúc đó, chọn `Omni 1.1 Flash` thì cả hai nhóm hiện đầy đủ,
+gồm 360p với 720p, và 4s với 6s, 8s, 10s.
 
-Một, giao diện Flow không phơi ô chọn thời lượng cho Veo dù model có hỗ trợ ở cấp API. Khi
-đó bảng chính thức mô tả năng lực model, còn phép đo mô tả năng lực giao diện, và cả hai
-đều đúng theo cách riêng.
+Giá đọc được trong cùng phép đo, cấu hình x1 và 16:9: Veo 3.1 Lite `10 credits`, Veo 3.1
+Fast `20 credits`, Veo 3.1 Quality `100 credits`. Khớp bảng giá chính thức.
 
-Hai, phép đo ngày 06/09/2026 đã bỏ sót ô đó, hoặc giao diện đã đổi sau bản cập nhật ngày
-27/08/2026.
+**Kết luận.** Bảng ở mục 4.0 mô tả năng lực của MODEL, đúng ở cấp API. Giao diện Flow trên
+gói Pro không phơi hai ô đó ra cho Veo, nên trong Flow bạn không chọn được. Muốn đổi thời
+lượng hay độ phân giải của Veo thì phải đi đường API, xem `api-guide.md`. Đây không phải
+lỗi tài liệu và cũng không phải lỗi quan sát.
 
-**Chưa được kết luận bên nào sai.** Khi cần dùng, hãy tự mở panel cài đặt, chọn từng model
-Veo, và đọc xem có ô duration hay không, rồi cập nhật lại mục này kèm ngày đo.
+Hai điều còn để ngỏ. Thứ nhất, chưa biết Flow ngầm dùng thời lượng nào cho Veo. Thứ hai,
+chưa thử trên gói Ultra nên chưa biết ô đó có hiện ở hạng cao hơn không.
 
-Đã thử giải quyết ngày 08/09/2026 nhưng KHÔNG xong. Lần đo đó mở panel cài đặt khi model
-đang chọn là Omni 1.1 Flash và đọc được đủ bốn mốc 4s, 6s, 8s, 10s, tất cả đều bấm được
-trên tài khoản Pro. Nhưng phép đo đó **không chuyển sang từng model Veo rồi đọc lại panel**,
-nên nó không nói được gì về Veo. Mâu thuẫn vẫn còn nguyên. Đây chính xác là một bước còn
-thiếu, không phải một câu trả lời.
+Một dữ kiện phụ thu được cùng lần đo: changelog ngày 21/04/2026 giới thiệu hai mốc 4 giây
+và 6 giây như tuỳ chọn thử nghiệm dành cho người dùng Ultra, nhưng tài khoản Pro ngày
+08/09/2026 chọn được cả hai và không bị khoá `[live 08/09/2026]`. Tính năng đã mở rộng ra
+ngoài Ultra, dù không có mục changelog nào ghi lại việc mở rộng đó.
 
-Một dữ kiện phụ thu được cùng lần đo đó: changelog ngày 21/04/2026 giới thiệu hai mốc 4
-giây và 6 giây như tuỳ chọn thử nghiệm dành cho người dùng Ultra, nhưng tài khoản Pro ngày
-08/09/2026 chọn được cả hai và không bị khoá `[live 08/09/2026]`. Nghĩa là tính năng đã mở
-rộng ra ngoài Ultra sau đó, dù không có mục changelog nào ghi lại việc mở rộng.
+### 4.0d Nhãn trên giao diện KHÔNG trùng tên trong tài liệu
+
+Đây là nguyên nhân kinh điển làm người ta đi tìm một nút không tồn tại. Bảng dưới đối
+chiếu tên trong tài liệu với chuỗi hiển thị thật, đo ngày 08/09/2026 `[live]`.
+
+| Tài liệu gọi là | Giao diện hiện chữ | Ở đâu |
+|---|---|---|
+| `Gemini Omni Flash 1.1` | `Omni 1.1 Flash` | Dropdown `Select model family` |
+| `Frames to Video: First` | nút `Start` | Video type `Frames`, mở hộp `Select a frame image` |
+| `Frames to Video: First and last` | nút `Start` cộng nút `End` | Giữa hai nút có nút `Swap first and last frames` |
+| `Extend videos` | `Extend (Veo 3.1 - Lite)` | **Nằm trong menu của nút `Add clip` ở timeline**, không phải nút riêng |
+| `Video to Video editing` | ô `Describe how to edit this video…` | Mở một clip có sẵn để vào chế độ sửa |
+| `Scenebuilder` | `Scenes` | Sidebar của project |
+
+Ba điều đáng nhớ từ bảng này.
+
+Thứ nhất, **`Extend` giấu trong menu `Add clip`**, chỗ không ai nghĩ tới. Nhãn của nó ghi
+thẳng tên model là `Extend (Veo 3.1 - Lite)`, tức giao diện tự nói ra rằng chỉ Lite làm
+được, khớp đúng bảng chính thức. Thử trên bốn clip do Omni sinh thì cả bốn lần nút này đều
+ở trạng thái vô hiệu hoá, đúng như tài liệu nói Omni chưa hỗ trợ.
+
+Thứ hai, **ô sửa video khoá cứng vào Omni**. Nhãn model cạnh ô `Describe how to edit this
+video…` ghi `Omni 1.1 Flash` và bấm vào không mở được dropdown nào để đổi sang model khác.
+
+Thứ ba, tên nội bộ của nút vẫn là first và last dù nhãn hiển thị là Start và End, nên khi
+tự động hoá bằng Playwright thì tìm theo cả hai cách.
 
 ### 4.0c Mâu thuẫn thứ hai: Omni có nhận cả khung đầu lẫn khung cuối không
 

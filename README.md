@@ -58,7 +58,7 @@ skills/ai-video-studio/
 │   ├── changelog.md              dòng thời gian chính thức của Google Flow
 │   └── content-playbook.md       chọn dạng nội dung và ước chi phí
 ├── scripts/                      9 script Python cho đường API
-└── evals/evals.json              41 bản ghi kiểm thử, giữ cả những lần từng sai
+└── evals/evals.json              43 bản ghi kiểm thử, giữ cả những lần từng sai
 ```
 
 ## Cách đọc nhãn bằng chứng
@@ -94,7 +94,7 @@ mục mới nhất. Vì vậy skill đọc bốn nguồn song song, liệt kê �
 
 ## Bộ eval
 
-41 bản ghi, trong đó mười ba bản mang trạng thái `FAIL rồi mới PASS`. Chữ FAIL được
+43 bản ghi, trong đó mười bốn bản mang trạng thái `FAIL rồi mới PASS`. Chữ FAIL được
 giữ nguyên có chủ đích, để không xoá dấu vết một bản ghi từng sai. Hai nguyên tắc
 cho mọi eval về script. Thứ nhất, parse được cú pháp **không phải** bằng chứng,
 phải chạy thật và kiểm file đầu ra. Thứ hai, một agent báo PASS cũng **không phải**

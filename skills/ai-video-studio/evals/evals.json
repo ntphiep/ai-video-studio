@@ -1,6 +1,6 @@
 {
  "skill_name": "ai-video-studio",
- "notes": "Bộ eval của skill ai-video-studio. Cập nhật 08/09/2026: 41 eval. Eval mang trạng thái FAIL rồi mới PASS được giữ nguyên chữ FAIL để không xoá dấu vết một bản ghi PASS từng sai. Hai nguyên tắc cứng cho mọi eval về script. Thứ nhất, parse được cú pháp KHÔNG phải bằng chứng, phải chạy thật và kiểm file đầu ra. Thứ hai, một agent báo PASS cũng KHÔNG phải bằng chứng: eval 38 là trường hợp bài kiểm của agent khớp với code chứ không khớp với tài liệu, nên nó không bao giờ chạm vào nhánh hỏng, và lỗi chỉ lộ ra khi người khác tự viết bài kiểm độc lập.",
+ "notes": "Bộ eval của skill ai-video-studio. Cập nhật 08/09/2026: 43 eval. Eval mang trạng thái FAIL rồi mới PASS được giữ nguyên chữ FAIL để không xoá dấu vết một bản ghi PASS từng sai. Hai nguyên tắc cứng cho mọi eval về script. Thứ nhất, parse được cú pháp KHÔNG phải bằng chứng, phải chạy thật và kiểm file đầu ra. Thứ hai, một agent báo PASS cũng KHÔNG phải bằng chứng: eval 38 là trường hợp bài kiểm của agent khớp với code chứ không khớp với tài liệu, nên nó không bao giờ chạm vào nhánh hỏng, và lỗi chỉ lộ ra khi người khác tự viết bài kiểm độc lập.",
  "evals": [
   {
    "id": 1,
@@ -426,6 +426,29 @@
    "files": [
     "SKILL.md",
     "scripts/doctor.py"
+   ]
+  },
+  {
+   "id": 42,
+   "name": "veo-khong-co-o-chon-thoi-luong-tren-giao-dien",
+   "prompt": "Veo co chon duoc thoi luong trong Flow khong?",
+   "expected_output": "Tra loi dung, phan biet duoc nang luc model va nang luc giao dien.",
+   "status": "PASS (đóng một mâu thuẫn) — 08/09/2026. Bảng năng lực chính thức nói cả ba Veo 3.1 hỗ trợ 4, 6, 8 giây. Phép đo giao diện nói không có ô nào. LẦN ĐO ĐẦU KHÔNG ĐỦ: chỉ mở panel khi model đang là Omni rồi kết luận, tức không hề chạm vào Veo. Tôi từ chối coi đó là câu trả lời và yêu cầu đo lại đúng trường hợp. LẦN ĐO THỨ HAI: chọn lần lượt cả ba model Veo, thử cả hai Video type Frames và Ingredients, thử cả khi đã nạp ảnh Start frame và khi để trống. Mọi trường hợp panel chỉ có Mode, Video type, Aspect ratio, Select model family, Output count, và dòng credit. Không có Video resolution, không có Video duration. Chọn Omni thì cả hai nhóm hiện đủ. Giá đọc được khớp bảng chính thức: Lite 10, Fast 20, Quality 100. KẾT LUẬN: hai nguồn nói về hai TẦNG khác nhau, bảng nói năng lực model ở cấp API, giao diện Pro không phơi ô đó ra. Cả hai đều đúng. Muốn đổi thời lượng Veo thì phải đi API. BÀI HỌC: một phép đo không chạm vào đúng trường hợp thì không phải bằng chứng cho trường hợp đó, dù nó có vẻ liên quan.",
+   "files": [
+    "references/flow-core.md",
+    "SKILL.md"
+   ]
+  },
+  {
+   "id": 43,
+   "name": "flow-co-san-publish-to-youtube-ma-skill-khong-biet",
+   "prompt": "Dang video Flow len YouTube bang cach nao?",
+   "expected_output": "Chi ra duong ngan nhat, khong bat nguoi dung lam thu cong.",
+   "status": "FAIL rồi mới PASS — 08/09/2026. Skill có script upload_video.py mà chính docstring thừa nhận nó KHÔNG tải lên đâu cả, chỉ sinh một file metadata JSON, và bảo người dùng tự đăng. Trong khi đó menu chuột phải trên một ô media trong Flow có sẵn mục `Publish to YouTube`. Skill không hề biết. Phát hiện ngoài danh sách yêu cầu, khi agent đọc toàn bộ menu ngữ cảnh: `Favorite`, `Reuse prompt`, `Add to scene`, `Add to prompt`, `Download`, `Copy`, `Rename`, `Share`, `Publish to YouTube`, `Set project cover`, `Flag output`, `Move to trash`. ĐÃ SỬA: ghi menu đầy đủ vào flow-core.md mục 1.2, thêm một dòng kịch bản vào SKILL.md, và sửa docstring của upload_video.py để nó chỉ đường sang Flow khi video làm hoàn toàn trong Flow. CHƯA XÁC MINH: chưa bấm thử nên chưa biết nó hỏi trường gì và đăng lên kênh nào. BÀI HỌC: liệt kê ĐẦY ĐỦ mọi menu ngữ cảnh của một công cụ, đừng chỉ đọc những nút nằm sẵn trên màn hình.",
+   "files": [
+    "references/flow-core.md",
+    "SKILL.md",
+    "scripts/upload_video.py"
    ]
   }
  ]

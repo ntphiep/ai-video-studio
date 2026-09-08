@@ -2,8 +2,12 @@
 
 Tên file là di sản cũ. Script này CHỈ sinh ra một file JSON gồm tiêu đề, mô tả,
 tag và thông tin file, để bước đăng về sau dùng lại. Nó không gọi Google Drive,
-không gọi YouTube, không gọi dịch vụ nào khác. Việc đăng thật do người dùng làm,
-và skill này không mô tả bước đó.
+không gọi YouTube, không gọi dịch vụ nào khác. Việc đăng thật do người dùng làm.
+
+CÓ MỘT ĐƯỜNG NGẮN HƠN nếu video được làm hoàn toàn trong Google Flow: chuột phải
+lên video trong project rồi chọn `Publish to YouTube`, Flow đăng thẳng lên. Đo
+trực tiếp trên giao diện ngày 08/09/2026, xem references/flow-core.md mục 1.2.
+Chỉ dùng script này khi video được dựng ngoài Flow, ví dụ đường Remotion.
 
 Cách dùng:
   python upload_video.py --title "Video 1" --file final.mp4       --desc "Mô tả" --tags "ai,faceless" --category 22       --meta-out meta.json

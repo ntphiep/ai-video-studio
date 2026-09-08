@@ -10,35 +10,7 @@ Tài liệu này gom từ 49 báo cáo quan sát khung hình, mã b01 đến b49
 
 ### 1.1 Cấu trúc thư mục project
 
-Từ Finder macOS, project "Elly Test" [b26 t=490s]:
-```
-Projects
-├── Projects Elly
-├── Scheduled
-    ├── 2D Animation Video
-    ├── CV-Generate-Sample
-    ├── Demo_Beauty Box_Assistant
-    ├── Elly Test          (đang chọn)
-    │   ├── count_0_to_100000.srt
-    │   ├── generate_sfx.py
-    │   ├── generate_voice_ghost.py
-    │   ├── generate_voice.py
-    │   ├── node_modules
-    │   ├── out
-    │   ├── package-lock.json
-    │   ├── package.json
-    │   ├── public
-    │   ├── remotion.config.js
-    │   ├── src
-    │   └── whisper_result.json
-    ├── Forbidden Thing
-    ├── MONEY IDEA
-    └── Redbull
-```
-Trong thư mục `public` của "Elly Test" [b26 t=499s]: `3M for dental.jpg`, `3M logo.jpeg`, `audio.mp3`, `Dentsply...png`, `Flag_of_Germany.svg.webp`, `Flag_of_the...svg`, `img_nokia_phone.jpg` (447 KB, 2409x3614, độ phân giải 72x72), `ivoclar logo.jpeg`, `KaVo equipment.jpeg`, `kavo logo.jpeg`, `logos`, `Nobel Biocare logo.jpeg`, `nokia_audio.mp3`, `nokia_transcript.json`, `NontechlamAI.png`, `straumann logo.jpeg`, `thiết bị.jpeg`, `vietnam`.
-
-Project "psych-video" [b46 t=575s]: `Projects > Forbidden Thing > psych-video > public` chứa `img_0.png` đến `img_14.png`, `Vid3_merged.mp3`, cùng `node_modules`, `package.json`, `remotion.config.ts`, `script.ts`, `src`, `tsconfig.json`, `Vid3_Audio1.mp3`, `Vid3_Audio2.mp3`.
-
+Mọi project Remotion quan sát được, gồm b08, b09, b25, b26, b39 và b46, đều dùng chung một khuôn: `package.json`, `tsconfig.json`, `remotion.config.ts`, thư mục `src/` chứa `Root.tsx` và `Video.tsx`, thư mục `public/` chứa audio và ảnh. Cây đầy đủ nhất do Claude tự trình bày:
 Project "stick-figure-video" do Claude tự trình bày cấu trúc [b25 t=515s]:
 ```
 stick-figure-video/
@@ -69,9 +41,36 @@ stick-figure-video/
 │       ├── Scene8.tsx  (ANXIETY)
 │       └── Scene9.tsx  (WITHDRAWAL)
 ```
-Panel Progress của Claude liệt kê file skill đã tạo [b25 t=207s]: `Instructions - CLAUDE.md`, `package.json`, `tsconfig.json`, `remotion.config.ts`, `setup.sh`, `DrawPath.tsx`, `DrawCircle.tsx`, `StickFigure.tsx`, `Background.tsx`, `Caption.tsx`, `Scene1.tsx`.
+Ở các project khác, Claude tạo một file cảnh duy nhất rất dài, khoảng 380 tới 440 dòng, rồi sửa `Root.tsx` và xoá file cũ không còn được import [b08, b09].
 
-Ở project khác, Claude tạo `SpiderReactionFull.jsx` (440 dòng theo [b09 t=546s], 429 dòng theo cách ghi ở [b08 t=306s] cho file cùng loại `OctopusReactionFull.jsx`), sửa `Root.tsx`, xóa file cũ `Composition.tsx` vì không còn được import [b09 t=546s]. Ở b08 còn có `AntFarmReaction.jsx` (381 dòng) [b08 t=306-501s].
+### 1.8 Tốc độ đọc của TTS KHÔNG phải hằng số
+
+Đo ngày 08/09/2026 trên bảy đoạn lời đọc tiếng Việt do Gemini TTS sinh, giọng Charon, đo
+bằng `ffprobe` `[live]`.
+
+| Cảnh | Tốc độ đo được |
+|---|---|
+| Cảnh ít chữ số nhất | 225,2 từ mỗi phút |
+| Trung bình cả kịch bản | 194,1 từ mỗi phút |
+| Cảnh nhiều chữ số nhất | 172,6 từ mỗi phút |
+
+Chênh lệch giữa hai cảnh trong CÙNG một kịch bản và CÙNG một giọng lên tới 30 phần trăm.
+Nguyên nhân là số viết bằng chữ tiếng Việt đọc rất chậm: cụm "mười bốn nghìn chín trăm bốn
+mươi sáu" chỉ đếm là năm từ nhưng mất thời gian như một câu ngắn.
+
+Con số 219 từ mỗi phút ghi trong eval 34 vì vậy không phải hằng số của TTS mà là trung bình
+của đúng kịch bản hôm đó. **Đừng dùng bất kỳ con số wpm nào để đặt độ dài cảnh.**
+
+Quy trình đúng, đã chạy thật:
+
+1. Viết kịch bản, ước số từ theo biên độ 170 tới 225 từ mỗi phút chứ không theo một con số.
+2. Sinh TOÀN BỘ lời đọc trước khi dựng hình.
+3. Chạy `ffprobe` đo từng file, rồi sinh ra file độ dài cho Remotion từ số đo đó cộng một
+   khoảng lặng đặt riêng cho từng cảnh.
+4. Remotion đọc file độ dài đó thay vì viết tay số khung.
+
+Làm theo thứ tự này thì hình không thể ngắn hơn tiếng, vì hình lấy số đo từ tiếng. Đây
+chính là cách chặn lỗi lời đọc bị cắt cụt trong im lặng mà không ai hay.
 
 ### 1.2 Lệnh terminal (chép nguyên văn)
 
@@ -137,30 +136,113 @@ Chi tiết b46 (Video 2) [b46 t=24-714s]: không dùng CapCut/Premiere kéo th�
 - [b46 t=714s] Lỗi caption lệch giọng đọc từ phút thứ 3 trở đi. Claude tự nhận lỗi: "Audio có đọc cả tiêu đề ở đầu... nhưng tôi bỏ sót phần này khi tính timestamps", rồi fix lại toàn bộ.
 - [b08 t=213s] Cạm bẫy quan trọng: dán ảnh trực tiếp vào khung chat Claude Code không tạo ra file thật trên máy. Claude tự báo: "không có tool nào để trích xuất chúng thành file thật trên máy (đã kiểm tra /tmp, Downloads, cache paste, không có file nào khớp)".
 
-### 1.6 Con số thật (không làm tròn)
+### 1.6 Con số thật, không làm tròn
 
-- [b26 t=622s] Render lần 1: `out/nokia_collapse.mp4 (3.7MB, 15s, 1920x1080)`.
-- [b26 t=638s] Render sau khi thêm texture giấy: `out/nokia_collapse.mp4 (11.4MB, 15s, 1920x1080)`.
-- [b26 t=354s] Audio test dài 14.3 giây.
-- [b08 t=216s] Canvas video mẫu đầu: 1080x1920 (dọc). [b08 t=269s] Canvas chốt cho video chính: 1920x1080 (ngang).
-- [b08 t=306-322s] Video hoàn chỉnh 9 cảnh, mỗi cảnh 3.8-8.4 giây, không cảnh nào vượt 10 giây, tổng thời lượng khoảng 50 giây.
-- [b08 t=437s] Video thứ hai: audio dài 40 giây; clip kiến từ Pexels dài 20 giây, mã hóa lại 1920x1080 ở 30fps.
-- [b09 t=546s] Hai ảnh gốc 2823x3764 và 3376x4220 pixel, downscale còn khoảng 1920px chiều ngang.
-- [b25 t=0s] Composition StickFigureVideo: độ phân giải 1280x720, 30 FPS, Duration 00:42:27; FPS thực tế dao động 29.9-31.7.
-- [b25 t=490s] Bộ skill nhân vật: 5 hat x 5 outfit x 6 emotion = 150 tổ hợp.
-- [b39 t=356.9s] Composition MicrosoftLayoffs: canvas 1920x1080, 450 khung hình = 15 giây.
-- [b39 t=372.8s] File xuất: `out/microsoft-layoffs.mov (1920x1080, 15s, ProRes 4444, ~274MB)`, pixel format cuối `yuva444p12le`.
-- [b46 t=490-501s] Skill psych-video: font Montserrat 300 (body) + 600 (current word); caption 1 dòng giữa dưới 64px, word-by-word sync; Ken Burns zoom 1.0 đến 1.08 kèm pan nhẹ; scrim gradient đen 38%; fade 10 frame đầu/cuối mỗi segment.
-- [b46 t=615s] Video test: 1080x1920, 59 giây. [b46 t=705s] Composition PsychVideo: 1920x1080, 30 FPS, thời lượng 07:23.11.
-- [b46 t=645s] Vid2_Audio1.mp3 dài 331.65s, Vid2_Audio2.mp3 dài 132.52s, Total merged 464.17s.
+- [b39 t=372.8s] `out/microsoft-layoffs.mov`, 1920x1080, 15 giây, ProRes 4444, khoảng 274MB, pixel format cuối là **`yuva444p12le`** chứ không phải `yuva444p10le` như cờ yêu cầu.
+- [b08 t=306-322s] Video 9 cảnh, mỗi cảnh **3,8 tới 8,4 giây**, không cảnh nào vượt 10 giây, tổng khoảng 50 giây. Đây là mẫu nhịp cảnh đáng tham khảo.
+- [b46 t=490-501s] Skill psych-video: caption một dòng 64px hiện theo từng từ, Ken Burns phóng từ 1,0 tới 1,08, lớp phủ tối 38 phần trăm, mờ dần 10 khung đầu và cuối mỗi đoạn.
 
 ### 1.7 Ghi chú độ tin cậy
 
-- [b26 t=16s, chỉ nghe nói, không thấy hình minh hoạ cụ thể]: lời dẫn nói không cần model AI đắt tiền, không cần RunwayML/Kaiber/Pika, chỉ cần Claude Code + Remotion.
-- [b26 t=59s, chỉ nghe nói]: tác giả nói mất khoảng 1 tiếng để ra bản vừa ý sau nhiều vòng chỉnh sửa.
-- [b16, b17, chỉ liên quan gián tiếp]: hai file này ghi nhận bước cuối cùng của pipeline "Claude → Google Flow → Claude → Google Flow → Claude → Google Flow → Remotion" có dùng Remotion để ghép clip Flow thành video hoàn chỉnh, nhưng không có chi tiết kỹ thuật cụ thể về code/lệnh Remotion trong hai file này.
+Phần lớn nội dung mục 1 đến từ việc nhìn màn hình. Riêng con số "mất khoảng một tiếng để ra bản vừa ý" chỉ là lời tác giả nói trong video, không có hình minh hoạ, nên ở mức thấp nhất [b26 t=59s].
 
 ---
+
+### 1.9 Làm sao video Remotion không trông như một bản trình chiếu
+
+Đây là nhận xét thật của chủ dự án ngày 09/09/2026 về một video đã dựng xong:
+"trông nó vẫn hơi giống một slide trình chiếu hơn là một video thực thụ". Nhận
+xét đó đúng, và chẩn đoán quan trọng hơn cách chữa.
+
+**Ba dấu hiệu của một bản trình chiếu**, chẩn đoán được bằng máy chứ không bằng
+cảm tính:
+
+1. Khung hình ĐỨNG YÊN giữa các lần phần tử hiện ra. Đo được: trích hai khung
+   cách nhau một giây rồi so pixel. Nếu gần như không đổi, đó là slide.
+2. Cắt cảnh là thay thế tức thời. Phim thì hai cảnh luôn có khoảnh khắc cùng tồn
+   tại.
+3. Mọi cảnh dùng cùng một bố cục căn giữa, đối xứng. Bố cục tĩnh đối xứng chính
+   là đặc trưng thị giác của slide.
+
+**Bốn thay đổi đã áp dụng thật và đo được kết quả:**
+
+| Thay đổi | Cách làm | Kết quả đo |
+|---|---|---|
+| Máy quay không bao giờ đứng yên | Một `interpolate` chạy suốt từ khung đầu tới khung cuối của cảnh, KHÔNG chỉ ở đoạn vào và ra | Đoạn trước đây bất động nay có 2,4% pixel đổi rõ rệt mỗi giây |
+| Mỗi cảnh một hướng khác nhau | Bảng tra cứu chuyển động theo tên cảnh, xen kẽ đẩy vào, lùi ra, lia ngang, trượt chéo | Tránh việc chính sự lặp lại lại thành máy móc |
+| Chuyển cảnh chồng lấn | `TransitionSeries` với 12 khung giao nhau ở mạch 30 hình, tức 0,4 giây | Hết cắt phụt |
+| Hạt nhiễu đổi ba khung một lần | Bộ lọc `feTurbulence` với `seed` đổi theo `Math.floor(frame / 3)` | Không tồn tại hai khung hình nào giống hệt nhau |
+
+**Hai cái giá phải trả, đã đo:**
+
+Thứ nhất, hạt nhiễu làm **dung lượng file tăng gấp ba**, từ 11 MB lên 35 MB cho
+cùng một video, vì nhiễu ngẫu nhiên là thứ khó nén nhất. Thời gian render cũng
+tăng đáng kể vì bộ lọc SVG phải tính lại mỗi ba khung.
+
+Thứ hai, **phóng to thì nội dung ở rìa bị cắt**. Phải kiểm bằng cách render khung
+đầu và khung cuối mọi cảnh rồi dò pixel màu nội dung ở dải tám pixel sát rìa.
+Đừng tin phép tính, hãy tin ảnh.
+
+**Một ngoại lệ có lý do:** cảnh chứa bảng dữ liệu dày phải gần như đứng yên, vì
+người xem cần ĐỌC. Bảng hai mươi dòng mà trôi thì không đọc nổi.
+
+**Khoảng trống bằng chứng:** không có con số chuẩn ngành nào cho việc phóng to
+bao nhiêu phần trăm mỗi giây là hợp lý. Đây là khoảng trống thật trong nguồn
+công khai. Mốc tham chiếu duy nhất tìm được là hiệu ứng Ken Burns thông thường
+chạy 1 tới 2 phần trăm mỗi giây. Biên độ 0,25 phần trăm mỗi giây đang dùng là
+lựa chọn, không phải chuẩn.
+
+### 1.10 Ép Gemini TTS phát âm tên tiếng Anh trong câu tiếng Việt
+
+Vấn đề: lời đọc tiếng Việt có xen tên như `archify`, `ponytail`, `Matt Pocock`
+thì model đọc chúng theo âm tiếng Việt, nghe không chuyên nghiệp.
+
+Gemini TTS **không nhận SSML**, nhưng nó nhận chỉ dẫn bằng ngôn ngữ tự nhiên đặt
+TRƯỚC văn bản, và chỉ dẫn đó không bị đọc thành tiếng.
+
+Mẫu đã dùng thật:
+
+```
+Đọc bằng giọng một người dẫn chương trình công nghệ, tự tin và gọn gàng.
+Nhịp NHANH và dứt khoát, không kéo dài, nhưng vẫn ngắt nghỉ đúng chỗ.
+QUY TẮC PHÁT ÂM BẮT BUỘC: mọi tên riêng và thuật ngữ tiếng Anh phải phát âm
+đúng như người bản ngữ tiếng Anh đọc, TUYỆT ĐỐI không đọc theo âm tiếng Việt.
+Cụ thể gồm: <liệt kê từng từ>. Các chữ viết tắt đọc rời từng chữ cái.
+
+Văn bản cần đọc:
+<văn bản>
+```
+
+**Kết quả đo được**, phép thử đối chứng trên cùng một câu:
+
+| Từ | Không chỉ dẫn | Có chỉ dẫn |
+|---|---|---|
+| archify | Việt hoá | tiếng Anh |
+| ponytail | Việt hoá | tiếng Anh |
+| skills | tiếng Anh | tiếng Anh |
+| Matt Pocock | Việt hoá | Việt hoá |
+
+Tên người là chỗ khó nhất và chỉ dẫn không chắc ăn.
+
+Chỉ dẫn về nhịp cũng có tác dụng mạnh: trên cùng bộ kịch bản, tốc độ đo được
+tăng từ **194,1 lên 231,6 từ mỗi phút**, làm tổng lời đọc giảm từ 160,9 xuống
+136,3 giây, tức ngắn hơn 24,6 giây mà không cắt một chữ nào.
+
+**CẢNH BÁO VỀ CÁCH ĐO, quan trọng hơn cả kết quả.** Cách kiểm là đưa audio cho
+Gemini nghe rồi chấm từng từ. Nhưng khi hỏi **cùng một file bốn lần**, nó chấm
+`archify` là "tiếng Anh" hai lần và "Việt hoá" hai lần. Công cụ đo tự mâu thuẫn
+50 phần trăm ở các ca ranh giới. Vì vậy:
+
+- Chỉ tin kết quả khi nó nhất quán qua nhiều lần hỏi. Từ `ponytail` đúng 4 trên
+  4 lần thì tin được.
+- Với ca ranh giới, KHÔNG được tuyên bố đã sửa xong. Phải nói thẳng là công cụ
+  đo không đủ tin cậy và nhờ người nghe thật quyết định.
+- Bài học chung: trước khi tin một phép đo, hãy đo chính phép đo đó bằng cách
+  chạy lại nhiều lần trên cùng một đầu vào.
+
+Đường chắc chắn hơn nếu cần đúng tuyệt đối: sinh riêng các từ tiếng Anh bằng
+giọng tiếng Anh rồi ghép bằng `ffmpeg`. Đổi lại có rủi ro nghe thấy mối nối giữa
+câu. Chưa thử.
 
 ## 2. NotebookLM (nay đổi tên thành Gemini Notebook)
 
@@ -240,16 +322,9 @@ Quy trình tạo notebook mới và thêm nguồn [tổng hợp b41 t=31-138s, b
 
 Tích hợp Gemini và NotebookLM [b18]: mở notebook từ sidebar "Notebooks" trong Gemini app, chat trong đó, bấm link "NotebookLM" góc trên phải để mở sang notebooklm.google.com cùng notebook, thấy nguồn "Chats from Gemini (1)" tự động đồng bộ làm 1 source [b18 t=537-566s]. Tính năng "Move Chat" cho phép chuyển một đoạn chat vào notebook có sẵn qua modal "Select a notebook to move this chat into" [b18 t=610s].
 
-### 2.7 Con số thật khác
+### 2.7 Một giới hạn đáng nhớ
 
-- Video Cinematic "NotebookLM: Biến Nghiên Cứu Thành Video" dài 04:33 [b36 t=255.7s, t=309.6s].
-- File mp4 tải về "Free_vs.mp4": 69.2 MB, 5:53, 1280x720, 30fps [b34 t=228-238s].
-- Audio Overview mẫu "OpenClaw and the aut...": dài 24:01 [b34 t=686s]. Video Overview cùng chủ đề: 05:46 [b34 t=699.8s].
-- Video "Free vs. Paid: The $15 Google Education AI Dilemma": 05:53 [b34 t=194.2s, t=557.1s]. Video Short "How to Read a River for Gold": 01:21 [b45 t=167s]. Video "The Science of the Perfect Chocolate...": 04:44 [b45 t=209s]. Video "Cam Nang Leo Nui Trong Nha" (14 sources): 07:06 [b45 t=308s]. Video Short "How to Position Your Arms in Climbing" (10 sources): 01:08 [b45 t=389s]. Video "World Cup History and Broken Records" (10 sources): 01:19 [b45 t=415s]. Video "How Ocean Waves Travel Without Moving Water" (11 sources): 01:13 [b45 t=530s].
-- Flashcards: tổng 65 thẻ trong 1 bộ [b34 t=352.6s].
-- File PDF xuất từ notebook: 147 KB, trạng thái "Done" [b38 t=345.3s].
-- Giới hạn ký tự Custom persona trong Configure Chat: 10.000 ký tự (ví dụ đã nhập "2207/10000") [b38 t=405.3-435.3s].
-- Không quan sát thấy bảng giá cụ thể (Pro/Ultra) trên màn hình; chỉ có nhãn "PRO"/"CHUYÊN NGHIỆP" cạnh tên notebook và nút "Upgrade" nhưng không hiện giá cụ thể khi bấm [b40, t=208s]. [chỉ nghe nói, không thấy]: phụ đề nói gói Pro mở khoá video cinematic/short, tài khoản miễn phí bị giới hạn tính năng nâng cao, không có bảng so sánh giá Free/Pro nào được chụp lại [b45].
+Ô Custom persona trong Configure Chat giới hạn **10.000 ký tự**, đo trực tiếp trên bộ đếm hiện "2207/10000" [b38 t=405-435s]. Các con số thời lượng và dung lượng file quan sát được đã lược, vì chúng phụ thuộc từng notebook nên không suy ra được gì cho lần dùng khác.
 
 ---
 
@@ -321,13 +396,6 @@ Dubbing Workflow: bảng "Workflow Projects (N)", nút "+ New Project", modal ch
 - [b11, t=908-936s, chỉ nghe nói, không thấy minh hoạ cụ thể]: tác giả nhận xét VMEG "chất lượng khá là ok", "tạo được cùng một lúc nhiều phiên bản dịch", "có thể detect được speaker khác nhau", nhưng "dịch thì nó cũng tương đối là sắt" (nghe không rõ).
 - Popup QR "Join our WhatsApp community for instant support and updates" xuất hiện lặp lại rất nhiều lần khắp giao diện dashboard.
 
-### 3.6 Con số thật khác
-
-- File gốc: 31.6 MB theo hộp thoại mở file [b10 t=77.1s]; Editor timeline ghi 30.17 MB [b10 t=95.4-364.9s] (chênh lệch nhỏ, cách đo khác nhau) [suy luận].
-- Thời lượng video test: 8 giây (00:00:00 / 00:00:08) [b10 t=298-453s].
-- Kênh YouTube "Non-tech làm AI": 2.73 nghìn người đăng ký, 34 video [b10 t=91-96s, t=453s].
-- b11: thời lượng video xem trước VMEG "00:00:46", timeline kéo dài đến "00:06:00" dù nội dung chỉ 46 giây [suy luận, có thể khung timeline kéo rộng hơn nội dung, b11 t=886s]. Thời lượng video gốc trong hộp thoại YouTube Studio: "21:06" [b11 t=877s].
-
 ---
 
 ## 4. OpenMusic AI và Suno để làm MV ca nhạc
@@ -387,12 +455,6 @@ Lưu ý mâu thuẫn tiêu đề [suy luận, dựa trên nhiều frame]: dù ti
 - Trên Suno, tìm bằng bộ lọc 3 điều kiện trả về "No songs found" kèm nút "Reset filters" [b30 t=307s].
 - Trong Trình chỉnh sửa MIDI AI, hộp thoại chọn file nhập hiện toàn file ảnh PNG không liên quan MIDI/audio, có thể do duyệt nhầm thư mục "Tài liệu" chứ không phải bug công cụ [suy luận, b30].
 
-### 4.6 Con số thật khác
-
-- Bài "Golden" (mẫu demo AI Vocal Remover) dài 01:40; bài "Tự Ơm Lấy Em" dài 4:05.
-- Video mỗi shot khi xem trước dài khoảng 6 giây (00:00/00:06).
-- Clip TikTok cá nhân "Elly Huyền" dùng làm nguồn cảm hứng: 44.8K tim, 48 bình luận, 885 lượt lưu, 912,2K lượt xem, 1079 lượt chia sẻ [b30 t=616-698s].
-
 ---
 
 ## 5. Các công cụ khác (Google AI Studio, Google Vids, Canva, Pomelli, Stitch)
@@ -427,10 +489,6 @@ Lỗi/giới hạn liên quan tới ảnh:
 
 Tính năng riêng của Canva đáng chú ý cho làm ảnh/video: "Magic Layers" tách ảnh AI (ví dụ infographic từ NotebookLM) thành các lớp chỉnh sửa được, popup "Hình ảnh được tách thành các lớp có thể chỉnh sửa" [b45 t=382s, t=412s]. Panel "Chỉnh sửa hình ảnh" gồm 8 công cụ, trong đó có "Hình ảnh thành video" và "Xóa nền" [b44 t=1103s].
 
-### 5.4 Pomelli — chỉ phần liên quan tới ảnh
+### 5.4 Pomelli và Stitch, cả hai đều ngoài phạm vi
 
-Pomelli (nhãn "EXPERIMENT" [b32 t=214s]) chủ yếu là công cụ chiến lược thương hiệu và web, ngoài phạm vi skill này; phần duy nhất liên quan tới làm ảnh là bước "Generate a Product Photoshoot" [b32 t=35s], sinh ảnh sản phẩm theo danh mục General (Studio, In Use, Contextual, Flatlay), Beauty, giới hạn chọn tối đa 4 template ảnh mỗi lần ("4/4 selected") [b32 t=336s].
-
-### 5.5 Stitch — ngoài phạm vi skill
-
-Stitch là công cụ thiết kế app/web (tạo giao diện, xuất code Figma/HTML), không sinh ảnh hay video, nên ngoài phạm vi skill này [b28 t=0s, t=64-75.5s].
+Pomelli mang nhãn EXPERIMENT và chủ yếu là công cụ chiến lược thương hiệu, còn Stitch là công cụ thiết kế giao diện app và web xuất code. Cả hai không sinh video nên không thuộc phạm vi skill này [b32].

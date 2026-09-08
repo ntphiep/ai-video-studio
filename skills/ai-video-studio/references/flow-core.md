@@ -106,56 +106,14 @@ Dialog **"Edit Voice"** (khi tạo mới hoặc chỉnh sửa): trường **Base
 
 Xem chi tiết đầy đủ về danh sách giọng, giới hạn, và hạn chế ngôn ngữ ở Mục 5.
 
-### 1.5 Tools — bản đồ đầy đủ
+### 1.5 Tools
 
-Trang vào: `flow.google.com/project/<id>/tools`, tiêu đề trang "Explore tools". Số tab đo được `[live]` ngày 06/09/2026 là **đúng BA TAB: My Tools, Community, Templates** [live, danh mục tool đọc từ DOM ngày 06/09/2026 — tài liệu cũ ghi 4 tab là sai]. Một số video hướng dẫn cũ hơn chỉ thấy **hai tab "Discover" / "My Tools"** [b06 t=54.1s; b20 t=169s; b21 t=1213s; b35 t=22s] — khả năng cao đây là giao diện TRƯỚC ngày 21/07/2026, vì changelog chính thức ghi "The Tools Community Gallery is Live!" đúng ngày đó [live, changelog.md]; tức tab Community là tính năng MỚI được thêm, và "Discover" nhiều khả năng chính là tiền thân của "Templates" (tên gọi khác thời điểm khác nhau). Đây là suy luận có căn cứ từ changelog, không phải bằng chứng trực tiếp về việc đổi tên.
+Trang `flow.google.com/project/<id>/tools`, tiêu đề "Explore tools", đúng **ba tab:
+My Tools, Community, Templates** `[live 06/09/2026]`. Video cũ hơn chỉ thấy hai tab
+Discover và My Tools.
 
-Banner đầu trang (mọi thời điểm): *"Build all the tools you can imagine. An idea and a description are all it takes to make whatever tool you need."* kèm nút "Create Tool" [b01, b06, b21, b35].
-
-Danh mục tool đầy đủ (34 tool tab Templates, 28 tool tab Community) nằm ở `flow-tools.md` mục 1, không lặp lại ở đây.
-
-**Tab My Tools**: chứa hai loại thẻ — tool cộng đồng đã "Remix" (bấm "Remix tool" trên bất kỳ tool nào để sao chép về của mình rồi tùy biến) và tool tự tạo bằng "Create Tool". Có phần con **"My creations"** chỉ liệt kê tool do chính người dùng dựng, ví dụ quan sát được: Nature Documentary Maker, (Gia dụng) Tạo video..., Story Animator, (Gia dụng) Tải ảnh sản phẩm..., Fashion Motion Lab [b21]; ở một tài khoản khác: Style Portrait, Claymation Studio [b02, b35].
-
-### 1.6 Đường dẫn thao tác chi tiết từng tool đã có bằng chứng thao tác thật
-
-**Storyboard Studio**: Tools > (Discover/Templates) > "Storyboard Studio". Modal chào "Welcome to Story Studio" có dropdown chọn style (mặc định "Realistic", đổi được sang "Claymation"...), liệt kê 3 bước "1. Workshop your script", "2. Create your cast and locations", "3. Visualize your storyboard", nút "Get Started" [b06 t=61.5s]. Bên trong có đúng 3 tab **"1. Script"**, **"2. Assets"**, **"3. Storyboard"**, mỗi tab có dropdown style riêng.
-- Tab Script: khung chat "Ask Gemini" để định vai trò đạo diễn, Gemini trả về bảng kịch bản với cột Cảnh/Thời lượng/Hình ảnh/Âm thanh/Voiceover; ràng buộc cứng lời bình mỗi cảnh 25-35 từ để khớp 10 giây/cảnh [b06 t=7.2s, t=26.7s].
-- Tab Assets: nút "Autofill Characters" mở 3 lựa chọn **Add Character | Autofill descriptions | Autocreate images** [b06 t=71-73s]. Upload nhiều ảnh tham khảo cùng lúc (ví dụ 10 file, 7.3 MB) [b06 t=75.4s].
-- Tab Storyboard: mỗi Scene có "Scene 01", tên cảnh, số khung ("6 frames"), nút "Autofill Scene", ảnh được đặt tên riêng từng khung, tiến trình "Generating images X/10" kèm nút "Stop" [b06 t=79.9-88s].
-Cạm bẫy quan sát trực tiếp: phải yêu cầu lặp lại "tạo ảnh storyboard số X nốt nhé" cho từng cảnh — công cụ không tự sinh hết tất cả cảnh cùng lúc dù đã có kịch bản đầy đủ [b06 mục 7]. Khi điều khiển bằng agent ngoài (Claude in Chrome), phải ép rõ chế độ "Image" nếu muốn ra MỘT ảnh storyboard dạng lưới — nếu không, Flow/agent có thể tự tách thành nhiều clip video riêng theo từng panel [b16 t=463-501s].
-
-**Image Editor**: panel trái **"Layers (0)"** với "+ Add Image" và "Add text layer"; panel phải **"Canvas dimensions"** (Preset "Default", **Width 1344px, Height 768px** mặc định, nút "Reset defaults") và **"AI settings"** (Image Model mặc định **Nano Banana 2**; Background Removal: **"MODNet (People, Fast)"**); thanh công cụ dưới ảnh: **Refine, Inpaint, Outpaint, Cutout, Crop**; nút **"Save to gallery"** [b01 t=635-654s; xác nhận lại kích thước mặc định ở b35 t=326s]. Chèn ảnh có sẵn qua hộp thoại "Media Grid" (lọc theo tháng, "Search assets", "Recent", tab Images/Uploads, "Upload media"). Text layer chọn font trong Google Sans, Inter, Bebas Neue, Montserrat, Playfair Display, Cinzel (danh sách còn cuộn thêm); có tính năng "depth": toggle Enable depth, thanh trượt "Depth offset", toggle "Flatten layer depth", nút "Save depth composite". Mỗi layer ảnh có thanh trượt Opacity/Brightness/Contrast/Saturation/Blur. Quy trình thật: thêm 2 layer ảnh, dùng Refine để hòa trộn thành một ảnh, rồi Inpaint để chèn chữ tiêu đề đè lên [b35 t=396-453s].
-
-**Mockup**: URL dạng `labs.google/fx/tools/flow/project/<id>/tool/<id>`. Header có nút "Remix tool", icon tim/ghim/chia sẻ/cờ, nút "Done". Panel trái "Canvas media" + nút "Import Image". **12 loại mockup dựng sẵn**: laptop, phone, tv, shirt, hat, bag, pin, book, poster, window, billboard, mural, cộng thêm **"+ custom mockup"** để nhập mô tả tự do [live, danh mục tool đọc từ DOM ngày 06/09/2026; b24 t=699.7s; b35 t=235s]. Toggle **Fast/Pro** và nút "RESET SESSION". "Import Image" mở hộp thoại **Media Grid** giống các tool khác. Chọn "custom mockup" mở ô nhập text placeholder "Describe your mockup..." — **chấp nhận tiếng Việt trực tiếp**, ví dụ đã dùng thật: "hiển thị trang web của tôi bên trong chiếc máy tính xách tay nó được đặt trên một chiếc bàn làm việc hiện đại..." ra kết quả đúng yêu cầu [b24 t=719.4-746.2s].
-
-**Converge**: tiêu đề "CONVERGE". Panel trái "HISTORY STACK" + nút "CLEAR ALL". Công cụ vẽ: Sketch, Annotate, Fill, Dropper. Panel phải "AI SETTINGS" (model mặc định **Nano Banana Pro**), "GUIDING PROMPT", "RENDER OUTPUT SETTINGS" (Style, Aspect Ratio "Auto (Match Input)"), toggle "CONTEXTUAL BACKGROUND" (mặc định tắt), nút "GENERATE RENDER" [b35 t=629s]. Quy trình BẮT BUỘC 2 bước: (1) vẽ phác thảo rồi bấm "Generate Vector Layer" để ra vector sạch, chọn 1 trong các biến thể; (2) chỉ sau đó mới bấm "Generate Render" để ra ảnh render 3D. Bỏ qua bước vector sẽ không render được [b35 t=629-664s].
-
-**Shot Explorer**: panel trái "SELECT IMAGE". Ba nhóm nút: "Perspective" (overhead/side/back), "Pan" (left/right/up/down), "Zoom" (zoom in/zoom out/extreme detail/surprise me), nút RESET, toggle Fast/Pro [b35 t=601s]. Mỗi lần bấm một nút sẽ tạo biến thể góc máy mới, không cần viết prompt.
-
-**Simple Sketch**: khung vẽ tay ("DRAW HERE") + công cụ vẽ (chọn, bút chì, hình vuông, hình tròn, chữ T, bảng màu, 2 cỡ nét, undo/redo, upload ảnh, xóa) + ô nhập prompt bên dưới; kết quả hiện bên phải kèm nhãn "FAST" [b01 t=603-618s; b35 t=139-220s]. Có thể vẽ và viết prompt tiếng Việt cùng lúc; tinh chỉnh thêm bằng cách khoanh vùng đỏ trên ảnh kết quả rồi nhập mô tả bổ sung.
-
-**Video Resizer** (đo `[live]` bằng ffprobe, xem chi tiết đầy đủ ở Mục 8).
-
-Các tool có tên trong catalog nhưng CHƯA có video nào ghi lại thao tác chi tiết bên trong (chỉ có mô tả một dòng): Scene Explorer, Mask Magic, Grid Architect, Whisk, Style Writer, Type Overlays (Type Overlays chỉ xác nhận được KHÔNG tốn credit qua đo `[live]`, không có ảnh giao diện chi tiết) [chưa xác minh].
-
-### 1.7 Create Tool — tự tạo công cụ bằng ngôn ngữ tự nhiên
-
-Vào từ Tools > Explore Tools > nút "Create Tool", hoặc My Tools > "Create New". Trang khởi tạo luôn ghi: *"Start building any creative tool you can dream by describing it below."* kèm 3 gợi ý mẫu đổi theo phiên bản (đã thấy "Image Filter, Time Stretcher, Voice Over" [b01] và "Style Morph, Image Filter, Voice Over" [b35]) [b01 t=749-770.6s; b35 t=664s].
-
-Người dùng mô tả tool mong muốn bằng tiếng Việt tự nhiên. Flow tự sinh một công cụ hoàn chỉnh với: model mặc định (thường Nano Banana Pro), tỉ lệ khung hình mặc định (ví dụ 1:1), một prompt phong cách mặc định do AI tự viết. Giao diện tool vừa tạo: 2 tab "Tool"/"Edit"; bên trong Tool có 2 tab con "Preview"/"Code"; panel phải cố định tên **"Tool Builder"** — khung chat để tiếp tục chỉnh sửa tool bằng lời [b01 t=772-811.6s; b02 t=826.6s].
-
-Năm ví dụ thật đã quan sát:
-1. **Claymation Studio** — biến ảnh bất kỳ sang phong cách claymation. Prompt gốc: *"...xây dựng một công cụ cho phép tôi tải lên bất kỳ hình ảnh nào, và công cụ đó sẽ tự động chuyển nó sang phong cách hoạt hình đất sét"*. AI tự chọn Nano Banana Pro làm mặc định "vì khả năng hiểu phong cách nghệ thuật rất tốt", gợi ý Imagen 4 nếu cần chi tiết cao hơn, tỉ lệ 1:1, tự viết prompt phong cách mặc định [b01 t=772.7s; b02 t=826.6-852.9s].
-2. **Story Animator** — kịch bản tóm tắt biến thành phim hoạt hình nhiều cảnh. Giao diện 3 cột: "1. KỊCH BẢN & LỜI BÌNH", "2. THIẾT LẬP NHÂN VẬT" (dropdown Phong cách: Điện ảnh/Tả thực/Anime/Hoạt hình 3D/Tranh sơn dầu/Màu nước; chọn khung Ngang/Dọc; tối đa 2 ảnh nhân vật), nút "Phân tích & Tạo Phim". Công cụ TỰ CHIA kịch bản thành tối đa 6 cảnh, mỗi cảnh có mô tả hình ảnh chi tiết do AI viết, rồi bấm "Bắt đầu quay" từng cảnh để tạo video 8 giây/cảnh, tiến độ "x/6 cảnh hoàn tất" [b21 t=1026-1078s].
-3. **Style Portrait** — trả về 3 phong cách chân dung từ 1 ảnh (Pixar Style, Biếm họa, Sách tô màu), nút "Bắt đầu chuyển đổi", nút "Tải về tất cả". Code sinh ra dùng React/TSX với thư viện nội bộ "flow-sdk" [b35 t=664-759s].
-4. **Outfit & Env Switcher** (đổi tên nhiều lần: Outfit Change → Outfit Persona → Outfit & Env Switcher) — 3 cột OPTION 1/2/3 mỗi cột có Outfit/Environment/nút RANDOM/nút "TAO BIEN THE", nút "BATCH GENERATE ALL", thanh trượt "Độ tương đồng khuôn mặt" (90%), Aspect Ratio 4 nút (9:16/3:4/1:1/16:9), mỗi ảnh có nút DOWNLOAD và xóa riêng [b35 t=986-1034s].
-5. **Fashion Motion Lab** — tải ảnh người mẫu + trang phục vào 2 ô riêng, tool tự tạo bộ ảnh 8 góc/tư thế của người mẫu mặc đúng trang phục đó [b21 t=1250s].
-
-Nguyên tắc chung: mô tả ban đầu càng cụ thể (số lượng đầu ra, tên style, ràng buộc giữ nhận dạng) thì tool tạo ra càng sát ý; chỉnh sửa nên đi qua nhiều lượt chat nhỏ (đổi tên, thêm nút, đổi bố cục) thay vì một prompt lớn; mọi tool tự tạo đều mang cảnh báo cố định cuối trang về khả năng tốn credit.
-
-### 1.8 Cảnh báo chuẩn trên mọi tool
-
-Chân trang khi mở bất kỳ tool nào (kể cả tool của Google) luôn ghi nguyên văn: *"Google Flow can make mistakes, so double check it. This Tool may consume credits."* — với tool cộng đồng (remix) còn thêm: *"This app was created by another person and may be inaccurate or unsafe. Report unsafe content."* [live, tự đọc chân trang trên DOM ngày 06/09/2026; xác nhận lại ở b21 và b35 t=326s]. Điều này bác bỏ khẳng định cũ "tool không tốn credit" — phát biểu đúng là Flow chỉ CẢNH BÁO tool có thể tốn credit, không cam kết miễn phí tuyệt đối. Đã đo được cụ thể: **Video Resizer** và **Type Overlays** xử lý phía client, KHÔNG trừ credit qua nhiều lần đo `[live]`; mọi tool khác gọi lại model sinh ảnh/video nền (Nano Banana, Imagen 4, Omni Flash...) nên phải giả định CÓ khả năng tốn credit cho tới khi tự đo được con số cụ thể.
+Danh mục đầy đủ 34 tool tab Templates, đường thao tác chi tiết từng tool, tính năng
+Create Tool, và câu hỏi tool nào tốn credit: xem `flow-tools.md`. Không lặp lại ở đây.
 
 ---
 
@@ -574,58 +532,19 @@ Quy trình thao tác thật đã ghi lại: mở asset picker (tab All/Images/Ch
 
 ---
 
-## 8. Giới hạn cứng (mọi con số đọc trực tiếp trên màn hình)
+## 8. Giới hạn cứng
 
-- Sample Dialogue (Voice): giới hạn **120 ký tự** (0/120) [b01, b06, b12, b17, b23].
-- Video dài hơn **10 giây** KHÔNG chỉnh sửa được trong editor (phải Trim Automatically) [b22; live].
-- Tỉ lệ khung hình Video: chỉ **2 lựa chọn** (16:9, 9:16). Tỉ lệ khung hình Ảnh: **5 lựa chọn** (16:9, 4:3, 1:1, 3:4, 9:16).
-- Số lượng sinh mỗi lần: tối đa **x4** (1x/x2/x3/x4), như nhau cho ảnh và video.
-- Thời lượng video: **4 mức cố định** 4s/6s/8s/10s. API cấp thấp chỉ nhận chuỗi "4"/"6"/"8" và BẮT BUỘC "8" khi dùng extension/reference images/1080p/4K [live, doc Veo đọc bằng HTML thô ngày 06/09/2026].
-- Video Resizer (đo `[live]` bằng ffprobe): Output Ratio đúng **6 mục** — 9:16, 16:9, 1:1, 4:5, 21:9, Custom. Custom: input Width/Height min=1, max=**4096**, giá trị mặc định 1080×1080, nhưng đầu ra CHỈ LẤY TỈ LỆ, chiều rộng đầu ra LUÔN LUÔN chuẩn hóa về **1280px** bất kể số pixel đã gõ hay độ rộng nguồn (đã thử với nguồn 640px và 1280px, đều ra 1280 chiều rộng). [chưa xác minh] với nguồn rộng 1920px hoặc 1080p — nếu quy luật giữ nguyên, đưa clip 1080p vào tool này sẽ bị HẠ xuống 1280px, tức MẤT độ phân giải.
-- Free tier: **50 credit/ngày**, không cộng dồn. AI Plus **+200/tháng**. AI Pro **+1.000/tháng**. AI Ultra 100 USD **+10.000/tháng**. AI Ultra 200 USD **+25.000/tháng** [live].
-- Upscale 1080p: miễn phí cho subscriber. Upscale 4K: **50 credit**, chỉ Ultra.
-- Canvas Image Editor mặc định: **Width 1344px, Height 768px** (Preset "Default") [b01, b35].
-- Background Removal (Image Editor): **"MODNet (People, Fast)"**.
-- Font Text Layer: Google Sans, Inter, Bebas Neue, Montserrat, Playfair Display, Cinzel (danh sách còn cuộn thêm, chưa xác nhận hết).
-- 12 loại Mockup dựng sẵn (laptop, phone, tv, shirt, hat, bag, pin, book, poster, window, billboard, mural) + custom.
-- Explore Tools: đúng **3 tab** (My Tools, Community, Templates) tính đến 06/09/2026 [live].
-- Voice không sinh hết nếu lời thoại quá dài: giới hạn thực tế tối đa khoảng **10 giây**, trung bình **2 dòng thoại**.
+Bảng tra nhanh nằm ở `SKILL.md` mục "Giới hạn cứng cần biết ngay". Chi tiết từng
+con số và nguồn nằm ở các mục 2 tới 5 của chính file này. Riêng Video Resizer xem
+`format-and-export.md` mục 2 và 3.
 
 ---
 
-## 9. Lỗi thường gặp và cách xử lý
+## 9. Lỗi và cạm bẫy
 
-Bảng 3 lỗi phổ biến nhất, lấy từ slide tổng kết chính thức trong video hướng dẫn (khớp lại độc lập giữa ghi chép xem frame và b22):
+Toàn bộ bảng lỗi và danh sách cạm bẫy nằm ở `troubleshooting.md`, không lặp lại ở
+đây. Ba mục chưa có ở file đó nên giữ lại tại chỗ:
 
-| Lỗi | Cách xử lý (ghi trên slide/UI) |
-|---|---|
-| Clip bị blur hoặc nhân vật biến dạng | Đơn giản hóa mô tả, tách ra thành nhiều clip ngắn hơn thay vì nhồi tất cả vào một cảnh |
-| Voice không được gen hết khi tạo | Cắt xén câu thoại tối đa 10 giây, trung bình 2 dòng mỗi câu lệnh |
-| Audio lệch không khớp với hình | Chia lời thoại thành đoạn ngắn hơn, generate từng đoạn thay vì một lần dài |
-
-Các lỗi kỹ thuật khác quan sát trực tiếp trên màn hình (không phải slide tổng kết mà là sự cố thật xảy ra khi thao tác):
-
-- **"Chunk upload failed: 400"** khi build custom Tool ("Story Animator") — Agent tự báo đã sửa bằng "Strict Data Validation", "FFmpeg Result Checking", "Memory Management" [b21 t=1026s].
-- Prompt không submit được ở lần bấm đầu tiên khi một agent ngoài (Claude in Chrome) thao tác tự động — phải chụp lại màn hình xác định đúng nút gửi (mũi tên "→") rồi thử lại mới thành công [b17 t=623s].
-- Asset ảnh tham chiếu "biến mất" khỏi asset picker giữa một phiên làm việc dài — không tìm lại được dù lọc theo tab Images/Characters hay tìm theo tên, phải dùng ảnh thay thế [b17 t=653s].
-- Đổi Base Voice/mô tả giọng mới nhưng nhãn preview vẫn hiển thị mô tả CŨ kế thừa từ giọng gốc, không tự cập nhật [b23 t=340s].
-- Nhân vật trong video kết quả có thể khác với Character đã lưu công phu trước đó — cần luôn kiểm tra lại (xem Mục 5.6) [b23].
-- Tỉ lệ khung hình đã chọn trong bảng cấu hình (ví dụ "16:9") có thể hiển thị SAI trên icon của trang editor sau khi video đã tạo xong (hiện "9:16" dù chọn 16:9) — nghi là do icon mặc định của giao diện editor, chưa chắc phản ánh đúng tỉ lệ thật của file video [b23, chưa xác minh].
-
-Cảnh báo hệ thống toàn site khi tải cao: *"Flow is currently experiencing high demand, affecting video generation. Requests may need to be retried at a later time. AI Credits will be refunded for any failed requests."* — có nghĩa Flow CÓ chính sách hoàn credit cho request thất bại do quá tải [live, danh mục tool đọc từ DOM ngày 06/09/2026].
-
----
-
-## 10. Cạm bẫy
-
-- **Không xuống dòng khi gõ prompt.** Nếu prompt bị xuống dòng (Enter), Flow hiểu thành NHIỀU lệnh riêng biệt và sinh dư thừa nhiều ảnh/video ngoài ý muốn — luôn viết prompt thành một đoạn liền mạch. Người dẫn của video `mCnR9j-Qk9Y` nhấn mạnh cạm bẫy này hai lần, ở b16 và b17, mà b16 với b17 là hai phần của CÙNG một video. Vậy đây là lời của một người, chưa có video độc lập nào khác xác nhận và nhóm cũng chưa tự thử `[chưa xác minh độc lập]`. Vẫn nên viết prompt liền mạch vì chi phí tuân thủ bằng không.
-- **Giọng tiếng Việt bị "lơ lớ".** Mọi voice có sẵn trong Flow đều là giọng gốc nước ngoài đọc tiếng Việt — chính Agent xác nhận bằng chữ trên màn hình đây là hạn chế kỹ thuật thật, không phải lỗi dùng sai. Giải pháp: tạo video không lồng tiếng, lồng tiếng riêng bằng công cụ TTS tiếng Việt chuyên dụng rồi ghép ngoài Flow (xem Mục 5.4).
-- **Yêu cầu "storyboard" có thể ra nhầm thành nhiều video** nếu không ép rõ chế độ "Image" — Flow/Agent có xu hướng tự hiểu "storyboard" thành việc tạo NHIỀU clip video riêng theo từng panel thay vì một ảnh lưới tĩnh. Phải yêu cầu tường minh "tạo đúng 1 ảnh" khi cần một storyboard grid [b16 t=463-501s].
-- **Đổi từ chế độ tạo ẢNH sang VIDEO làm giao diện ô nhập thay đổi hoàn toàn** (từ prompt tự do sang cặp nút Start/End), dễ gây nhầm lẫn nếu không để ý kỹ đang ở chế độ nào [b05].
-- **Mỗi cảnh Storyboard cần 2 ảnh** (START và FINISH image prompt), không phải 1 ảnh, để Flow nối thành video mượt mà — nguyên tắc này được nhấn mạnh bằng dòng chữ lớn "2 IMAGE PROMPT PER SCENE" chồng lên giao diện trong video hướng dẫn [b05 t=170.3s].
-- **Quy ước đặt tên asset trong Video Resizer gây hiểu lầm**: tên file trong gallery ghi kích thước DANH NGHĨA người dùng đã gõ, KHÔNG phải kích thước THẬT của file kết quả — chỉ có tỉ lệ là khớp, số pixel trong tên luôn sai, phải tự đo (ffprobe hoặc công cụ tương đương) mới biết chính xác [live, số đo Video Resizer ngày 06/09/2026].
-- **Tool cộng đồng (remix từ người khác) có thể sai và vẫn tốn credit** — luôn có cảnh báo cố định cuối trang: *"This app was created by another person and may be inaccurate or unsafe. Report unsafe content. This app may consume credits."* [b35 t=326s].
-- **Nút "Format" trong tạo Character** tự động dịch và mở rộng mô tả ngắn tiếng Việt thành một prompt tiếng Anh chi tiết (kèm thiết bị máy ảnh, ánh sáng) — tiện lợi nhưng cần đọc lại kỹ nội dung AI tự thêm vào trước khi dùng, vì có thể thêm chi tiết không mong muốn.
-- **Đặt tên tiếng Việt phải giữ đầy đủ dấu** khi dùng cho storyboard/video có chữ hiển thị trên hình, để tránh lỗi hiển thị chữ thiếu dấu — mẹo rút ra từ một chuỗi automation dài dùng Flow qua agent ngoài [b17, Insight 5].
-- **Một chuỗi thao tác tự động hóa (agent ngoài điều khiển Flow) kéo dài nhiều bước có thể khiến ứng dụng điều khiển phải nén ngữ cảnh** ("Compacting conversation") — không phải lỗi của riêng Flow nhưng ảnh hưởng trực tiếp đến độ tin cậy của các workflow tự động hóa nhiều bước liên tiếp [b17 t=634s].
-- **Giao diện Flow thay đổi khá nhanh theo thời gian** — số tab Explore Tools (2 → 3), số model trong dropdown video (4 → 5 tùy hạng tài khoản), số thẻ mẫu Character (4 → 6) đều khác nhau giữa các video quay ở thời điểm khác nhau. Khi áp dụng tài liệu này, nên đối chiếu lại với giao diện thật tại thời điểm sử dụng, đặc biệt là số credit chính xác vì phần này biến động nhiều nhất và ít được đo lại độc lập ngoài `[live]`.
+- **Đổi chế độ tạo ẢNH sang VIDEO làm ô nhập đổi hoàn toàn**, từ prompt tự do sang cặp nút Start và End, dễ nhầm nếu không để ý đang ở chế độ nào [b05].
+- **Nút "Format" khi tạo Character tự dịch và mở rộng** mô tả ngắn tiếng Việt thành prompt tiếng Anh chi tiết kèm máy ảnh và ánh sáng. Đọc lại kỹ phần AI tự thêm trước khi dùng.
+- **Chuỗi tự động hoá dài có thể khiến ứng dụng điều khiển phải nén ngữ cảnh** ("Compacting conversation"), ảnh hưởng độ tin cậy của workflow nhiều bước [b17 t=634s].

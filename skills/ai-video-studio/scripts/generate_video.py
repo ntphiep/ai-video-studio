@@ -9,9 +9,16 @@ Endpoint ĐÚNG cho Veo (đã verify): POST /v1beta/models/<model>:predictLongRu
   - KHÔNG dùng numberOfVideos (model từ chối)
 Schema: {"instances":[{"prompt":"..."}],"parameters":{"aspectRatio":"..."}}
 Luồng: tạo operation (trả "name") -> poll GET /v1beta/<name> cho tới done.
+
+Endpoint cho Omni (đọc doc chính thức 08/09/2026, xem
+references/api-guide.md mục 2): POST /v1beta/interactions, KHÔNG còn dùng
+:generateContent làm đường chủ động nữa vì generateContent không có
+response_format nên không có cách chính thức đặt aspect_ratio/resolution.
 """
 import argparse
+import base64
 import json
+import mimetypes
 import sys
 import time
 import urllib.request
@@ -36,6 +43,12 @@ MODELS = {
 }
 
 
+def is_veo_model(model):
+    """True nếu model là một trong ba Veo 3.1, False nếu là Omni (hoặc model
+    Gemini khác gọi qua đường generateContent thời cũ)."""
+    return model in VEOS.values()
+
+
 def _post(url, payload, key):
     req = urllib.request.Request(
         url,
@@ -54,38 +67,104 @@ def _post(url, payload, key):
         return e.code, body
 
 
-def create_operation(model, prompt, aspect, key, duration=None):
-    """Tạo operation tạo video.
+def _encode_image(path):
+    """Đọc file ảnh local, trả về object inlineData theo đúng shape đã verify
+    qua doc Veo (ai.google.dev/gemini-api/docs/veo, đọc qua WebFetch
+    08/09/2026): {"inlineData": {"mimeType": "...", "data": "<base64>"}}."""
+    mime = mimetypes.guess_type(path)[0] or "image/png"
+    with open(path, "rb") as f:
+        data = base64.b64encode(f.read()).decode("ascii")
+    return {"inlineData": {"mimeType": mime, "data": data}}
+
+
+def build_reference_images(paths):
+    """paths: list đường dẫn ảnh local, tối đa 3 (ràng buộc của Veo).
+
+    Shape mỗi phần tử {"image": {...inlineData...}, "referenceType": "asset"}
+    đọc qua WebFetch doc Veo 08/09/2026, bằng chứng trung bình. Giá trị
+    referenceType khác ngoài "asset" [chưa xác minh].
+    """
+    if len(paths) > 3:
+        raise SystemExit(
+            f"referenceImages tối đa 3 ảnh (bạn truyền {len(paths)})."
+        )
+    return [
+        {"image": _encode_image(p), "referenceType": "asset"} for p in paths
+    ]
+
+
+def validate_veo_constraints(model, duration, resolution, reference_images):
+    """Kiểm tra ràng buộc Veo TRƯỚC khi gọi API, tránh chờ lỗi 400 mới biết.
+
+    Nguồn: references/api-guide.md mục 1, bảng RÀNG BUỘC (đọc doc chính thức
+    08/09/2026).
+    - durationSeconds bắt buộc là 8 khi dùng resolution 1080p/4k hoặc dùng
+      referenceImages.
+    - "4k" không dùng được trên Veo 3.1 Lite.
+
+    Trả về duration đã chuẩn hoá (tự đặt 8 nếu người dùng không truyền gì mà
+    lại dùng một trong các tính năng bắt buộc 8 giây). Nếu người dùng TRUYỀN
+    RÕ một duration khác 8 trong khi dùng các tính năng đó thì báo lỗi và
+    dừng hẳn, không tự ý sửa theo ý mình.
+    """
+    forces_8s = []
+    if resolution in ("1080p", "4k"):
+        forces_8s.append(f"resolution={resolution}")
+    if reference_images:
+        forces_8s.append("referenceImages")
+
+    if forces_8s and duration is not None and duration != 8:
+        raise SystemExit(
+            "Sai tham số Veo: dùng " + ", ".join(forces_8s) +
+            f" thì --duration bắt buộc là 8 (bạn truyền {duration})."
+        )
+    if forces_8s and duration is None:
+        print(f"Lưu ý: {', '.join(forces_8s)} bắt buộc 8 giây, tự đặt --duration=8.")
+        duration = 8
+
+    if resolution == "4k" and model == VEOS["lite"]:
+        raise SystemExit("Sai tham số Veo: Veo 3.1 Lite không hỗ trợ resolution 4k.")
+
+    if resolution == "360p":
+        raise SystemExit(
+            "Sai tham số Veo: 360p chỉ có ở Gemini Omni Flash, ba model Veo không "
+            "có mức này. Muốn nháp rẻ thì dùng --model omni --resolution 360p."
+        )
+
+    return duration
+
+
+def create_operation(model, prompt, aspect, key, duration=None, resolution=None,
+                      reference_images=None):
+    """Tạo operation/interaction tạo video.
 
     - Veo (veo-3.1-*) dùng :predictLongRunning (đã verify: không phải generateVideos).
-    - Gemini Omni chỉ hỗ trợ :generateContent + responseModalities=["VIDEO"]
-      (đã verify live: predictLongRunning → 404). Trả về inline video có thể là
-      generateContent đồng bộ; nếu responseModalities VIDEO thì payload khác.
+    - Gemini Omni dùng POST /v1beta/interactions (xem references/api-guide.md
+      mục 2). KHÔNG còn dùng :generateContent làm đường chủ động, vì
+      generateContent không có response_format nên trước đây phải nhét tỉ lệ
+      khung hình vào giữa câu prompt — đó là lỗi đã sửa ở bản này.
     """
-    if model.startswith("gemini-omni") or model.startswith("gemini-3."):
-        # Omni: generateContent, không long-running
-        url = f"{BASE_URL}/models/{model}:generateContent?key={key}"
-        # Omni không có tham số thời lượng riêng trong schema đã verify.
-        # Cách ĐÃ VERIFY để đặt thời lượng: viết thẳng vào prompt.
+    if not is_veo_model(model):
+        # Omni: Interactions API, đồng bộ, không cần poll.
+        url = f"{BASE_URL}/interactions?key={key}"
+        # Omni không có field thời lượng riêng trong tài liệu đọc được.
+        # Cách ĐÃ VERIFY để đặt thời lượng vẫn là viết thẳng vào input.
         # Bằng chứng: câu "Create one 8-second video ..." cho ra file đo được
         # đúng 8.000000 giây (ffprobe). Xem references/format-and-export.md mục 4.
-        # Omni KHÔNG có tham số aspectRatio lẫn tham số thời lượng trong schema.
-        # Cách duy nhất đã kiểm chứng là ghi thẳng yêu cầu vào prompt. Trước đây
-        # chỉ làm vậy cho thời lượng, còn --aspect thì bị bỏ qua hoàn toàn nên
-        # người dùng chọn 9:16 mà vẫn nhận khung ngang.
-        yeu_cau = []
         if duration:
-            yeu_cau.append(f"one {duration}-second video")
+            text = f"Create one {duration}-second video. {prompt}"
         else:
-            yeu_cau.append("one video")
-        if aspect == "9:16":
-            yeu_cau.append("in vertical 9:16 portrait format")
-        elif aspect == "16:9":
-            yeu_cau.append("in horizontal 16:9 landscape format")
-        text = f"Create {' '.join(yeu_cau)}. {prompt}"
+            text = prompt
+        response_format = {"type": "video", "aspect_ratio": aspect}
+        if resolution:
+            response_format["resolution"] = resolution
         payload = {
-            "contents": [{"parts": [{"text": text}]}],
-            "generationConfig": {"responseModalities": ["VIDEO"]},
+            "model": model,
+            "input": text,
+            "response_format": response_format,
+            # task mặc định text_to_video vì script này chỉ nhận prompt text,
+            # chưa hỗ trợ image_to_video/reference_to_video/edit/extend.
+            "generation_config": {"video_config": {"task": "text_to_video"}},
         }
     else:
         # Veo: predictLongRunning
@@ -104,8 +183,13 @@ def create_operation(model, prompt, aspect, key, duration=None):
                     "Muốn 10 giây thì dùng --model omni."
                 )
             params["durationSeconds"] = str(int(duration))
+        if resolution:
+            params["resolution"] = resolution
+        instance = {"prompt": prompt}
+        if reference_images:
+            instance["referenceImages"] = reference_images
         payload = {
-            "instances": [{"prompt": prompt}],
+            "instances": [instance],
             "parameters": params,
         }
     return _post(url, payload, key)
@@ -181,7 +265,7 @@ def handle_error(status, body):
         print("Lỗi thoáng, retry...")
         return "retry"
     if status == 404:
-        print("Sai endpoint/model. Kiểm tra model id + suffix :predictLongRunning.")
+        print("Sai endpoint/model. Kiểm tra model id + suffix :predictLongRunning / :interactions.")
         return "stop"
     return "stop"
 
@@ -193,6 +277,16 @@ def main():
     ap.add_argument("--aspect", default="16:9", choices=["16:9", "9:16"])
     ap.add_argument("--duration", type=int, default=None, choices=[4, 6, 8, 10],
                     help="Thời lượng giây. Giao diện Flow cho Omni chọn 4/6/8/10. Doc Veo ghi rõ chỉ nhận chuỗi 4, 6, 8, và bắt buộc là 8 khi dùng extension, reference images, 1080p hoặc 4k.")
+    ap.add_argument("--resolution", default=None,
+                    choices=["360p", "720p", "1080p", "4k"],
+                    help="Độ phân giải. Mặc định API là 720p nếu bỏ trống. "
+                         "'360p' CHỈ có ở Omni và là mức nháp rẻ nhất, đúng theo "
+                         "Luật vàng số 1 của SKILL.md. Veo không có 360p. "
+                         "'4k' không dùng được với --model lite (Veo 3.1 Lite).")
+    ap.add_argument("--reference-images", default=None,
+                    help="Chỉ áp dụng cho Veo. Đường dẫn ảnh local, cách nhau "
+                         "bằng dấu phẩy, tối đa 3 ảnh (Ingredients to Video). "
+                         "Bắt buộc --duration 8 khi dùng.")
     ap.add_argument("--out", default="clip.mp4", help="File lưu video")
     ap.add_argument("--max-retry", type=int, default=3)
     args = ap.parse_args()
@@ -201,9 +295,21 @@ def main():
     # alias thân thiện -> model id; nhận cả model id đầy đủ
     model = MODELS.get(args.model, args.model)
 
+    reference_images = None
+    if args.reference_images:
+        if not is_veo_model(model):
+            raise SystemExit("--reference-images chỉ dùng được với Veo, không dùng được với --model omni.")
+        paths = [p.strip() for p in args.reference_images.split(",") if p.strip()]
+        reference_images = build_reference_images(paths)
+
+    duration = args.duration
+    if is_veo_model(model):
+        duration = validate_veo_constraints(model, duration, args.resolution, reference_images)
+
     for attempt in range(args.max_retry + 1):
         status, body = create_operation(model, args.prompt, args.aspect, key,
-                                        duration=args.duration)
+                                        duration=duration, resolution=args.resolution,
+                                        reference_images=reference_images)
         action = handle_error(status, body)
         if action == "stop":
             sys.exit(1)
@@ -212,7 +318,9 @@ def main():
             continue
         # success. Phân nhánh:
         #   - Veo (predictLongRunning): body có "name" → poll tới khi done.
-        #   - Omni (generateContent): body có candidates ngay (đồng bộ) → dùng luôn.
+        #   - Omni (Interactions API): body có "object": "interaction" → đồng bộ, dùng luôn.
+        #   - generateContent kiểu cũ (dự phòng, không còn được gọi chủ động ở
+        #     đây nhưng giữ nhánh phòng khi model khác trả về dạng này): "candidates".
         if body.get("name"):
             name = body["name"]
             print(f"Operation created: {name}")
@@ -221,8 +329,11 @@ def main():
                 handle_error(status, final_body)
                 sys.exit(1)
             final = final_body
+        elif body.get("object") == "interaction":
+            print(f"Omni interactions API trả ngay (đồng bộ), status={body.get('status')}.")
+            final = body
         elif body.get("candidates"):
-            print("Omni generateContent trả ngay (đồng bộ).")
+            print("generateContent kiểu cũ trả ngay (đồng bộ).")
             final = body
         else:
             handle_error(status, body)
@@ -245,11 +356,18 @@ def main():
 
 
 def extract_uri(body):
-    """Tìm uri video/ảnh trong nhiều dạng response.
+    """Tìm uri/base64 video trong nhiều dạng response.
 
-    - predictLongRunning (Veo): body["response"]["video"]["uri"]
-    - generateContent (Omni): candidates[].content.parts[].inlineData.data
-      (base64) — phải lưu dạng khác, nên trả về ("base64", data) hoặc ("uri", u).
+    - predictLongRunning (Veo): body["response"]["video"]["uri"].
+    - Interactions API (Omni, /v1beta/interactions): body["steps"][] có phần
+      tử type == "model_output", bên trong content[] có phần tử type ==
+      "video" với "data" (base64) hoặc "uri". Nguồn:
+      ai.google.dev/gemini-api/docs/omni, đọc qua WebFetch 08/09/2026, bằng
+      chứng trung bình (model tóm tắt), CHƯA tự gọi bằng key thật để xác nhận
+      response thật trên endpoint này khớp y hệt.
+    - generateContent kiểu cũ (candidates[].content.parts[].inlineData): giữ
+      lại làm phương án dự phòng, KHÔNG còn được nhánh Omni trong script này
+      chủ động gọi tới nữa kể từ khi chuyển sang /v1beta/interactions.
     Trả về (kind, value): kind='uri' | 'base64'.
     """
     # 1) dạng predictLongRunning
@@ -259,7 +377,22 @@ def extract_uri(body):
         u = v.get("uri") or v.get("url")
         if u:
             return "uri", u
-    # 2) dạng generateContent (inlineData base64)
+    # 2) dạng Interactions API (Omni mới).
+    # CỐ Ý không lọc theo step["type"] == "model_output". Chuỗi đó lấy từ doc
+    # đọc qua WebFetch chứ chưa ai xác minh bằng key thật, nên nếu response
+    # thật dùng tên khác hoặc không có field type thì script sẽ mất tiền sinh
+    # video xong vẫn thoát lỗi mà không lấy được file. Quét mọi step rồi tìm
+    # phần tử content type == "video" là đủ và không mất mát gì.
+    for step in body.get("steps", []):
+        if not isinstance(step, dict):
+            continue
+        for item in step.get("content", []) or []:
+            if isinstance(item, dict) and item.get("type") == "video":
+                if item.get("uri"):
+                    return "uri", item["uri"]
+                if item.get("data"):
+                    return "base64", item["data"]
+    # 3) dạng generateContent kiểu cũ (dự phòng)
     for cand in body.get("candidates", []):
         for part in cand.get("content", {}).get("parts", []):
             d = part.get("inlineData") or part.get("inline_data", {})

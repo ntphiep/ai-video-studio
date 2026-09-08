@@ -56,6 +56,26 @@ Summary" mà quy trình clone ở mục 2 sẽ dùng. Ngoài lần chạy thật
 trong Style Writer, chỉ có mô tả một dòng trong catalog chính thức của Flow
 (xem Tự soát nguồn).
 
+**Từ khoá chính thức bổ sung cho hai mục Lighting và Camera**, đọc trực tiếp
+bài hướng dẫn Nano Banana của Google Cloud `[doc, đọc 08/09/2026]`
+https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-nano-banana,
+dùng để làm giàu hai mục Lighting và Camera của Khung A ở trên (đã có sẵn từ
+khung 9 mục chung ở `prompt-library.md` mục 0.2, đây chỉ là bổ sung riêng cho
+ánh sáng và chất liệu):
+
+- **Lighting theo studio setup**, nguyên văn: `three-point softbox setup` (dàn
+  đèn đều cho sản phẩm), `Chiaroscuro lighting with harsh, high contrast`
+  (tương phản gắt kiểu hội hoạ cổ điển), `Golden hour backlighting creating
+  long shadows` (ngược sáng giờ vàng, bóng dài).
+- **Máy ảnh/lens tạo cảm giác khác nhau**, nguyên văn: `GoPro` cho cảm giác
+  hành động méo ảnh, `Fujifilm` cho màu sắc chân thực kiểu phim, `disposable
+  camera` cho cảm giác thô mộc hoài cổ có đèn flash; kèm mô tả ống kính
+  `low-angle shot with a shallow depth of field (f/1.8)`.
+- **Chất liệu nên mô tả cụ thể thay vì mô tả chung chung**, ví dụ nguyên văn
+  của Google: thay vì viết `suit jacket` nên viết `navy blue tweed`, thay vì
+  `armor` nên viết `ornate elven plate armor, etched with silver leaf
+  patterns`.
+
 ### Khung B — 7 tiêu chí clone thiết kế
 
 Khung này đến từ việc hỏi Claude "để bắt chước một dạng thiết kế nào đó thì
@@ -347,3 +367,6 @@ mô tả lại từ đầu mỗi lần. Hai nguyên tắc để giữ ổn đị
 - Công thức 5 phần, chuẩn hóa lighting descriptor, "1 biến/lần iterate":
   đã có sẵn ở `prompt-library.md` trong cùng thư mục, dẫn lại nguyên tắc
   chứ không trích lại nguồn gốc (xem mục "Tự soát nguồn" của file đó).
+- Từ khoá Lighting/Camera/chất liệu bổ sung ở Khung A: đọc trực tiếp bằng
+  WebFetch ngày 08/09/2026 https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-nano-banana,
+  chép nguyên văn, gắn nhãn [doc].

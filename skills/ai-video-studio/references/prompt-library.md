@@ -4,6 +4,92 @@ Nguồn: 49 báo cáo quan sát khung hình, mã b01 đến b49 (quan sát bằn
 
 ---
 
+## 0. Công thức chính thức của Google (nguồn có mức bằng chứng cao nhất)
+
+Mục này đọc trực tiếp hai bài hướng dẫn chính thức của Google Cloud, đặt TRƯỚC thư viện prompt rút từ video ở mục 1 vì nguồn chính thức có mức bằng chứng cao hơn nguồn video. Đã tự mở hai URL dưới bằng WebFetch ngày 08/09/2026, không chỉ tin bản tóm tắt có sẵn từ trước.
+
+- Veo 3.1: https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1
+- Nano Banana: https://cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-nano-banana
+
+### 0.1 Công thức năm phần cho Veo 3.1
+
+`[doc, đọc 08/09/2026]` Google đưa ra công thức cấu trúc chính thức:
+
+> **[Cinematography] + [Subject] + [Action] + [Context] + [Style & Ambiance]**
+
+Ví dụ nguyên văn của Google:
+> "Medium shot, a tired corporate worker, rubbing his temples in exhaustion, in front of a bulky 1980s computer in a cluttered office late at night. The scene is lit by the harsh fluorescent overhead lights and the green glow of the monochrome monitor. Retro aesthetic, shot as if on 1980s color film, slightly grainy."
+
+### 0.2 Ba nhóm từ khoá chính thức
+
+`[doc, đọc 08/09/2026]`, chép nguyên văn tiếng Anh:
+
+- **Chuyển động camera:** `dolly shot`, `tracking shot`, `crane shot`, `aerial view`, `slow pan`, `POV shot`.
+- **Bố cục:** `wide shot`, `close-up`, `extreme close-up`, `low angle`, `two-shot`.
+- **Ống kính và lấy nét:** `shallow depth of field`, `wide-angle lens`, `soft focus`, `macro lens`, `deep focus`.
+
+### 0.3 Thoại, hiệu ứng âm thanh, âm thanh nền
+
+`[doc, đọc 08/09/2026]`:
+
+- Thoại đặt trong ngoặc kép, nguyên văn: `A woman says, "We have to leave now."`
+- Hiệu ứng âm thanh dùng tiền tố `SFX:`, nguyên văn: `SFX: thunder cracks in the distance`.
+- Âm thanh nền dùng tiền tố `Ambient noise:`, nguyên văn: `Ambient noise: the quiet hum of a starship bridge`.
+
+### 0.4 Negative prompt viết đúng cách
+
+`[doc, đọc 08/09/2026]` Google khuyến nghị mô tả cụ thể thứ KHÔNG muốn thay vì phủ định chung chung. Ví dụ nguyên văn: thay vì viết `no man-made structures`, nên viết `a desolate landscape with no buildings or roads`.
+
+Nano Banana đưa ra nguyên tắc cùng tinh thần nhưng áp dụng cho ảnh `[doc, đọc 08/09/2026]`: "Use positive framing: Describe what you want, not what you don't want", ví dụ nguyên văn dùng `empty street` thay vì `no cars`.
+
+### 0.5 Mốc thời gian nhiều đoạn trong một lần sinh (Veo 3.1)
+
+`[doc, đọc 08/09/2026]`, cú pháp nguyên văn:
+```
+[00:00-00:02] Medium shot from behind a young female explorer with a leather satchel and messy brown hair in a ponytail, as she pushes aside a large jungle vine to reveal a hidden path.
+
+[00:02-00:04] Reverse shot of the explorer's freckled face, her expression filled with awe as she gazes upon ancient, moss-covered ruins in the background. SFX: The rustle of dense leaves, distant exotic bird calls.
+```
+Mỗi đoạn có thể mang camera, SFX và cảm xúc riêng (ví dụ đoạn khác trong cùng bài dùng `Emotion: Wonder and reverence.`).
+
+### 0.6 Quy trình ba bước Google khuyến nghị
+
+`[doc, đọc 08/09/2026]`:
+
+1. **Làm giàu prompt bằng Gemini.** Dùng Gemini (Gemini 2.5 Flash Image trong ví dụ của Google) để soạn hoặc tinh chỉnh mô tả trước khi đưa vào Veo.
+2. **Tạo ảnh đầu và ảnh cuối rồi nội suy.** Sinh khung hình đầu và khung hình cuối bằng Gemini, sau đó dùng tính năng "First and Last Frame" của Veo 3.1 với một prompt mô tả cách camera đi từ khung đầu sang khung cuối. Ví dụ nguyên văn: "The camera performs a smooth 180-degree arc shot, starting with the front-facing view of the singer and circling around her to seamlessly end on the POV shot from behind her on stage."
+3. **Tạo ảnh tham chiếu rồi dùng Ingredients to Video.** Sinh ảnh tham chiếu nhân vật và bối cảnh bằng Gemini, sau đó dùng "Ingredients to Video" để giữ nhân vật nhất quán qua nhiều cảnh. Ví dụ nguyên văn: "Using the provided images for the detective, the woman, and the office setting, create a medium shot of the detective behind his desk. He looks up at the woman and says in a weary voice, 'Of all the offices in this town, you had to walk into mine.'"
+
+Một chi tiết quan trọng khác từ cùng trang: chức năng thêm/xoá vật thể (Add/Remove Object) chạy trên nền **Veo 2** và **không sinh âm thanh**, khác với các tính năng Veo 3.1 còn lại.
+
+### 0.7 Bốn thẻ riêng của Gemini Omni Flash (khác sản phẩm với Veo 3.1 và Nano Banana)
+
+Bốn thẻ này đọc từ tài liệu API Omni chính thức (`ai.google.dev/gemini-api/docs/omni`, `[doc, đọc 08/09/2026]`), không nằm trong hai bài blog Veo/Nano Banana ở trên, tách riêng để không nhầm sản phẩm:
+
+- `<FIRST_FRAME>` khung hình đầu.
+- `<LAST_FRAME>` khung hình cuối, bắt buộc phải có `<FIRST_FRAME>` đi kèm.
+- `<IMAGE_REF_N>` ảnh tham chiếu, N đếm từ 0.
+- `<VIDEO_REF_N>` video tham chiếu, N đếm từ 0.
+
+Cú pháp mốc thời gian của Omni khác với Veo 3.1 ở mục 0.5: Omni dùng dạng chỉ có giây `[0-3s] Scene description`, còn Veo 3.1 dùng dạng có phút và giây `[00:00-00:02]`. Hai sản phẩm khác nhau, không tự gộp làm một cú pháp.
+
+### 0.8 Đối chiếu với kho prompt rút từ 49 file vision ở mục 1-5 bên dưới
+
+**Khớp nhau, hai nguồn độc lập cùng xác nhận — tín hiệu mạnh:**
+
+- Quy trình "tạo ảnh đầu + ảnh cuối rồi nội suy" ở mục 0.6 bước 2 khớp với mẫu thực chiến đã quan sát ở `[b05]` (mục 1.9 và mục 2 bên dưới): mỗi Scene tách thành **START IMAGE PROMPT** và **FINISH IMAGE PROMPT** rồi để Flow tự nội suy chuyển động giữa hai ảnh.
+- Quy trình "tạo ảnh tham chiếu rồi dùng Ingredients to Video" ở mục 0.6 bước 3 khớp với các prompt ghép nhiều ảnh nguyên liệu đã quan sát ở `[b01 t=140.9s]` ("Make this character wearing this outfit with a white background") và `[b20 t=549-553s]` (ghép 5 ảnh nguyên liệu).
+- Công thức multimodal của Nano Banana `[Reference images] + [Relationship instruction] + [New scenario]` khớp đúng cấu trúc các prompt ghép ảnh ở mục 1.2 bên dưới.
+- Từ khoá camera `slow pan` ở mục 0.2 khớp với `[b17]` "slow upward tilt... Soft breeze moves the leaves gently" và `[b20]` "slow tracking shot from the side" ở mục 1.9.
+- Nguyên tắc "mô tả cụ thể, tránh chung chung" của Nano Banana ở mục 0.4 cùng tinh thần với mẹo mục 5.1 bên dưới về việc nêu cụ thể kích thước, tông màu thay vì câu mơ hồ như "Làm cái banner đẹp".
+
+**Mâu thuẫn cần giữ nguyên cả hai, không tự quyết bên nào đúng:**
+
+- Google khuyến nghị TRÁNH phủ định chung chung, thay bằng mô tả cụ thể thứ muốn có (mục 0.4). Nhưng kỹ thuật xuất hiện lặp lại nhiều nhất và được ghi nhận là hiệu quả trong kho prompt thực chiến ở mục 5.5 bên dưới lại chính là câu phủ định trực tiếp dạng "Do NOT change face, hair, outfit, or art style" và "HARD RULES: Do NOT remove, simplify, or slow any animation". Đây là hai cách tiếp cận ngược nhau cho cùng mục đích chống biến dạng. Có khả năng Google đang nói về mô tả CẢNH MUỐN CÓ (loại trừ vật thể không muốn xuất hiện), còn kho prompt thực chiến dùng phủ định để khoá THUỘC TÍNH CẦN GIỮ NGUYÊN của nhân vật/sản phẩm đã có sẵn, nhưng đây chỉ là suy luận, không có nguồn nào xác nhận cách hiểu này. Ghi lại đúng như hai nguồn nói, không tự quyết bên nào đúng hơn.
+- Trang hướng dẫn prompt Veo 3.1 liệt kê năng lực "High-fidelity video (720p/1080p)", không nhắc tới 4K. Trong khi đó trang giá chính thức `support.google.com/flow/answer/16526234` (xem `references/format-and-export.md`) liệt kê rõ nâng cấp lên 4K tốn 50 credit cho mọi model, chỉ dành cho Ultra. Giữ cả hai, có thể bài hướng dẫn prompt viết trước khi 4K ra mắt hoặc chỉ liệt kê năng lực sinh gốc chứ không tính bản nâng cấp sau khi sinh.
+
+---
+
 ## 1. THƯ VIỆN PROMPT NGUYÊN VĂN
 
 ### 1.1 Tạo nhân vật (character)

@@ -285,9 +285,80 @@ Xem danh sách đầy đủ ở Mục 1 (Tab Community). Tóm tắt lại các t
 | Vẽ quỹ đạo di chuyển camera bằng tay, có vật lý | Director Camera & Path Vector Board (Community, adcraftai) |
 | Có ý tưởng riêng, chưa có tool nào làm đúng ý (ví dụ: 3 phong cách chân dung cùng lúc, đổi trang phục/bối cảnh hàng loạt, phim hoạt hình nhiều cảnh từ kịch bản tóm tắt) | Create Tool (tự mô tả bằng tiếng Việt, dùng Tool Builder chỉnh sửa dần) |
 
-## 7. Ghi chú về nguồn và mức tin cậy
+## 7. Community Tools Market và Tools Community Gallery — ai tạo được, ai remix được
+
+Trang chính thức duy nhất tìm được nói về việc tạo và quản lý Tool là "Create & manage Tools in Google Flow" (`https://support.google.com/flow/answer/17104535`, đọc 08/09/2026) [doc]. Trang này xác nhận:
+- Có tồn tại **hạn ngạch (quota) hàng ngày** cho số Tool được tạo, nhưng không ghi con số cụ thể.
+- Có thể **"share Tools publicly"** (chia sẻ Tool công khai), nguyên văn.
+- KHÔNG dùng tên gọi "Community Tools Market" hay "Tools Community Gallery" ở bất kỳ đâu trên trang, và KHÔNG nói rõ việc tạo/remix Tool có bị giới hạn theo gói tài khoản (miễn phí hay trả phí) hay không.
+
+Theo nguồn bên thứ ba (MindStudio, bài tổng hợp về Flow Tools, đọc 08/09/2026): mọi người dùng Flow, kể cả tài khoản miễn phí, đều **DÙNG** được Tool có sẵn trong thư viện cộng đồng; nhưng chỉ tài khoản trả phí (Google AI Plus, Pro, hoặc Ultra) mới **BUILD** (tạo Tool mới bằng Create Tool), **REMIX** (sao chép Tool người khác về sửa lại) và **SHARE** (phân phối Tool mình tạo) được [chưa xác minh, nguồn: mindstudio.ai/blog/what-is-google-flow-tools-custom-ai-workflows-no-code, đọc 08/09/2026]. Đây là khẳng định của MỘT nguồn thứ ba, KHÔNG có trang chính thức nào của Google xác nhận hay phủ định lại, nên chỉ dùng làm giả thuyết làm việc, không dùng làm căn cứ chắc chắn khi tư vấn cho người dùng.
+
+Danh mục tool cụ thể trong tab "Community" đã liệt kê ở Mục 1 của file này vẫn giữ nguyên giá trị — đó là quan sát `[live]` trực tiếp trên DOM ngày 06/09/2026, độc lập với hai nguồn vừa nêu ở trên.
+
+**Xác nhận thêm bằng phép đo `[live 08/09/2026]` khác, mở trực tiếp UI bằng Playwright trên tài khoản Pro**: tên gọi đúng của khu vực này là **"Tools from creators like you"** (heading thật trong tab Community), mô tả nguyên văn "Explore tools curated from the Google Flow Community. Try them out, get inspired, and create your own!", danh sách chia theo ba nhóm **Image, Video, Experimental**. Tab **"My Tools"** có heading **"Submit your tool to be featured"** kèm nút **"Create New"**, và chia hai mục con **"My creations"** và **"Tools shared with me"**. Phép đo này còn xác nhận thêm hai điểm: **chỉ gói trả phí mới tạo được tool** (khớp với giả thuyết của nguồn MindStudio ở trên, nay đã có `[live]` củng cố thêm chứ không chỉ dựa một nguồn thứ ba nữa), và **Flow Tools chỉ có trên bản web**, không có trên app di động.
+
+## 8. Custom Prompt Expanders [chưa xác minh]
+
+Đã tìm nhưng CHƯA thấy trang hỗ trợ chính thức nào của Flow nhắc tên "Custom Prompt Expanders" hay "Prompt Expander". Mọi mô tả dưới đây đến từ báo công nghệ bên thứ ba, gắn `[chưa xác minh]`, không phải "tính năng không tồn tại" — chỉ là chưa tự đọc được nguồn chính thức:
+
+- Biến một câu lệnh ngắn thành một prompt đầy đủ chi tiết hơn ("convert a short instruction into a richer, fully formed prompt"), có sẵn nhiều preset dựng sẵn như **Action Figure, Film Noir, Cinematic**, và cho phép tạo kiểu mở rộng (custom expansion style) riêng [chưa xác minh, testingcatalog.com/google-flow-adds-nano-banana-editing-and-prompt-expander, bài đăng 28/09/2025].
+- Một Expander đã áp dụng sẽ tác động đồng thời lên cả ba model nền của Flow: cách Veo 3 sinh video, cách Imagen 4 sinh ảnh minh hoạ, và cách Gemini xử lý prompt ngôn ngữ tự nhiên [chưa xác minh, vp-land.com/p/google-flow-s-custom-expander-feature-brings-consistency-to-ai-video-production, đọc 08/09/2026].
+- Công dụng chính theo cả hai nguồn: giữ nhất quán phong cách hình ảnh qua nhiều clip trong cùng một dự án.
+
+Hai nguồn trên độc lập với nhau và mô tả khớp nhau về cơ chế (ngắn thành dài, có preset, ảnh hưởng nhiều model), nên đáng tin hơn một nguồn đơn lẻ, nhưng vẫn CHƯA đạt mức `[doc]` vì chưa tự đọc được trang chính thức của Google.
+
+## 9. Doodle, Object Removal, Camera Adjustment — tinh chỉnh video sau khi đã sinh
+
+Nguồn: `blog.google/innovation-and-ai/models-and-research/google-labs/flow-refine-videos/`, đọc 08/09/2026 [doc], cộng nội dung hộp thoại changelog thật đọc trực tiếp trên tài khoản Pro ngày 08/09/2026 [changelog], ghi rõ riêng theo từng mục.
+
+- **Doodle**: người dùng vẽ hoặc chú thích (annotate) trực tiếp lên một khung hình; Flow đọc hiểu nét vẽ tay và đưa ý đó vào khung hình cuối cùng, nguyên văn "Flow understands your doodles and incorporates them into your final frame." Dùng để chỉ đạo sáng tạo mà không cần gõ hết bằng chữ.
+  - **Đường thao tác thật, theo changelog ngày 21/10/2025 [changelog]**: bấm icon edit trên một ảnh để vẽ chú thích lên ảnh đó. Dùng tốt kết hợp với **Nano Banana** và với chế độ **Doodle to Video**.
+- **Object removal / insertion (thêm và xoá vật thể)**: cho phép "insert objects directly into videos or remove elements, without changing anything else." Blog ghi rõ tính năng xoá vật thể (object removal) là **thử nghiệm (experimental)**, đang rollout dần; blog không ghi ngày rollout hoàn tất tính tới lúc đọc 08/09/2026.
+  - **Đường thao tác thật, theo changelog ngày 02/12/2025 [changelog]**: bấm icon bút chì trên video, chọn **Remove**, vẽ mask quanh vật thể cần xoá, có thể thêm prompt tuỳ chọn kiểu `remove the hat`, rồi bấm icon mũi tên để sinh. Hoạt động tốt nhất khi vật thể ít di chuyển trong khung hình.
+  - **Chi tiết quan trọng cần nhớ khi chọn model hoặc viết prompt**: theo hướng dẫn prompt chính thức của Google Cloud (nguồn `cloud.google.com/blog/products/ai-machine-learning/ultimate-prompting-guide-for-veo-3-1`, đọc 08/09/2026), chức năng thêm/xoá vật thể chạy trên nền **Veo 2** và **KHÔNG có âm thanh**, nguyên văn `Add/remove object (uses Veo 2, no audio)`. Nghĩa là dùng tính năng này sẽ MẤT toàn bộ âm thanh gốc của video, kể cả khi video gốc do Veo 3.1 sinh vốn có âm thanh kèm sẵn.
+- **Camera adjustment (điều chỉnh camera)**: cho phép "adjust the camera position, orbit, or move the 'dolly' in any of your generated videos." Hoạt động tốt nhất trên các clip CHƯA có sẵn chuyển động camera từ trước (video gốc quay tĩnh).
+  - **Đổi hạng tài khoản, theo changelog ngày 02/12/2025 [changelog]**: tính năng này TRƯỚC ĐÂY chỉ dành cho gói Ultra, nay đã **mở cho mọi hạng tài khoản**. Đừng dùng thông tin cũ "chỉ Ultra" cho tính năng này nữa.
+- **Model nền cho ảnh dùng trong các thao tác tinh chỉnh này**: sinh ảnh dùng Imagen và Nano Banana cho người dùng miễn phí; Nano Banana Pro dành cho người trả phí, có thêm điều khiển cấp chuyên nghiệp như depth of focus, lighting, và color grading.
+
+Blog không nói rõ Doodle và Camera adjustment có tốn credit hay không, và không nói backend model riêng cho hai tính năng này (chỉ nói rõ backend của object removal/insertion là Veo 2).
+
+## 10. Maps Imagery Grounding — đang Private Preview, KHÔNG phải lỗi thiếu tính năng
+
+Nguồn: `mapsplatform.google.com/maps-products/grounding/`, đọc 08/09/2026 [doc].
+
+Tính năng cho phép chèn chủ thể do AI sinh vào bối cảnh địa lý có thật, dùng dữ liệu không gian địa lý của Google để giữ đúng thực tế, nguyên văn cho phép "seamlessly insert" chủ thể vào bối cảnh thật. Nguồn ảnh nền là **Street View**.
+
+Tính năng hiện đang ở **Private Preview** — phải nộp đơn xin quyền truy cập qua form riêng, KHÔNG mở đại trà cho mọi tài khoản bất kể trả phí hay không. Trang không ghi rõ vùng khởi đầu cụ thể; theo mô tả tổng thể và đối chiếu với `mapsplatform.google.com/resources/blog/three-new-ways-to-build-with-real-world-imagery-and-ai/`, điểm khởi đầu là địa điểm tại Mỹ qua Street View.
+
+**Điểm quan trọng cần nhớ**: trang này không hề nhắc tới Google Flow — Maps Imagery Grounding vận hành trong hệ sinh thái Gemini Enterprise Agent Platform, tách biệt khỏi Flow. Vì vậy **việc tài khoản Flow (kể cả gói Pro) không nhìn thấy tính năng này là ĐÚNG THIẾT KẾ, không phải lỗi thiếu tính năng hay lỗi tài khoản** — tính năng chưa từng được tích hợp đại trà vào Flow, và đang giới hạn ở diện xin duyệt trước cho một sản phẩm/API khác của Google. Không nên kết luận "Flow không có Maps Imagery Grounding" theo nghĩa phủ định vĩnh viễn; đúng hơn là "tính năng này chưa mở, và đang thuộc một preview riêng ngoài Flow" — lần sau gặp lại câu hỏi này thì tra cứu đúng chỗ (Maps Platform, không phải Flow support) trước khi kết luận.
+
+## 11. Phím tắt, Archive, và Starter Projects — ba tính năng chỉ có tên trong changelog
+
+Ba mục này từng chỉ xuất hiện đúng một lần trong toàn skill, ở dòng tiêu đề bảng changelog, không được giải thích ở đâu khác. Nay đã tìm thêm được bằng chứng, ghi rõ mức độ.
+
+### Phím tắt (Keyboard Shortcuts)
+
+Danh sách dưới đây đọc trực tiếp từ hộp thoại changelog ngày 29/04/2026 trên tài khoản Pro [changelog 08/09/2026]: Copy, Paste, Delete; phím mũi tên để di chuyển phần tử; Escape để thoát menu hoặc bỏ chọn; phím cộng và trừ để đổi cỡ ô lưới; phím `/` để nhảy tới thanh tìm kiếm.
+
+Cùng ngày 08/09/2026, một phép đo khác đã tự fetch trang hỗ trợ chính thức `support.google.com/flow/answer/17069754` [doc] và đọc được bảng phím tắt Windows đầy đủ hơn nhiều (xem lại tại đây để không lặp): Del/Backspace xoá, `@` mở menu (+), Space xem trước, mũi tên trái/phải chuyển asset, mũi tên lên/xuống chuyển version, Ctrl+D tải xuống, Esc đóng chế độ sửa, Ctrl+C/Ctrl+V copy/paste, `u` hoặc Esc quay lại lưới, Enter vào chế độ sửa, Ctrl+G nhóm asset, `=`/`-`/`0` đổi cỡ lưới, Shift+G chuyển view, Shift+I lọc ảnh, Shift+V lọc video, Shift+U lọc upload, Ctrl+U tải lên, Ctrl+F focus tìm kiếm, Shift+mũi tên trái/phải chuyển khung hình video, `/` mở tìm kiếm. Trang này KHÔNG có bảng phím tắt Mac chi tiết, chỉ báo có tab riêng cho nền tảng khác mà nội dung không lấy được qua lần fetch này.
+
+Về việc tìm bảng phím tắt NGAY TRONG giao diện Flow: agent đã tự tìm nhưng **chưa thấy** bảng phím tắt nào hiện ngay trên UI, và **chưa bấm thử nút "Product help"** để kiểm tra tiếp. Viết đúng hiện trạng: "chưa tìm thấy sau khi đã thử tìm trực tiếp trên UI", KHÔNG kết luận "Flow không có bảng phím tắt trong giao diện" — đường "Product help" còn chưa thử.
+
+### Archive
+
+Theo changelog ngày 29/04/2026 [changelog 08/09/2026]: chuột phải lên một mục media bất kỳ để chuyển nó vào thư mục archive của project; truy cập archive ở góc dưới bên trái màn hình.
+
+Đối chiếu với quan sát `[live 08/09/2026]` trên sidebar một project thật: sidebar HIỆN TẠI không có mục nào tên "Archive" — sidebar chỉ có **All media, Images, Videos, Characters, Scenes, Uploads, Tools, Trash**. Ghi cả hai dữ kiện, không xoá vế nào: đường thao tác thật lấy từ changelog (chuột phải để archive, truy cập ở góc dưới trái) và việc sidebar project thật đang mở KHÔNG thấy mục "Archive" theo tên đó — có thể chức năng vẫn tồn tại dưới một lối vào khác (ví dụ ẩn trong menu chuột phải, chưa thử trực tiếp) chứ chưa đủ căn cứ để nói tính năng đã bị gỡ.
+
+### Starter Projects [chưa xác minh đầy đủ]
+
+Changelog ngày 21/08/2025 nói trên trang chủ Flow có nút "Add Starter Projects" [changelog]. Trên tài khoản đã có sẵn project (tài khoản Pro đang dùng để kiểm chứng), **KHÔNG thấy** nút này trên trang chủ [live 08/09/2026]. Giả thuyết hợp lý: nút chỉ hiện với tài khoản còn trống (chưa có project nào), nhưng giả thuyết này **CHƯA được thử** trên một tài khoản trống thật. Viết đúng hiện trạng: "không tìm thấy trên tài khoản đã có project, chưa thử với tài khoản trống" — không kết luận tính năng đã bị gỡ bỏ.
+
+## 12. Ghi chú về nguồn và mức tin cậy
 
 - Toàn bộ Mục 1 (danh mục ba tab) và Mục 3.5 (Video Resizer) dựa trên `[live]`, tức tự mở Flow đọc DOM và tự đo bằng `ffprobe` ngày 06/09/2026, mức bằng chứng cao nhất trong tài liệu này.
 - Mục 3 và Mục 4 dựa trên nhiều video hướng dẫn độc lập (kênh "Non-tech làm AI" và các kênh khác), mỗi chi tiết đều kèm mã batch [bXX] và mốc giây gốc trong file để tiện tra lại nếu cần đối chiếu.
 - Những tool không có bằng chứng thao tác thật (Scene Explorer, Mask Magic, Grid Architect, Whisk, Style Writer, Type Overlays) được gắn rõ [chưa xác minh] ở phần mô tả chi tiết; chỉ tên gọi và mô tả một dòng của chúng là chắc chắn (lấy từ catalog chính thức [live]).
 - Giao diện Flow thay đổi khá nhanh (ví dụ tên tab Discover/Templates khác nhau giữa các video quay ở thời điểm khác nhau, số lượng model video từ 4 lên 5 mục tùy hạng tài khoản) — khi áp dụng tài liệu này, nên đối chiếu lại với giao diện thật tại thời điểm sử dụng, đặc biệt là số credit chính xác của từng Tool phụ vì phần này chưa đo được trực tiếp cho đa số tool ngoài Video Resizer và Type Overlays.
+- Mục 7, 9, 10 đọc trực tiếp từ tài liệu chính thức (`[doc]`) hoặc từ hộp thoại changelog thật (`[changelog]`) ngày 08/09/2026, cộng phép đo `[live 08/09/2026]` mở UI thật bằng Playwright ở Mục 7 và Mục 11. Ngoại lệ gắn rõ `[chưa xác minh]`: một vế của Mục 7 (Community Tools Market/Gallery về phân quyền tạo/remix theo gói tài khoản — tuy đã có thêm bằng chứng `[live]` củng cố phần "chỉ trả phí mới tạo tool"), toàn bộ Mục 8 Custom Prompt Expanders, và phần Starter Projects trong Mục 11 (chưa thử trên tài khoản trống). Không tự suy diễn thêm ngoài nguyên văn các trang và hộp thoại đã đọc.

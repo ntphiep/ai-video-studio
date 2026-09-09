@@ -5,6 +5,22 @@ bản export-spec cũ, nay đã gỡ khỏi skill. Mọi con số đều kèm ng
 `[chưa xác minh]`, không đoán. Mục 4.1, 7 và 8 cập nhật ngày 08/09/2026 dựa trên các trang
 hỗ trợ chính thức của Google, đọc trực tiếp bằng WebFetch.
 
+<!-- MUCLUC:BAT-DAU (sinh bang scripts/gen_toc.py, dung sua tay) -->
+**Mục lục** (số dòng để đọc thẳng đúng đoạn, không cần nạp cả file)
+
+- 1. Ba tầng tỉ lệ khung hình — dòng 24
+- 2. Video Resizer — bảng đo thật bằng ffprobe — dòng 40
+- 3. Ba quy luật bắt buộc phải biết trước khi dùng Resizer — dòng 57
+- 3b. Menu tải về: nội dung thật, đo ngày 08/09/2026 `[live]` — dòng 86
+- 4. Độ phân giải và thời lượng — chỉ Omni chọn được, ba model Veo thì không — dòng 125
+- 5. Lệnh ffmpeg đã chạy thật (không phải chép từ doc) — dòng 183
+- 6. Chuẩn xuất theo từng nền tảng — dòng 228
+- 7. Định dạng video tải lên Flow — dòng 253
+- 8. Watermark — mục quan trọng vì Việt Nam nằm trong vùng bắt buộc — dòng 261
+- 9. Đăng thẳng lên YouTube bằng Composio MCP `[live 09/09/2026]` — dòng 300
+- Tự soát nguồn — dòng 341
+
+<!-- MUCLUC:KET-THUC -->
 ## 1. Ba tầng tỉ lệ khung hình
 
 Flow có ba con đường ra tỉ lệ khác nhau, không được gộp làm một:
@@ -281,6 +297,47 @@ xác nhận lại chi tiết này.
 Chừa lề an toàn ở góc dưới bên phải khi crop hoặc đặt chữ đè, vì cắt trúng dấu watermark
 khi crop giữa khung chỉ là hệ quả ngoài ý muốn, không phải cách gỡ watermark hợp lệ.
 
+## 9. Đăng thẳng lên YouTube bằng Composio MCP `[live 09/09/2026]`
+
+Trước bản này tài liệu chỉ ghi hai đường đăng: chuột phải trong Flow chọn
+`Publish to YouTube`, hoặc tải về rồi tự đăng tay. Có đường thứ ba đã chạy thật,
+tự động hoàn toàn, dùng được cho video render bằng Remotion tức thứ Flow không biết tới.
+
+**Nút thắt:** công cụ `YOUTUBE_UPLOAD_VIDEO` và `YOUTUBE_MULTIPART_UPLOAD_VIDEO` của
+Composio đều bắt trường `videoFile` phải là object có `s3key`, tức file đã nằm sẵn
+trên S3 của Composio. Chúng KHÔNG nhận đường dẫn file trên máy. Composio MCP chạy
+remote tại `https://connect.composio.dev/mcp` nên nó cũng không đọc được ổ đĩa của bạn.
+Helper `upload_local_file()` trong sandbox chỉ thấy file trong chính sandbox, không giúp gì.
+
+**Cách vượt, bốn bước, đã chạy thật:**
+
+1. Trong `COMPOSIO_REMOTE_WORKBENCH`, xin một presigned URL:
+   `POST {BACKEND_URL}/api/v3/tool_router/internal/presigned_url` với body
+   `{"operation": "upload"}` và header `x-session-access-key: $COMPOSIO_WORKBENCH_ACCESS_KEY`.
+   Trả về `upload_url`, `key`, `download_url`, hạn **3600 giây**.
+2. Từ máy mình đẩy file thẳng lên: `curl -T <file> -H "Content-Type: video/mp4" "<upload_url>"`.
+   URL chỉ ký theo header `host` nên không cần khớp Content-Type lúc ký.
+3. Đối chiếu: tải `download_url` về trong sandbox, so số byte với file gốc, kiểm 16 byte
+   đầu có chuỗi `ftyp`. Đừng bỏ bước này, đăng nhầm file hỏng là công khai luôn.
+4. Gọi `YOUTUBE_MULTIPART_UPLOAD_VIDEO` với `videoFile.s3key` chính là `key` ở bước 1.
+
+Đo thật: file 37.886.929 byte đẩy lên hết **8 giây**, khớp từng byte. Không cần bất kỳ
+dịch vụ lưu trữ bên thứ ba nào.
+
+**Bốn cạm bẫy đã vấp:**
+
+- Tham số của `YOUTUBE_GET_VIDEO_DETAILS_BATCH` là `id`, KHÔNG phải `ids`. Truyền sai ra
+  lỗi 400 `Following fields are missing: {'id'}`.
+- YouTube tự gán `defaultAudioLanguage` thành `en-US` kể cả khi lời đọc là tiếng Việt.
+  `YOUTUBE_UPDATE_VIDEO` của Composio KHÔNG có trường này, muốn sửa phải vào YouTube Studio
+  đổi tay. Bỏ qua thì video bị giảm cơ hội đề xuất cho người Việt.
+- **Mốc chương trong mô tả phải lấy từ thời lượng RENDER THẬT, không lấy từ kịch bản.**
+  Kịch bản đặt mục tiêu 180 giây, bản render ra 164,47 giây, lệch 17 giây làm mọi mốc từ
+  chương thứ tư trở đi sai hết. Nguồn đúng là `durations.json`: cộng dồn `durationInFrames`
+  rồi chia `fps`. Đây là lỗi đã mắc thật và phải sửa sau khi video đã công khai.
+- Nếu tài khoản Composio có nhiều kênh YouTube, `account_selection` là `required`. Phải
+  truyền đúng alias hoặc account id, không thì nó dùng kênh mặc định và đăng nhầm kênh.
+
 ## Tự soát nguồn
 
 - Ba tầng tỉ lệ và bảng 6 Output Ratio của Video Resizer: số đo Video Resizer ngày 06/09/2026,
@@ -307,3 +364,6 @@ khi crop giữa khung chỉ là hệ quả ngoài ý muốn, không phải cách
   chính thức xác nhận, giữ nguyên nhãn [chưa xác minh].
 - Facebook và các giới hạn thời lượng nền tảng: chưa tìm thấy nguồn trong
   batch video hay tài liệu chính thức đã đọc, gắn [chưa xác minh].
+- Mục 9 đường đăng YouTube: tự chạy thật ngày 09/09/2026 trong phiên làm việc. Mã nguồn
+  helper đọc bằng `inspect.getsource` trong sandbox Composio; presigned URL, mã trạng thái
+  HTTP 200, số byte hai đầu, và id video trả về đều là output lệnh thật, không suy đoán.

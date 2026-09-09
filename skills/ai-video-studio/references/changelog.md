@@ -12,6 +12,16 @@ Bảng B tồn tại vì trang changelog của Flow đi CHẬM HƠN blog và cha
 ngày 27/08/2026 giới thiệu ba tính năng lớn mà bảng A chưa ghi mục nào. Khi cần biết
 trạng thái mới nhất, phải đọc cả hai bảng.
 
+<!-- MUCLUC:BAT-DAU (sinh bang scripts/gen_toc.py, dung sua tay) -->
+**Mục lục** (số dòng để đọc thẳng đúng đoạn, không cần nạp cả file)
+
+- Bảng A. Giao diện Flow — dòng 25
+- Bảng B. Model và API, những mục bảng A chưa có — dòng 89
+- Không tìm thấy gì cho hai cái tên này — dòng 114
+- Mười điều dòng thời gian này giải thích được — dòng 120
+- Quy tắc sử dụng trang này — dòng 143
+
+<!-- MUCLUC:KET-THUC -->
 ## Bảng A. Giao diện Flow
 
 Nguồn: `https://flow.google.com/changelogs`, đọc ngày 06/09/2026 và **đọc lại ngày

@@ -2,6 +2,21 @@
 
 Phạm vi: chỉ nói về chính Google Flow (labs.google/fx/tools/flow, còn gọi flow.google.com). Không bao gồm NotebookLM, Canva, AI Studio, Remotion, OpenMusic, Stitch, Pomelli, VMEG dù các công cụ này xuất hiện trong cùng video hướng dẫn.
 
+<!-- MUCLUC:BAT-DAU (sinh bang scripts/gen_toc.py, dung sua tay) -->
+**Mục lục** (số dòng để đọc thẳng đúng đoạn, không cần nạp cả file)
+
+- Chú giải nguồn — dòng 20
+- 1. Bản đồ giao diện — dòng 50
+- 2. Model và chi phí — dòng 135
+- 3. Tỉ lệ khung hình, độ phân giải, thời lượng — dòng 240
+- 4. Chế độ tạo: Văn bản, Frames to Video, Ingredients to Video — dòng 285
+- 5. Characters và Voices — dòng 439
+- 6. Scenes và Collections — dòng 506
+- 7. Agent mode — dòng 518
+- 8. Giới hạn cứng — dòng 550
+- 9. Lỗi và cạm bẫy — dòng 558
+
+<!-- MUCLUC:KET-THUC -->
 ## Chú giải nguồn
 
 - `[live]` = tự mở giao diện Flow và đọc DOM, tự đo bằng `ffprobe`, tự gọi API, hoặc tự đọc HTML thô của trang tài liệu chính thức, thực hiện ngày 06/09/2026. Đây là mức bằng chứng cao nhất vì không qua trung gian nào. Đúng năm nguồn được mang nhãn này: doc Veo đọc bằng HTML thô, bảng giá đo trực tiếp trên tài khoản, số đo Video Resizer bằng `ffprobe`, danh mục tool đọc từ DOM, và kết quả gọi `GET /v1beta/models`.

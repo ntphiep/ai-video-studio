@@ -156,8 +156,9 @@ Chỉ nạp đúng file cần dùng, đừng nạp hết.
 
 ## Chạy bằng script
 
-Thư mục `scripts/` có 9 file Python cho đường B, tức đường gọi API. Đây là phần
-duy nhất của skill chạy được không cần trình duyệt.
+Thư mục `scripts/` có 10 file Python: 9 file cho đường B tức đường gọi API, cộng
+một script bảo trì chính tài liệu này. Đây là phần duy nhất của skill chạy được
+không cần trình duyệt.
 
 | Script | Làm gì |
 |---|---|
@@ -170,6 +171,7 @@ duy nhất của skill chạy được không cần trình duyệt.
 | `assemble_video.py` | Nối clip, trộn tiếng, đổi tỉ lệ, xuất bản cuối |
 | `upload_video.py` | Chỉ sinh file metadata JSON, không tải lên đâu cả |
 | `pipeline.py` | Điều phối các bước trên theo `spec.json` |
+| `gen_toc.py` | Bảo trì, không dính tới sản xuất video. Sinh lại mục lục kèm số dòng cho mọi file trong `references/`. **Chạy lại sau mỗi lần sửa file reference**, nếu không số dòng trong mục lục sẽ lệch. Dùng `--check` để chỉ báo lệch mà không ghi |
 
 Chạy từng bước một, đừng chạy hết một mạch, vì mỗi bước đều tốn tiền API:
 

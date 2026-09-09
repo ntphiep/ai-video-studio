@@ -16,19 +16,74 @@ except Exception:
     pass
 
 
-def get_api_key() -> str:
-    """Lấy Gemini API key từ env hoặc file local, không từ code."""
-    key = os.environ.get("GEMINI_API_KEY")
+def _doc_key(ten_env: str, ten_file: str, huong_dan: str, bat_buoc: bool = True):
+    """Đọc một API key từ env, hoặc từ file trong thư mục home.
+
+    Không bao giờ nhúng cứng key vào code. Trả về None nếu không bắt buộc mà
+    cũng không tìm thấy, để script gọi tự quyết định bỏ qua hay báo lỗi.
+    """
+    key = os.environ.get(ten_env)
     if key:
         return key.strip()
-    # Fallback: file local ở home, không nằm trong repo/skill
-    keyfile = Path.home() / ".gemini_key"
+    keyfile = Path.home() / ten_file
     if keyfile.exists():
         return keyfile.read_text().strip()
-    sys.exit(
-        "❌ Thiếu GEMINI_API_KEY. Đặt env: $env:GEMINI_API_KEY='...' "
-        "hoặc tạo file ~/.gemini_key"
+    if bat_buoc:
+        sys.exit(f"❌ Thiếu {ten_env}. {huong_dan}")
+    return None
+
+
+def get_api_key() -> str:
+    """Lấy Gemini API key từ env hoặc file local, không từ code."""
+    return _doc_key(
+        "GEMINI_API_KEY",
+        ".gemini_key",
+        "Đặt env: $env:GEMINI_API_KEY='...' hoặc tạo file ~/.gemini_key",
     )
+
+
+def get_pexels_key(bat_buoc: bool = True):
+    """Key Pexels cho ảnh và video stock. Lấy miễn phí ở pexels.com/api/."""
+    return _doc_key(
+        "PEXELS_API_KEY",
+        ".pexels_key",
+        "Đăng ký miễn phí ở https://www.pexels.com/api/ rồi đặt env "
+        "$env:PEXELS_API_KEY='...' hoặc tạo file ~/.pexels_key",
+        bat_buoc,
+    )
+
+
+def get_cloudflare(bat_buoc: bool = True):
+    """Trả về (account_id, api_token) cho Workers AI, hoặc (None, None)."""
+    acc = _doc_key(
+        "CLOUDFLARE_ACCOUNT_ID",
+        ".cloudflare_account",
+        "Lấy Account ID ở dash.cloudflare.com rồi đặt env "
+        "$env:CLOUDFLARE_ACCOUNT_ID='...' hoặc tạo file ~/.cloudflare_account",
+        bat_buoc,
+    )
+    tok = _doc_key(
+        "CLOUDFLARE_API_TOKEN",
+        ".cloudflare_token",
+        "Tạo API token có quyền Workers AI ở dash.cloudflare.com rồi đặt env "
+        "$env:CLOUDFLARE_API_TOKEN='...' hoặc tạo file ~/.cloudflare_token",
+        bat_buoc,
+    )
+    return acc, tok
+
+
+# Cloudflare Workers AI. Bậc miễn phí 10.000 Neuron mỗi ngày, reset 00:00 UTC,
+# không cần thẻ tín dụng. Nguồn:
+# https://developers.cloudflare.com/workers-ai/platform/pricing/ đọc 09/09/2026.
+CF_BASE = "https://api.cloudflare.com/client/v4/accounts/{acc}/ai/run/"
+CF_IMAGE_MODEL = "@cf/black-forest-labs/flux-1-schnell"
+CF_STEPS_MAX = 8  # doc ghi mặc định 4, tối đa 8
+
+# Pexels. Rate limit công bố: 200 request mỗi giờ, 20.000 mỗi tháng.
+# Nguồn: https://www.pexels.com/api/documentation/ đọc 09/09/2026.
+PEXELS_PHOTO = "https://api.pexels.com/v1/search"
+PEXELS_VIDEO = "https://api.pexels.com/v1/videos/search"
+PEXELS_RATE = "200 request/giờ, 20.000/tháng"
 
 # Base URL Gemini API (v1beta)
 BASE_URL = "https://generativelanguage.googleapis.com/v1beta"

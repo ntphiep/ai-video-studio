@@ -156,9 +156,9 @@ Chỉ nạp đúng file cần dùng, đừng nạp hết.
 
 ## Chạy bằng script
 
-Thư mục `scripts/` có 10 file Python: 9 file cho đường B tức đường gọi API, cộng
-một script bảo trì chính tài liệu này. Đây là phần duy nhất của skill chạy được
-không cần trình duyệt.
+Thư mục `scripts/` có 13 file Python: 9 file cho đường B tức đường gọi API, 3 file
+cho các đường miễn phí đỡ tốn quota Google, và 1 script bảo trì chính tài liệu này.
+Đây là phần duy nhất của skill chạy được không cần trình duyệt.
 
 | Script | Làm gì |
 |---|---|
@@ -172,6 +172,17 @@ không cần trình duyệt.
 | `upload_video.py` | Chỉ sinh file metadata JSON, không tải lên đâu cả |
 | `pipeline.py` | Điều phối các bước trên theo `spec.json` |
 | `gen_toc.py` | Bảo trì, không dính tới sản xuất video. Sinh lại mục lục kèm số dòng cho mọi file trong `references/`. **Chạy lại sau mỗi lần sửa file reference**, nếu không số dòng trong mục lục sẽ lệch. Dùng `--check` để chỉ báo lệch mà không ghi |
+
+Ba script dưới đây dùng bậc miễn phí của bên ngoài Google, để dành quota Veo và
+Gemini cho việc thật sự cần. Đều tuỳ chọn, thiếu key thì skill vẫn chạy đủ.
+
+| Script | Làm gì | Cần gì |
+|---|---|---|
+| `fetch_stock.py` | Tải ảnh và video stock từ Pexels làm B-roll. **Cảnh nào không cần nhân vật nhất quán thì lấy stock, đừng sinh bằng Veo.** Đây là cách tiết kiệm credit hiệu quả nhất. Pexels cho dùng thương mại, không bắt ghi công, nhưng script vẫn ghi sẵn danh sách tác giả ra file | `PEXELS_API_KEY`, đăng ký miễn phí |
+| `generate_image_cf.py` | Sinh ảnh bằng FLUX.1 schnell trên Cloudflare Workers AI, 10.000 Neuron mỗi ngày miễn phí, không cần thẻ. Hợp cho ảnh nháp và ảnh nền. **KHÔNG nhận ảnh tham khảo nên không giữ được nhân vật nhất quán** — cần nhất quán thì vẫn phải dùng Nano Banana hoặc Characters trong Flow | `CLOUDFLARE_ACCOUNT_ID` và `CLOUDFLARE_API_TOKEN` |
+| `generate_audio_edge.py` | Giọng đọc miễn phí có tiếng Việt qua edge-tts. Hợp để đo độ dài lời đọc trước khi dựng hình. **Không phải API chính thức của Microsoft**, là bản dịch ngược dịch vụ Read Aloud của Edge, có thể bị chặn bất cứ lúc nào, nên chỉ dùng cho bản nháp, đường chính vẫn là Gemini TTS | `pip install edge-tts` |
+
+Chạy `doctor.py` để biết đang thiếu key hay gói nào và lấy ở đâu.
 
 Chạy từng bước một, đừng chạy hết một mạch, vì mỗi bước đều tốn tiền API:
 

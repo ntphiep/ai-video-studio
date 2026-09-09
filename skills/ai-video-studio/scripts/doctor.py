@@ -67,21 +67,40 @@ def kiem_lenh(ten, bat_buoc, mo_ta, co_version=True):
     return ket
 
 
-def kiem_api_key():
-    ket = {"ten": "GEMINI_API_KEY", "bat_buoc": True,
-           "mo_ta": "Khoá gọi Gemini API, cần cho đường B",
+def kiem_key(ten_env, ten_file, mo_ta, cach_lay, bat_buoc=True):
+    """Kiểm một API key: có trong env chưa, hay có file ở thư mục home chưa."""
+    ket = {"ten": ten_env, "bat_buoc": bat_buoc, "mo_ta": mo_ta,
            "co": False, "duong_dan": None, "version": None}
-    if os.environ.get("GEMINI_API_KEY"):
+    if os.environ.get(ten_env):
         ket["co"] = True
-        ket["duong_dan"] = "biến môi trường GEMINI_API_KEY"
+        ket["duong_dan"] = f"biến môi trường {ten_env}"
     else:
-        f = Path.home() / ".gemini_key"
+        f = Path.home() / ten_file
         if f.exists() and f.read_text(encoding="utf-8").strip():
             ket["co"] = True
             ket["duong_dan"] = str(f)
     if not ket["co"]:
-        ket["cach_cai"] = ("Lấy khoá tại https://aistudio.google.com/apikey rồi đặt "
-                           "biến môi trường GEMINI_API_KEY, hoặc ghi vào file ~/.gemini_key")
+        ket["cach_cai"] = cach_lay
+    return ket
+
+
+def kiem_api_key():
+    return kiem_key(
+        "GEMINI_API_KEY", ".gemini_key",
+        "Khoá gọi Gemini API, cần cho đường B",
+        "Lấy khoá tại https://aistudio.google.com/apikey rồi đặt "
+        "biến môi trường GEMINI_API_KEY, hoặc ghi vào file ~/.gemini_key",
+    )
+
+
+def kiem_goi_python(ten_goi, mo_ta, cach_cai):
+    """Kiểm một gói Python tuỳ chọn đã cài chưa, không import thật để khỏi chậm."""
+    import importlib.util
+    co = importlib.util.find_spec(ten_goi) is not None
+    ket = {"ten": ten_goi, "bat_buoc": False, "mo_ta": mo_ta,
+           "co": co, "duong_dan": None, "version": None}
+    if not co:
+        ket["cach_cai"] = cach_cai
     return ket
 
 
@@ -105,6 +124,39 @@ def chay():
         kiem_lenh("npx", False, "Cần cho đường D, tức Remotion", co_version=False),
         kiem_lenh("yt-dlp", False, "Chỉ cần khi muốn tải video tham khảo về học"),
         kiem_lenh("curl", False, "Tải file từ URL ký tên của Flow"),
+        # Ba đường miễn phí dưới đây đều tuỳ chọn. Thiếu chúng thì skill vẫn
+        # chạy đủ, chỉ là mọi thứ đều tính vào quota Google.
+        kiem_key(
+            "PEXELS_API_KEY", ".pexels_key",
+            "Tuỳ chọn. Tải ảnh và video stock miễn phí làm B-roll, đỡ tốn credit Veo",
+            "Đăng ký miễn phí tại https://www.pexels.com/api/ rồi đặt biến môi "
+            "trường PEXELS_API_KEY, hoặc ghi vào file ~/.pexels_key",
+            bat_buoc=False,
+        ),
+        kiem_key(
+            "CLOUDFLARE_ACCOUNT_ID", ".cloudflare_account",
+            "Tuỳ chọn. Sinh ảnh miễn phí qua Workers AI, 10.000 Neuron mỗi ngày",
+            "Lấy Account ID tại https://dash.cloudflare.com rồi đặt biến môi "
+            "trường CLOUDFLARE_ACCOUNT_ID, hoặc ghi vào file ~/.cloudflare_account",
+            bat_buoc=False,
+        ),
+        kiem_key(
+            "CLOUDFLARE_API_TOKEN", ".cloudflare_token",
+            "Tuỳ chọn. Đi kèm CLOUDFLARE_ACCOUNT_ID, token cần quyền Workers AI",
+            "Tạo token có quyền Workers AI tại https://dash.cloudflare.com rồi đặt "
+            "biến môi trường CLOUDFLARE_API_TOKEN, hoặc ghi vào file ~/.cloudflare_token",
+            bat_buoc=False,
+        ),
+        kiem_goi_python(
+            "edge_tts",
+            "Tuỳ chọn. Giọng đọc miễn phí có tiếng Việt, dùng cho bản nháp",
+            "pip install edge-tts",
+        ),
+        kiem_goi_python(
+            "requests",
+            "Cần cho fetch_stock.py và generate_image_cf.py",
+            "pip install requests",
+        ),
     ]
     return kq
 

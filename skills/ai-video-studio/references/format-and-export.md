@@ -18,7 +18,7 @@ hỗ trợ chính thức của Google, đọc trực tiếp bằng WebFetch.
 - 7. Định dạng video tải lên Flow — dòng 253
 - 8. Watermark — mục quan trọng vì Việt Nam nằm trong vùng bắt buộc — dòng 261
 - 9. Đăng thẳng lên YouTube bằng Composio MCP `[live 09/09/2026]` — dòng 300
-- Tự soát nguồn — dòng 341
+- Tự soát nguồn — dòng 343
 
 <!-- MUCLUC:KET-THUC -->
 ## 1. Ba tầng tỉ lệ khung hình
@@ -303,7 +303,9 @@ Trước bản này tài liệu chỉ ghi hai đường đăng: chuột phải t
 `Publish to YouTube`, hoặc tải về rồi tự đăng tay. Có đường thứ ba đã chạy thật,
 tự động hoàn toàn, dùng được cho video render bằng Remotion tức thứ Flow không biết tới.
 
-**Nút thắt:** công cụ `YOUTUBE_UPLOAD_VIDEO` và `YOUTUBE_MULTIPART_UPLOAD_VIDEO` của
+Tên tool viết đầy đủ dạng `composio:TEN_TOOL` theo đúng quy ước gọi tool MCP; thiếu tiền tố server thì Claude hay báo không tìm thấy tool khi máy có nhiều MCP server.
+
+**Nút thắt:** công cụ `composio:YOUTUBE_UPLOAD_VIDEO` và `composio:YOUTUBE_MULTIPART_UPLOAD_VIDEO` của
 Composio đều bắt trường `videoFile` phải là object có `s3key`, tức file đã nằm sẵn
 trên S3 của Composio. Chúng KHÔNG nhận đường dẫn file trên máy. Composio MCP chạy
 remote tại `https://connect.composio.dev/mcp` nên nó cũng không đọc được ổ đĩa của bạn.
@@ -311,7 +313,7 @@ Helper `upload_local_file()` trong sandbox chỉ thấy file trong chính sandbo
 
 **Cách vượt, bốn bước, đã chạy thật:**
 
-1. Trong `COMPOSIO_REMOTE_WORKBENCH`, xin một presigned URL:
+1. Trong `composio:COMPOSIO_REMOTE_WORKBENCH`, xin một presigned URL:
    `POST {BACKEND_URL}/api/v3/tool_router/internal/presigned_url` với body
    `{"operation": "upload"}` và header `x-session-access-key: $COMPOSIO_WORKBENCH_ACCESS_KEY`.
    Trả về `upload_url`, `key`, `download_url`, hạn **3600 giây**.
@@ -319,17 +321,17 @@ Helper `upload_local_file()` trong sandbox chỉ thấy file trong chính sandbo
    URL chỉ ký theo header `host` nên không cần khớp Content-Type lúc ký.
 3. Đối chiếu: tải `download_url` về trong sandbox, so số byte với file gốc, kiểm 16 byte
    đầu có chuỗi `ftyp`. Đừng bỏ bước này, đăng nhầm file hỏng là công khai luôn.
-4. Gọi `YOUTUBE_MULTIPART_UPLOAD_VIDEO` với `videoFile.s3key` chính là `key` ở bước 1.
+4. Gọi `composio:YOUTUBE_MULTIPART_UPLOAD_VIDEO` với `videoFile.s3key` chính là `key` ở bước 1.
 
 Đo thật: file 37.886.929 byte đẩy lên hết **8 giây**, khớp từng byte. Không cần bất kỳ
 dịch vụ lưu trữ bên thứ ba nào.
 
 **Bốn cạm bẫy đã vấp:**
 
-- Tham số của `YOUTUBE_GET_VIDEO_DETAILS_BATCH` là `id`, KHÔNG phải `ids`. Truyền sai ra
+- Tham số của `composio:YOUTUBE_GET_VIDEO_DETAILS_BATCH` là `id`, KHÔNG phải `ids`. Truyền sai ra
   lỗi 400 `Following fields are missing: {'id'}`.
 - YouTube tự gán `defaultAudioLanguage` thành `en-US` kể cả khi lời đọc là tiếng Việt.
-  `YOUTUBE_UPDATE_VIDEO` của Composio KHÔNG có trường này, muốn sửa phải vào YouTube Studio
+  `composio:YOUTUBE_UPDATE_VIDEO` của Composio KHÔNG có trường này, muốn sửa phải vào YouTube Studio
   đổi tay. Bỏ qua thì video bị giảm cơ hội đề xuất cho người Việt.
 - **Mốc chương trong mô tả phải lấy từ thời lượng RENDER THẬT, không lấy từ kịch bản.**
   Kịch bản đặt mục tiêu 180 giây, bản render ra 164,47 giây, lệch 17 giây làm mọi mốc từ

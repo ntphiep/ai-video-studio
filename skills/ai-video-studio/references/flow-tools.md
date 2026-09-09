@@ -12,11 +12,11 @@ Nguồn: [live] = do agent tự mở giao diện Flow xác nhận trực tiếp 
 - 5. Tool cộng đồng đáng chú ý cho làm video (kèm tên tác giả) — dòng 266
 - 6. Bảng "cần làm việc X thì dùng tool nào" — dòng 283
 - 7. Community Tools Market và Tools Community Gallery — ai tạo được, ai remix được — dòng 305
-- 8. Custom Prompt Expanders [chưa xác minh] — dòng 318
+- 8. Custom Prompt Expanders `[chưa xác minh]` — dòng 318
 - 9. Doodle, Object Removal, Camera Adjustment — tinh chỉnh video sau khi đã sinh — dòng 328
-- 10. Maps Imagery Grounding — đang Private Preview, KHÔNG phải lỗi thiếu tính năng — dòng 343
-- 11. Phím tắt, Archive, và Starter Projects — ba tính năng chỉ có tên trong changelog — dòng 353
-- 12. Ghi chú về nguồn và mức tin cậy — dòng 375
+- 10. Maps Imagery Grounding — không thuộc Flow, đừng tìm trong Flow — dòng 343
+- 11. Phím tắt, Archive, và Starter Projects — ba tính năng chỉ có tên trong changelog — dòng 355
+- 12. Ghi chú về nguồn và mức tin cậy — dòng 377
 
 <!-- MUCLUC:KET-THUC -->
 ## 1. Ba tab của "Explore Tools" và danh mục đầy đủ
@@ -315,15 +315,15 @@ Danh mục tool cụ thể trong tab "Community" đã liệt kê ở Mục 1 c�
 
 **Xác nhận thêm bằng phép đo `[live 08/09/2026]` khác, mở trực tiếp UI bằng Playwright trên tài khoản Pro**: tên gọi đúng của khu vực này là **"Tools from creators like you"** (heading thật trong tab Community), mô tả nguyên văn "Explore tools curated from the Google Flow Community. Try them out, get inspired, and create your own!", danh sách chia theo ba nhóm **Image, Video, Experimental**. Tab **"My Tools"** có heading **"Submit your tool to be featured"** kèm nút **"Create New"**, và chia hai mục con **"My creations"** và **"Tools shared with me"**. Phép đo này còn xác nhận thêm hai điểm: **chỉ gói trả phí mới tạo được tool** (khớp với giả thuyết của nguồn MindStudio ở trên, nay đã có `[live]` củng cố thêm chứ không chỉ dựa một nguồn thứ ba nữa), và **Flow Tools chỉ có trên bản web**, không có trên app di động.
 
-## 8. Custom Prompt Expanders [chưa xác minh]
+## 8. Custom Prompt Expanders `[chưa xác minh]`
 
-Đã tìm nhưng CHƯA thấy trang hỗ trợ chính thức nào của Flow nhắc tên "Custom Prompt Expanders" hay "Prompt Expander". Mọi mô tả dưới đây đến từ báo công nghệ bên thứ ba, gắn `[chưa xác minh]`, không phải "tính năng không tồn tại" — chỉ là chưa tự đọc được nguồn chính thức:
+Không tìm được trang hỗ trợ chính thức nào của Google nhắc tên này. Cả mục dưới đây đến từ hai nguồn báo công nghệ độc lập, mô tả khớp nhau nên đáng tin hơn một nguồn đơn lẻ, nhưng chưa đạt mức `[doc]`.
 
-- Biến một câu lệnh ngắn thành một prompt đầy đủ chi tiết hơn ("convert a short instruction into a richer, fully formed prompt"), có sẵn nhiều preset dựng sẵn như **Action Figure, Film Noir, Cinematic**, và cho phép tạo kiểu mở rộng (custom expansion style) riêng [chưa xác minh, testingcatalog.com/google-flow-adds-nano-banana-editing-and-prompt-expander, bài đăng 28/09/2025].
-- Một Expander đã áp dụng sẽ tác động đồng thời lên cả ba model nền của Flow: cách Veo 3 sinh video, cách Imagen 4 sinh ảnh minh hoạ, và cách Gemini xử lý prompt ngôn ngữ tự nhiên [chưa xác minh, vp-land.com/p/google-flow-s-custom-expander-feature-brings-consistency-to-ai-video-production, đọc 08/09/2026].
-- Công dụng chính theo cả hai nguồn: giữ nhất quán phong cách hình ảnh qua nhiều clip trong cùng một dự án.
+- Biến câu lệnh ngắn thành prompt chi tiết. Có preset dựng sẵn gồm Action Figure, Film Noir, Cinematic, và cho tạo kiểu mở rộng riêng.
+- Một Expander đã áp dụng tác động đồng thời lên cả Veo, Imagen và Gemini.
+- Công dụng chính: giữ nhất quán phong cách hình ảnh qua nhiều clip trong cùng dự án.
 
-Hai nguồn trên độc lập với nhau và mô tả khớp nhau về cơ chế (ngắn thành dài, có preset, ảnh hưởng nhiều model), nên đáng tin hơn một nguồn đơn lẻ, nhưng vẫn CHƯA đạt mức `[doc]` vì chưa tự đọc được trang chính thức của Google.
+Nguồn: `testingcatalog.com` bài 28/09/2025, và `vp-land.com` đọc 08/09/2026.
 
 ## 9. Doodle, Object Removal, Camera Adjustment — tinh chỉnh video sau khi đã sinh
 
@@ -340,15 +340,17 @@ Nguồn: `blog.google/innovation-and-ai/models-and-research/google-labs/flow-ref
 
 Blog không nói rõ Doodle và Camera adjustment có tốn credit hay không, và không nói backend model riêng cho hai tính năng này (chỉ nói rõ backend của object removal/insertion là Veo 2).
 
-## 10. Maps Imagery Grounding — đang Private Preview, KHÔNG phải lỗi thiếu tính năng
+## 10. Maps Imagery Grounding — không thuộc Flow, đừng tìm trong Flow
 
-Nguồn: `mapsplatform.google.com/maps-products/grounding/`, đọc 08/09/2026 [doc].
+Nguồn: `mapsplatform.google.com/maps-products/grounding/`, đọc 08/09/2026 `[doc]`.
 
-Tính năng cho phép chèn chủ thể do AI sinh vào bối cảnh địa lý có thật, dùng dữ liệu không gian địa lý của Google để giữ đúng thực tế, nguyên văn cho phép "seamlessly insert" chủ thể vào bối cảnh thật. Nguồn ảnh nền là **Street View**.
+Chèn chủ thể do AI sinh vào bối cảnh địa lý có thật, ảnh nền lấy từ Street View.
 
-Tính năng hiện đang ở **Private Preview** — phải nộp đơn xin quyền truy cập qua form riêng, KHÔNG mở đại trà cho mọi tài khoản bất kể trả phí hay không. Trang không ghi rõ vùng khởi đầu cụ thể; theo mô tả tổng thể và đối chiếu với `mapsplatform.google.com/resources/blog/three-new-ways-to-build-with-real-world-imagery-and-ai/`, điểm khởi đầu là địa điểm tại Mỹ qua Street View.
+Ba điều cần nhớ:
 
-**Điểm quan trọng cần nhớ**: trang này không hề nhắc tới Google Flow — Maps Imagery Grounding vận hành trong hệ sinh thái Gemini Enterprise Agent Platform, tách biệt khỏi Flow. Vì vậy **việc tài khoản Flow (kể cả gói Pro) không nhìn thấy tính năng này là ĐÚNG THIẾT KẾ, không phải lỗi thiếu tính năng hay lỗi tài khoản** — tính năng chưa từng được tích hợp đại trà vào Flow, và đang giới hạn ở diện xin duyệt trước cho một sản phẩm/API khác của Google. Không nên kết luận "Flow không có Maps Imagery Grounding" theo nghĩa phủ định vĩnh viễn; đúng hơn là "tính năng này chưa mở, và đang thuộc một preview riêng ngoài Flow" — lần sau gặp lại câu hỏi này thì tra cứu đúng chỗ (Maps Platform, không phải Flow support) trước khi kết luận.
+- Tính năng thuộc **Gemini Enterprise Agent Platform, không phải Flow**. Trang tài liệu của nó không nhắc tới Flow một lần nào.
+- Đang ở **Private Preview**, phải nộp đơn xin quyền qua form riêng, khởi đầu ở các địa điểm tại Mỹ.
+- Do đó tài khoản Flow kể cả gói Pro không thấy tính năng này là **đúng thiết kế, không phải lỗi**. Lần sau gặp câu hỏi này thì tra ở Maps Platform, đừng tra ở trang hỗ trợ Flow.
 
 ## 11. Phím tắt, Archive, và Starter Projects — ba tính năng chỉ có tên trong changelog
 

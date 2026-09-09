@@ -1,20 +1,17 @@
 ---
 name: ai-video-studio
 description: >
-  Sản xuất video AI toàn diện, mọi loại nội dung, mọi style, mọi format. Bốn
-  đường sản xuất: Google Flow qua giao diện (Playwright, gói Free trở lên),
-  Gemini API (Veo 3.1, Omni, Nano Banana, TTS, Lyria), Gemini Notebook tức
-  NotebookLM cũ (video từ tài liệu), và Claude Code kết hợp Remotion (video
-  dựng bằng code). Bao gồm: story nhiều nhân vật có thoại tiếng Việt, faceless
-  giáo dục, Shorts, TikTok, Reels, quảng cáo UGC, ASMR, MV ca nhạc, kinetic
-  typography, motion graphics, explainer, hoạt hình 2D, video đa ngôn ngữ có
-  lip sync, video nhiều cảnh giữ nhân vật nhất quán. Dùng skill này khi người
-  dùng muốn TẠO VIDEO AI cho bất kỳ nền tảng, style hay mục đích nào, hoặc khi
-  họ nhắc "Google Flow", "flow.google.com", "veo", "omni", "nano banana",
-  "shorts", "faceless", "UGC", "kinetic typography", "clone style",
-  "multi-scene", "nhân vật nhất quán", "đổi tỉ lệ video", "MV", "lip sync",
-  "Remotion", "NotebookLM", "Gemini Notebook". KHÔNG dùng cho việc dựng phim
-  thủ công trên video có sẵn, hay cho chiến lược kênh thuần tuý.
+  Sản xuất video AI mọi nội dung, style và format. Bốn đường: Google Flow qua giao diện
+  (Playwright, gói Free trở lên), Gemini API (Veo 3.1, Omni, Nano Banana, TTS, Lyria), Gemini
+  Notebook tức NotebookLM (video từ tài liệu), và Claude Code với Remotion (video dựng bằng
+  code). Gồm story nhiều nhân vật thoại tiếng Việt, faceless giáo dục, Shorts, TikTok, Reels,
+  quảng cáo UGC, ASMR, MV ca nhạc, kinetic typography, motion graphics, explainer, hoạt hình
+  2D, video đa ngôn ngữ có lip sync, video nhiều cảnh giữ nhân vật nhất quán. Dùng khi người
+  dùng muốn TẠO VIDEO AI cho bất kỳ nền tảng, style hay mục đích nào, hoặc khi họ nhắc "Google
+  Flow", "flow.google.com", "veo", "omni", "nano banana", "shorts", "faceless", "UGC",
+  "kinetic typography", "clone style", "multi-scene", "nhân vật nhất quán", "đổi tỉ lệ video",
+  "MV", "lip sync", "Remotion", "NotebookLM", "Gemini Notebook". KHÔNG dùng cho dựng phim thủ
+  công trên video có sẵn, hay chiến lược kênh thuần tuý.
 compatibility: python 3, ffmpeg, curl, Gemini API key (env GEMINI_API_KEY), Playwright MCP cho đường giao diện
 ---
 
@@ -183,6 +180,18 @@ Gemini cho việc thật sự cần. Đều tuỳ chọn, thiếu key thì skill
 | `generate_audio_edge.py` | Giọng đọc miễn phí có tiếng Việt qua edge-tts. Hợp để đo độ dài lời đọc trước khi dựng hình. **Không phải API chính thức của Microsoft**, là bản dịch ngược dịch vụ Read Aloud của Edge, có thể bị chặn bất cứ lúc nào, nên chỉ dùng cho bản nháp, đường chính vẫn là Gemini TTS | `pip install edge-tts` |
 
 Chạy `doctor.py` để biết đang thiếu key hay gói nào và lấy ở đâu.
+
+Khi sửa frontmatter của chính file này, kiểm lại bằng validator tham chiếu của
+Anthropic, vì `claude plugin validate` **không** kiểm giới hạn `description`:
+
+```
+PYTHONUTF8=1 python <đường dẫn>/skill-creator/scripts/quick_validate.py <thư mục skill>
+```
+
+Hai điều đã kiểm bằng cách đọc mã nguồn validator ngày 09/09/2026: giới hạn 1024
+của `description` đếm **ký tự chứ không phải byte** (`len()` trên chuỗi Python),
+và nó cấm **mọi** dấu `<` `>` chứ không riêng thẻ XML. Bắt buộc đặt `PYTHONUTF8=1`
+trên Windows, nếu không validator đọc file bằng cp1252 rồi sập giữa chừng.
 
 Chạy từng bước một, đừng chạy hết một mạch, vì mỗi bước đều tốn tiền API:
 

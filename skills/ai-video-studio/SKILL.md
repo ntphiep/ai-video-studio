@@ -153,9 +153,9 @@ Chỉ nạp đúng file cần dùng, đừng nạp hết.
 
 ## Chạy bằng script
 
-Thư mục `scripts/` có 14 file Python: 9 file cho đường B tức đường gọi API, 3 file
-cho các đường miễn phí đỡ tốn quota Google, và 2 script bảo trì. Đây là phần duy
-nhất của skill chạy được không cần trình duyệt.
+Thư mục `scripts/` có 15 file Python: 9 file cho đường B tức đường gọi API, 3 file
+cho các đường miễn phí đỡ tốn quota Google, 1 file chấm video đã render, và 2 script
+bảo trì. Đây là phần duy nhất của skill chạy được không cần trình duyệt.
 
 | Script | Làm gì |
 |---|---|
@@ -181,6 +181,30 @@ Gemini cho việc thật sự cần. Đều tuỳ chọn, thiếu key thì skill
 | `generate_audio_edge.py` | Giọng đọc miễn phí có tiếng Việt qua edge-tts. Hợp để đo độ dài lời đọc trước khi dựng hình. **Không phải API chính thức của Microsoft**, là bản dịch ngược dịch vụ Read Aloud của Edge, có thể bị chặn bất cứ lúc nào, nên chỉ dùng cho bản nháp, đường chính vẫn là Gemini TTS | `pip install edge-tts` |
 
 Chạy `doctor.py` để biết đang thiếu key hay gói nào và lấy ở đâu.
+
+## Chấm video trước khi đăng
+
+`review_video.py` đo video đã render bằng `ffmpeg` và `ffprobe`, không gọi API,
+không tốn credit. **Chạy nó trước khi đăng, thay cho việc ngồi xem bằng mắt.**
+
+```
+python review_video.py video.mp4 --nen-tang youtube
+```
+
+Nó báo năm thứ kèm số thật: độ ồn tích hợp tính bằng LUFS, **tỉ lệ thời lượng bị
+đứng hình** tức thước đo "trông có giống slide không", số đoạn khung đen, độ lệch
+giữa hình và tiếng, và thông số kỹ thuật so với chuẩn nền tảng.
+
+Nó **cố ý không cho điểm tổng**. Lý do: khi đọc mã nguồn lệnh `/review-video` của
+`remotion-superpowers` ngày 09/09/2026, thứ nổi tiếng nhất trong nhóm này, tôi thấy
+nó là 145 dòng văn xuôi không có dòng code thực thi nào, không có bộ đếm vòng lặp,
+không có ngưỡng dừng, và con số "Overall Score 1-10" trong mẫu báo cáo không được
+định nghĩa ở bất kỳ đâu trong repo. Model tự nghĩ ra điểm. Nó còn cần TwelveLabs,
+một API trả phí. Một con số gộp che mất thứ đang thật sự sai, nên ở đây chỉ có số đo.
+
+Mốc `-14 LUFS` mang nhãn `[chưa xác minh]`: giới làm video nhắc con số này như mốc
+chuẩn hoá của YouTube nhưng tôi chưa tìm được trang chính thức nào của Google công
+bố nó. Số đo vẫn đúng, chỉ mốc so sánh là chưa có căn cứ cứng.
 
 Khi sửa frontmatter của chính file này, kiểm lại bằng validator tham chiếu của
 Anthropic, vì `claude plugin validate` **không** kiểm giới hạn `description`:

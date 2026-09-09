@@ -198,6 +198,12 @@ def create_operation(model, prompt, aspect, key, duration=None, resolution=None,
 LOI_THOANG = (500, 502, 503, 504)
 TOI_DA_LOI_LIEN_TIEP = 5
 
+# Operation chạy xong nhưng THẤT BẠI. Đây KHÔNG phải mã HTTP: theo quy ước
+# Long-Running Operation của Google, một operation đã done mang HOẶC `response`
+# HOẶC `error`, không bao giờ cả hai. Dùng số ngoài dải HTTP để khỏi lẫn với mã
+# thật, và `handle_error` có nhánh riêng cho nó.
+OPERATION_THAT_BAI = 900
+
 
 def poll_operation(name, key, timeout=600, interval=8, interval_toi_da=30):
     """Chờ operation sinh video chạy xong, trả (status, body).
@@ -231,7 +237,14 @@ def poll_operation(name, key, timeout=600, interval=8, interval_toi_da=30):
         if status == 200:
             loi_lien_tiep = 0
             if body.get("done"):
-                print(f"  xong sau {time.time() - start:.0f}s, hỏi {lan} lần.")
+                giay = time.time() - start
+                # done=true KHÔNG có nghĩa là thành công. Phải soi `error` riêng,
+                # nếu không thì lát nữa extract_uri sẽ báo "không thấy uri" và
+                # giấu mất lý do thật, chẳng hạn bị bộ lọc an toàn từ chối.
+                if body.get("error"):
+                    print(f"  operation kết thúc sau {giay:.0f}s nhưng THẤT BẠI.")
+                    return OPERATION_THAT_BAI, body
+                print(f"  xong sau {giay:.0f}s, hỏi {lan} lần.")
                 return 200, body
             print(f"  đang sinh... {time.time() - start:.0f}s (lần hỏi {lan})", flush=True)
         elif status == 0 or status in LOI_THOANG:
@@ -300,6 +313,13 @@ def handle_error(status, body):
         return "ok"
     msg = (body.get("error") or {}).get("message", str(body))
     print(f"[{status}] {msg}")
+    if status == OPERATION_THAT_BAI:
+        # Sinh lại y hệt gần như chắc chắn hỏng y hệt, và credit đã mất rồi.
+        # Đọc lý do ở dòng trên rồi sửa prompt, đừng chạy lại mù.
+        loai = (body.get("error") or {}).get("status", "")
+        print(f"Operation chạy xong nhưng thất bại{f' ({loai})' if loai else ''}. "
+              "Credit đã bị trừ. Sửa theo lý do trên rồi mới sinh lại.")
+        return "stop"
     if status == 429:
         delay = _retry_delay(body)
         if delay is not None:

@@ -102,7 +102,24 @@ def test_poll(chi_tiet: bool) -> None:
         kiem("lỗi 400 dừng ngay sau đúng 1 lần gọi", st == 400 and d2["n"] == 1,
              f"status={st}, gọi {d2['n']} lần")
 
-        # 4. Hết giờ phải trả lại operation name, vì clip đã bị tính tiền rồi.
+        # 4. done=true KÈM error là THẤT BẠI, không được coi là thành công.
+        #    Quy ước Long-Running Operation của Google: xong thì mang hoặc
+        #    `response` hoặc `error`. Bỏ sót nhánh này thì extract_uri sẽ báo
+        #    "không thấy uri" và giấu mất lý do thật.
+        gv._get = lambda url: (200, {"done": True, "error": {
+            "code": 3, "status": "INVALID_ARGUMENT",
+            "message": "prompt bị bộ lọc an toàn từ chối"}})
+        (st, body), _ = _chay_im(gv.poll_operation, "operations/a", "K", timeout=600)
+        kiem("done kèm error bị coi là thất bại chứ không phải thành công",
+             st == gv.OPERATION_THAT_BAI, f"status={st}, đáng lẽ {gv.OPERATION_THAT_BAI}")
+        _, in_ra = _chay_im(gv.handle_error, gv.OPERATION_THAT_BAI, body)
+        kiem("thông báo lỗi nói đúng lý do thật",
+             "bộ lọc an toàn" in in_ra, f"đã in: {in_ra[:80]}")
+        quyet_dinh, _ = _chay_im(gv.handle_error, gv.OPERATION_THAT_BAI, body)
+        kiem("và bảo dừng chứ không thử lại", quyet_dinh == "stop",
+             f"trả về {quyet_dinh!r}")
+
+        # 5. Hết giờ phải trả lại operation name, vì clip đã bị tính tiền rồi.
         gv._get = lambda url: (200, {"done": False})
         (st, body), _ = _chay_im(gv.poll_operation, "operations/xyz", "K", timeout=0.001)
         msg = (body.get("error") or {}).get("message", "")

@@ -153,9 +153,9 @@ Chỉ nạp đúng file cần dùng, đừng nạp hết.
 
 ## Chạy bằng script
 
-Thư mục `scripts/` có 13 file Python: 9 file cho đường B tức đường gọi API, 3 file
-cho các đường miễn phí đỡ tốn quota Google, và 1 script bảo trì chính tài liệu này.
-Đây là phần duy nhất của skill chạy được không cần trình duyệt.
+Thư mục `scripts/` có 14 file Python: 9 file cho đường B tức đường gọi API, 3 file
+cho các đường miễn phí đỡ tốn quota Google, và 2 script bảo trì. Đây là phần duy
+nhất của skill chạy được không cần trình duyệt.
 
 | Script | Làm gì |
 |---|---|
@@ -169,6 +169,7 @@ cho các đường miễn phí đỡ tốn quota Google, và 1 script bảo trì
 | `upload_video.py` | Chỉ sinh file metadata JSON, không tải lên đâu cả |
 | `pipeline.py` | Điều phối các bước trên theo `spec.json` |
 | `gen_toc.py` | Bảo trì, không dính tới sản xuất video. Sinh lại mục lục kèm số dòng cho mọi file trong `references/`. **Chạy lại sau mỗi lần sửa file reference**, nếu không số dòng trong mục lục sẽ lệch. Dùng `--check` để chỉ báo lệch mà không ghi |
+| `selftest.py` | Bảo trì. Tự kiểm logic dễ vỡ, chạy offline trong một giây, không tốn credit. **Chạy sau mỗi lần sửa `generate_video.py`.** Nó kiểm đúng chỗ đắt nhất: vòng chờ operation, nơi credit đã bị trừ trước khi vòng chờ bắt đầu, nên thoát sớm vì một lỗi mạng thoáng qua là mất trắng clip đã trả tiền |
 
 Ba script dưới đây dùng bậc miễn phí của bên ngoài Google, để dành quota Veo và
 Gemini cho việc thật sự cần. Đều tuỳ chọn, thiếu key thì skill vẫn chạy đủ.

@@ -195,23 +195,69 @@ def create_operation(model, prompt, aspect, key, duration=None, resolution=None,
     return _post(url, payload, key)
 
 
-def poll_operation(name, key, timeout=600, interval=8):
+LOI_THOANG = (500, 502, 503, 504)
+TOI_DA_LOI_LIEN_TIEP = 5
+
+
+def poll_operation(name, key, timeout=600, interval=8, interval_toi_da=30):
+    """Chờ operation sinh video chạy xong, trả (status, body).
+
+    Điều quan trọng nhất ở đây: credit đã bị trừ ngay khi operation được tạo,
+    TRƯỚC khi vòng chờ này bắt đầu. Nên một lỗi thoáng giữa chừng mà làm hàm
+    thoát sớm là mất trắng clip đã trả tiền. Vì vậy vòng chờ phải sống sót qua
+    mất mạng và qua lỗi 5xx, chỉ đầu hàng khi lỗi lặp liên tiếp quá nhiều lần
+    hoặc khi gặp lỗi thật sự không cứu được (400, 401, 404).
+
+    Giãn dần khoảng chờ từ `interval` lên `interval_toi_da` để đỡ đập API với
+    clip lâu, mà vẫn phản hồi nhanh với clip ngắn.
+    """
     url = f"{BASE_URL}/{name}?key={key}"
     start = time.time()
-    while time.time() - start < timeout:
-        status, body = _post_no_body(url, key)
-        if status != 200:
-            return status, body
-        if body.get("done"):
-            return 200, body
-        # body thường có response.video.uri khi xong
-        time.sleep(interval)
-    return 504, {"error": {"message": "timeout"}}
+    cho = interval
+    lan = 0
+    loi_lien_tiep = 0
 
-def _post_no_body(url, key):
+    while True:
+        con_lai = timeout - (time.time() - start)
+        if con_lai <= 0:
+            return 504, {"error": {"message": (
+                f"Chờ quá {timeout}s mà operation chưa done. Clip có thể vẫn "
+                f"đang sinh; operation name là {name}, hỏi lại sau bằng chính "
+                "name đó thay vì sinh lại từ đầu.")}}
+
+        lan += 1
+        status, body = _get(url)
+
+        if status == 200:
+            loi_lien_tiep = 0
+            if body.get("done"):
+                print(f"  xong sau {time.time() - start:.0f}s, hỏi {lan} lần.")
+                return 200, body
+            print(f"  đang sinh... {time.time() - start:.0f}s (lần hỏi {lan})", flush=True)
+        elif status == 0 or status in LOI_THOANG:
+            # status 0 nghĩa là lỗi mạng phía mình, chưa chạm tới server.
+            loi_lien_tiep += 1
+            msg = (body.get("error") or {}).get("message", "")
+            print(f"  lỗi thoáng {loi_lien_tiep}/{TOI_DA_LOI_LIEN_TIEP}: {msg[:120]}", flush=True)
+            if loi_lien_tiep >= TOI_DA_LOI_LIEN_TIEP:
+                return (status or 504), body
+        else:
+            # 400, 401, 404... thử lại cũng vô ích.
+            return status, body
+
+        time.sleep(min(cho, max(con_lai, 0)))
+        cho = min(cho * 1.5, interval_toi_da)
+
+
+def _get(url):
+    """GET một URL, luôn trả (status, body), KHÔNG bao giờ ném ngoại lệ.
+
+    Trả status 0 cho lỗi mạng. Người gọi phân biệt được "chưa tới được server"
+    với "server trả lỗi", và tự quyết định thử lại hay dừng.
+    """
     req = urllib.request.Request(url, headers={"Content-Type": "application/json"})
     try:
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req, timeout=60) as resp:
             return resp.status, json.load(resp)
     except urllib.error.HTTPError as e:
         try:
@@ -219,6 +265,10 @@ def _post_no_body(url, key):
         except Exception:
             body = {"message": e.read().decode(errors="replace")}
         return e.code, body
+    except (urllib.error.URLError, TimeoutError, OSError) as e:
+        return 0, {"error": {"message": f"lỗi mạng: {e}"}}
+    except json.JSONDecodeError as e:
+        return 0, {"error": {"message": f"response không phải JSON: {e}"}}
 
 
 def _retry_delay(body):

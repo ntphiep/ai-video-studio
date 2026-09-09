@@ -4,6 +4,16 @@ Tài liệu này gom từ 49 báo cáo quan sát khung hình, mã b01 đến b49
 
 ---
 
+<!-- MUCLUC:BAT-DAU (sinh bang scripts/gen_toc.py, dung sua tay) -->
+**Mục lục** (số dòng để đọc thẳng đúng đoạn, không cần nạp cả file)
+
+- 1. Claude Code / Claude Cowork kết hợp Remotion — dòng 17
+- 2. NotebookLM (nay đổi tên thành Gemini Notebook) — dòng 257
+- 3. VMEG (dịch video đa ngôn ngữ và lip sync) — dòng 341
+- 4. OpenMusic AI và Suno để làm MV ca nhạc — dòng 411
+- 5. Các công cụ khác (Google AI Studio, Google Vids, Canva, Pomelli, Stitch) — dòng 470
+
+<!-- MUCLUC:KET-THUC -->
 ## 1. Claude Code / Claude Cowork kết hợp Remotion
 
 Đây là đường có nhiều dữ liệu nhất, xuất hiện ở ít nhất 6 video: b08, b09, b25, b26, b39, b46 (chi tiết đầy đủ nhất), cùng một số đoạn liên quan ở b16, b17 (chỉ nhắc thoáng qua, không có chi tiết kỹ thuật).

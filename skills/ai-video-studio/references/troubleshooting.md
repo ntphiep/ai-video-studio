@@ -4,6 +4,23 @@ Gom tất cả lỗi và cạm bẫy đã ghi nhận được khi dùng Google F
 
 ---
 
+<!-- MUCLUC:BAT-DAU (sinh bang scripts/gen_toc.py, dung sua tay) -->
+**Mục lục** (số dòng để đọc thẳng đúng đoạn, không cần nạp cả file)
+
+- 1. Lỗi khi sinh video trong Flow — dòng 24
+- 2. Cạm bẫy về credit — dòng 42
+- 3. Cạm bẫy về giao diện — dòng 54
+- 4. Cạm bẫy về ngôn ngữ — dòng 68
+- 5. Cạm bẫy khi viết prompt — dòng 80
+- 6. Lỗi ở các đường khác — dòng 96
+- 7. Lỗi môi trường trên máy Windows — dòng 135
+- Ghi chú khi dùng file này — dòng 145
+- 8. Ghép clip Google Flow vào Remotion — dòng 151
+- 9. Sinh clip trong Flow bằng tự động hoá — dòng 193
+- 10. Điều kiện chạy và giới hạn vùng — dòng 203
+- 11. Sinh giọng đọc hàng loạt bằng API TTS — dòng 215
+
+<!-- MUCLUC:KET-THUC -->
 ## 1. Lỗi khi sinh video trong Flow
 
 | Lỗi | Dấu hiệu | Nguyên nhân (nếu biết) | Cách xử lý |

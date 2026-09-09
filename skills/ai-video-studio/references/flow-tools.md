@@ -2,6 +2,23 @@
 
 Nguồn: [live] = do agent tự mở giao diện Flow xác nhận trực tiếp ngày 06/09/2026 (mức bằng chứng cao nhất). [bXX] = agent xem frame video hướng dẫn kèm mốc giây gốc trong file. Mục nào chỉ dựa một nguồn duy nhất được gắn [chưa xác minh].
 
+<!-- MUCLUC:BAT-DAU (sinh bang scripts/gen_toc.py, dung sua tay) -->
+**Mục lục** (số dòng để đọc thẳng đúng đoạn, không cần nạp cả file)
+
+- 1. Ba tab của "Explore Tools" và danh mục đầy đủ — dòng 22
+- 2. Tool nào tốn credit, tool nào không — dòng 90
+- 3. Hướng dẫn chi tiết từng tool đã có thao tác thật trong video — dòng 102
+- 4. Tính năng "Create Tool" — tự tạo công cụ bằng ngôn ngữ tự nhiên — dòng 210
+- 5. Tool cộng đồng đáng chú ý cho làm video (kèm tên tác giả) — dòng 266
+- 6. Bảng "cần làm việc X thì dùng tool nào" — dòng 283
+- 7. Community Tools Market và Tools Community Gallery — ai tạo được, ai remix được — dòng 305
+- 8. Custom Prompt Expanders [chưa xác minh] — dòng 318
+- 9. Doodle, Object Removal, Camera Adjustment — tinh chỉnh video sau khi đã sinh — dòng 328
+- 10. Maps Imagery Grounding — đang Private Preview, KHÔNG phải lỗi thiếu tính năng — dòng 343
+- 11. Phím tắt, Archive, và Starter Projects — ba tính năng chỉ có tên trong changelog — dòng 353
+- 12. Ghi chú về nguồn và mức tin cậy — dòng 375
+
+<!-- MUCLUC:KET-THUC -->
 ## 1. Ba tab của "Explore Tools" và danh mục đầy đủ
 
 Trang vào: `flow.google.com/project/<id>/tools`, tiêu đề trang "Explore tools". Đúng **BA TAB**: My Tools, Community, Templates [live, danh mục tool đọc từ DOM ngày 06/09/2026]. Một số video hướng dẫn cũ gọi tab là "Discover" thay vì "Templates" và có nơi chỉ thấy 2 tab Discover/My Tools do tài khoản đó chưa có tool cộng đồng nào được thêm [b06, b20, b21, b35] — tên tab hiển thị có thể lệch theo phiên bản giao diện tại thời điểm quay, nhưng cấu trúc ba nhóm nội dung (tool của Google, tool cộng đồng, tool tự tạo) là nhất quán.

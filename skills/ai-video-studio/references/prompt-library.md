@@ -4,6 +4,18 @@ Nguồn: 49 báo cáo quan sát khung hình, mã b01 đến b49 (quan sát bằn
 
 ---
 
+<!-- MUCLUC:BAT-DAU (sinh bang scripts/gen_toc.py, dung sua tay) -->
+**Mục lục** (số dòng để đọc thẳng đúng đoạn, không cần nạp cả file)
+
+- 0. Công thức chính thức của Google (nguồn có mức bằng chứng cao nhất) — dòng 19
+- 1. THƯ VIỆN PROMPT NGUYÊN VĂN — dòng 105
+- 2. CẤU TRÚC PROMPT HIỆU QUẢ (rút ra từ các prompt thật ở trên) — dòng 395
+- 3. XỬ LÝ NGÔN NGỮ — dòng 426
+- 4. Style theo từng công cụ — dòng 455
+- 5. CẠM BẪY KHI VIẾT PROMPT — dòng 463
+- Ghi chú về nguồn và độ tin cậy — dòng 505
+
+<!-- MUCLUC:KET-THUC -->
 ## 0. Công thức chính thức của Google (nguồn có mức bằng chứng cao nhất)
 
 Mục này đọc trực tiếp hai bài hướng dẫn chính thức của Google Cloud, đặt TRƯỚC thư viện prompt rút từ video ở mục 1 vì nguồn chính thức có mức bằng chứng cao hơn nguồn video. Đã tự mở hai URL dưới bằng WebFetch ngày 08/09/2026, không chỉ tin bản tóm tắt có sẵn từ trước.

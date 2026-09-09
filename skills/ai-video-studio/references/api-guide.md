@@ -5,6 +5,23 @@ này gộp và thay thế trọn ba file cũ đã bị gỡ khỏi skill. Chuy�
 đường Google Flow UI (credit, voice UI, Flow Music) nằm ở `flow-core.md` và
 `flow-tools.md`, không lặp lại ở đây.
 
+<!-- MUCLUC:BAT-DAU (sinh bang scripts/gen_toc.py, dung sua tay) -->
+**Mục lục** (số dòng để đọc thẳng đúng đoạn, không cần nạp cả file)
+
+- 0. Cảnh báo đầu tiên: Google chạy song song ba họ API khác cú pháp — dòng 25
+- Base URL — dòng 39
+- 1. Video: Veo 3.1 — dòng 45
+- 2. Video: Gemini Omni Flash (khác Veo, dùng Interactions API) — dòng 113
+- 3. Ảnh: Nano Banana — dòng 259
+- 4. TTS: Gemini Flash TTS — dòng 282
+- 5. Nhạc: Lyria — dòng 335
+- 6. Text: viết kịch bản — dòng 349
+- 7. Bảng model hiện hành (kết quả gọi API thật, `models.list`, 06/09/2026) — dòng 359
+- 8. Rate limit và lỗi, chỉ ghi phần có căn cứ — dòng 374
+- 9. Giá — dòng 391
+- Tự soát nguồn — dòng 410
+
+<!-- MUCLUC:KET-THUC -->
 ## 0. Cảnh báo đầu tiên: Google chạy song song ba họ API khác cú pháp
 
 Google hiện có **ba họ API khác cú pháp cho cùng một việc**. Nhầm họ là mọi ví

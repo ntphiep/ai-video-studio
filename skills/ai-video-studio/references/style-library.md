@@ -11,6 +11,17 @@ cấu trúc câu prompt nói chung.
 
 ---
 
+<!-- MUCLUC:BAT-DAU (sinh bang scripts/gen_toc.py, dung sua tay) -->
+**Mục lục** (số dòng để đọc thẳng đúng đoạn, không cần nạp cả file)
+
+- 1. Hai bộ khung mô tả style — dòng 25
+- 2. Quy trình clone style một video/kênh bất kỳ — dòng 117
+- 3. Danh sách tên style CHÍNH XÁC theo từng công cụ — dòng 204
+- 4. Thư viện style (khối prompt mẫu dùng ngay) — dòng 253
+- 5. Ràng buộc giữ style ổn định giữa nhiều clip — dòng 315
+- Tự soát nguồn — dòng 332
+
+<!-- MUCLUC:KET-THUC -->
 ## 1. Hai bộ khung mô tả style
 
 Khi cần "bắt" (capture) một style bất kỳ để tái tạo lại bằng AI, có hai khung

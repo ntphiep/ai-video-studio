@@ -7,6 +7,19 @@ thuật từng đường (Remotion, Gemini Notebook, VMEG, UGC) nằm ở
 `format-and-export.md`. File này chỉ trả lời: nên làm dạng nội dung gì, đi
 đường nào, tốn bao nhiêu.
 
+<!-- MUCLUC:BAT-DAU (sinh bang scripts/gen_toc.py, dung sua tay) -->
+**Mục lục** (số dòng để đọc thẳng đúng đoạn, không cần nạp cả file)
+
+- 1. Bảng nền tảng — dòng 23
+- 2. Dạng nội dung khả thi — dòng 40
+- 3. Quy trình theo từng dạng nội dung — dòng 62
+- 4. Bốn dạng ngoài năng lực sinh video của Flow — dòng 82
+- 5. Muốn làm dạng video X thì đi đường nào, tốn bao nhiêu — dòng 118
+- 6. Lịch sản xuất đề xuất (một người, 5-10 giờ/tuần) — dòng 164
+- 7. Monetization và policy (cảnh báo, dùng chính xác) — dòng 174
+- Tự soát nguồn — dòng 197
+
+<!-- MUCLUC:KET-THUC -->
 ## 1. Bảng nền tảng
 
 | Nền tảng | Aspect | Độ dài ngọt | Ghi chú |
